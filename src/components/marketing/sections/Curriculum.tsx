@@ -5,7 +5,6 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
-import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,89 +80,141 @@ const DAYS: Day[] = [
 ];
 
 // Resting rotations per card — alternating so the stack looks hand-placed and the
-// buried cards peek out at the edges.
+// buried cards peek out at the edges. Shared by both layouts.
 const REST_ROTATIONS = [3, -2, 4, -1, -3];
+
+// Desktop hover-fan: each card's resting rotation + vertical stagger (px), so the
+// row reads like a hand-fanned deck rather than a flat strip.
+const DESKTOP_LAYOUT = [
+  { rot: -4, ty: 0 },
+  { rot: 3, ty: 30 },
+  { rot: -2, ty: 8 },
+  { rot: 4, ty: 34 },
+  { rot: -3, ty: 12 },
+];
+
+function HandDivider({ dark }: { dark: boolean }) {
+  return (
+    <svg
+      aria-hidden="true"
+      className={`mt-4 h-[10px] w-40 ${dark ? "text-ua-bg" : "text-ua-ink"}`}
+      viewBox="0 0 200 10"
+      fill="none"
+      preserveAspectRatio="none"
+    >
+      <path
+        d="M2 6C40 3 70 8 100 5C130 2 160 7 198 4"
+        stroke="currentColor"
+        strokeWidth={3}
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function Bullets({
+  bullets,
+  dark,
+  dense = false,
+}: {
+  bullets: string[];
+  dark: boolean;
+  dense?: boolean;
+}) {
+  return (
+    <ul className={dense ? "mt-4 space-y-1.5" : "mt-6 space-y-3"}>
+      {bullets.map((b) => (
+        <li
+          key={b}
+          className={`flex items-start leading-tight ${
+            dense ? "gap-2 text-sm" : "gap-3"
+          }`}
+        >
+          <span
+            aria-hidden
+            className={`${dense ? "mt-1.5" : "mt-2"} h-2 w-2 shrink-0 rounded-full ${
+              dark ? "bg-ua-bg" : "bg-ua-ink"
+            }`}
+          />
+          <span className={dark ? "text-ua-bg" : "text-ua-ink/90"}>{b}</span>
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 export function Curriculum() {
   const sectionRef = useRef<HTMLElement>(null);
-  const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
+  // Refs for the mobile scroll-stack cards only (desktop deck is pure-CSS hover).
+  const mobileCardRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
-    // Reduced motion: leave the cards as a plain, fully readable vertical stack.
-    if (prefersReducedMotion()) return;
+    // The scroll-stack only applies to mobile. gsap.matchMedia scopes the
+    // ScrollTriggers to the (max-width:767px) query and auto-reverts them when
+    // the viewport grows past it (or on unmount). Desktop gets the CSS hover-fan.
+    const mm = gsap.matchMedia();
+    mm.add(
+      "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
+      () => {
+        const cards = mobileCardRefs.current.filter(
+          (c): c is HTMLDivElement => c !== null,
+        );
+        if (!cards.length) return;
 
-    const ctx = gsap.context(() => {
-      const cards = cardRefs.current.filter(
-        (c): c is HTMLDivElement => c !== null,
-      );
-      if (!cards.length) return;
+        const lastWrapper = cards[cards.length - 1].parentElement;
 
-      // The whole stack releases at one shared point — the last card's wrapper.
-      // Anchoring every pin's end here is what makes earlier cards HOLD their
-      // position (just below the nav) while later cards scroll up and stack on
-      // top, instead of each card scrolling away as soon as its own bottom hits.
-      const lastWrapper = cards[cards.length - 1].parentElement;
+        // ScrollTrigger start/end strings don't parse "rem", so compute px. The
+        // fixed nav is ~80px tall; park the topmost card just below it.
+        const rootFontPx =
+          parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        const NAV_GAP = 6 * rootFontPx; // ~96px — clears the 80px fixed header
+        const FAN = 0.9 * rootFontPx; // ~14px peek between stacked cards
 
-      // ScrollTrigger start/end strings don't parse "rem" units, so compute the
-      // pin offset in pixels. The fixed nav is ~80px tall; park the topmost card
-      // just below it and fan each subsequent card a little lower.
-      const rootFontPx =
-        parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-      const NAV_GAP = 6 * rootFontPx; // ~96px — clears the 80px fixed header
-      const FAN = 0.9 * rootFontPx; // ~14px peek between stacked cards
+        cards.forEach((card, i) => {
+          const wrapper = card.parentElement;
+          if (!wrapper) return;
 
-      cards.forEach((card, i) => {
-        const wrapper = card.parentElement;
-        if (!wrapper) return;
+          gsap.set(card, { rotation: REST_ROTATIONS[i] ?? 0 });
+          const offset = Math.round(NAV_GAP + i * FAN);
 
-        // Rest the card at a small hand-placed rotation.
-        gsap.set(card, { rotation: REST_ROTATIONS[i] ?? 0 });
+          ScrollTrigger.create({
+            trigger: wrapper,
+            start: `top top+=${offset}`,
+            // Hold each pin until the whole stack has scrolled past, so earlier
+            // cards stay parked below the nav rather than scrolling away.
+            endTrigger: lastWrapper ?? wrapper,
+            end: "bottom top",
+            pin: true,
+            pinSpacing: false,
+            id: `curriculum-card-${i}`,
+          });
 
-        // Each card pins a little further down so the stack fans toward the top:
-        // just below the nav, plus a small peek per card.
-        const offset = Math.round(NAV_GAP + i * FAN);
-
-        ScrollTrigger.create({
-          trigger: wrapper,
-          start: `top top+=${offset}`,
-          // Hold the pin until the entire stack has scrolled past, so every card
-          // stays parked below the nav rather than releasing at its own bottom.
-          endTrigger: lastWrapper ?? wrapper,
-          end: "bottom top",
-          pin: true,
-          pinSpacing: false,
-          id: `curriculum-card-${i}`,
+          if (i < cards.length - 1) {
+            gsap.to(card, {
+              scale: 0.95,
+              ease: "none",
+              scrollTrigger: {
+                trigger: mobileCardRefs.current[i + 1]?.parentElement ?? wrapper,
+                start: `top top+=${offset}`,
+                end: `+=${window.innerHeight}`,
+                scrub: true,
+              },
+            });
+          }
         });
 
-        // Covered cards scale down slightly for depth as the next ones stack over.
-        if (i < cards.length - 1) {
-          gsap.to(card, {
-            scale: 0.95,
-            ease: "none",
-            scrollTrigger: {
-              trigger: cardRefs.current[i + 1]?.parentElement ?? wrapper,
-              start: `top top+=${offset}`,
-              end: `+=${typeof window !== "undefined" ? window.innerHeight : 800}`,
-              scrub: true,
-            },
-          });
-        }
-      });
+        ScrollTrigger.refresh();
+      },
+    );
 
-      ScrollTrigger.refresh();
-    }, section);
-
-    return () => ctx.revert();
+    return () => mm.revert();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="bg-ua-bg px-6 py-24 md:px-10"
-    >
+    <section ref={sectionRef} className="bg-ua-bg px-6 py-24 md:px-10">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2
@@ -178,25 +229,68 @@ export function Curriculum() {
         </Reveal>
 
         {/*
-          Scroll-driven stacking deck. Each card lives in a tall wrapper so there's
-          a viewport of scroll between pins. ScrollTrigger pins each card near the
-          top of the viewport with pinSpacing:false so the next card scrolls up and
-          stacks on top. Without JS / with reduced motion this is just a normal,
-          fully readable vertical stack (no overlap, nothing hidden).
+          Desktop (md+): horizontal hover-fan deck. Cards overlap in a fanned row;
+          hovering one straightens + lifts it and nudges the cards after it right
+          to reveal it (see .cur-card rules in globals.css). Pure CSS, no JS.
         */}
-        <div className="mt-14 flex flex-col gap-6 md:mt-20 md:gap-0">
+        <div className="cur-deck mt-20 hidden justify-center md:flex">
+          {DAYS.map((d, i) => {
+            const dark = d.color.includes("text-ua-bg");
+            const { rot, ty } = DESKTOP_LAYOUT[i] ?? { rot: 0, ty: 0 };
+            return (
+              <article
+                key={d.day}
+                className={`cur-card relative flex h-[30rem] w-[17rem] shrink-0 flex-col justify-end rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-16 shadow-[6px_6px_0_var(--ua-ink)] ${
+                  i > 0 ? "-ml-24" : ""
+                }`}
+                style={
+                  {
+                    zIndex: i + 1,
+                    "--rot": `${rot}deg`,
+                    "--ty": `${ty}px`,
+                  } as React.CSSProperties
+                }
+              >
+                <Sticker
+                  name={d.sticker}
+                  size={72}
+                  className="absolute -left-2 -top-7"
+                  rotate={-8}
+                />
+                <div>
+                  <h3
+                    className="text-2xl font-bold leading-tight"
+                    style={{ fontFamily: "var(--font-epilogue)" }}
+                  >
+                    {d.day}
+                  </h3>
+                  <HandDivider dark={dark} />
+                  <Bullets bullets={d.bullets} dark={dark} dense />
+                </div>
+              </article>
+            );
+          })}
+        </div>
+
+        {/*
+          Mobile (< md): GSAP scroll-driven stacking deck. Each card lives in a
+          tall wrapper; ScrollTrigger pins it just below the nav and the next card
+          scrolls up and stacks over it. With reduced motion this is a plain,
+          fully readable vertical stack.
+        */}
+        <div className="mt-14 flex flex-col gap-6 md:hidden">
           {DAYS.map((d, i) => {
             const dark = d.color.includes("text-ua-bg");
             return (
               <div
                 key={d.day}
-                className="curriculum-card-wrapper relative flex justify-center md:h-screen md:items-start"
+                className="curriculum-card-wrapper relative flex h-screen justify-center"
               >
                 <div
                   ref={(el) => {
-                    cardRefs.current[i] = el;
+                    mobileCardRefs.current[i] = el;
                   }}
-                  className={`relative w-full max-w-[22rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-14 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform min-h-[30rem]`}
+                  className={`relative min-h-[30rem] w-full max-w-[22rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-14 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform`}
                   style={{ zIndex: i + 1 }}
                 >
                   <Sticker
@@ -211,39 +305,10 @@ export function Curriculum() {
                   >
                     {d.day}
                   </h3>
-                  {/* Thin hand-drawn divider under the heading. */}
-                  <svg
-                    aria-hidden="true"
-                    className={`mt-4 h-[10px] w-40 ${dark ? "text-ua-bg" : "text-ua-ink"}`}
-                    viewBox="0 0 200 10"
-                    fill="none"
-                    preserveAspectRatio="none"
-                  >
-                    <path
-                      d="M2 6C40 3 70 8 100 5C130 2 160 7 198 4"
-                      stroke="currentColor"
-                      strokeWidth={3}
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                  <ul className="mt-6 space-y-3 md:mt-8 md:space-y-4">
-                    {d.bullets.map((b) => (
-                      <li
-                        key={b}
-                        className="flex items-start gap-3 text-xl leading-tight"
-                      >
-                        <span
-                          aria-hidden
-                          className={`mt-2 h-2 w-2 shrink-0 rounded-full ${
-                            dark ? "bg-ua-bg" : "bg-ua-ink"
-                          }`}
-                        />
-                        <span className={dark ? "text-ua-bg" : "text-ua-ink/90"}>
-                          {b}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
+                  <HandDivider dark={dark} />
+                  <div className="text-xl">
+                    <Bullets bullets={d.bullets} dark={dark} />
+                  </div>
                 </div>
               </div>
             );
