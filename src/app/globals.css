@@ -92,6 +92,9 @@
 @keyframes ua-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .ua-marquee { animation: ua-marquee 24s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .ua-marquee { animation: none; } }
+@keyframes ua-marquee-rev { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.ua-marquee-rev { animation: ua-marquee-rev 24s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .ua-marquee-rev { animation: none; } }
 
 /* ── Horizontal-words pinned section (post-hero) ── */
 .hw-section { height: 300svh; overflow: clip; }
