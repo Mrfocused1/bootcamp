@@ -17,9 +17,9 @@ const UNDERLINE_PATH =
 
 // TODO(owner): swap these placeholder photos for your own (students, sessions, projects).
 const PHOTOS = [
-  { src: "/marketing/placeholders/p1.png", rotate: -5, objectPosition: "left center" },
-  { src: "/marketing/placeholders/p5.png", rotate: 3, objectPosition: "center" },
-  { src: "/marketing/placeholders/p3.png", rotate: -2, objectPosition: "right center" },
+  { src: "/marketing/placeholders/p1.png", rotate: 0, objectPosition: "left center" },
+  { src: "/marketing/placeholders/p5.png", rotate: 0, objectPosition: "center" },
+  { src: "/marketing/placeholders/p3.png", rotate: 0, objectPosition: "right center" },
 ];
 
 export function Future() {
