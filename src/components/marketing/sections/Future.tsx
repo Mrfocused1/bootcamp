@@ -26,11 +26,13 @@ export function Future() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
+  const underlineRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const title = titleRef.current;
     const path = pathRef.current;
+    const underline = underlineRef.current;
     if (!section) return;
 
     const words = title?.querySelectorAll("[data-word]");
@@ -60,12 +62,25 @@ export function Future() {
       if (path && typeof path.getTotalLength === "function") {
         const length = path.getTotalLength();
         gsap.set(path, { strokeDasharray: length });
-        gsap.from(path, {
-          strokeDashoffset: length,
-          duration: 0.8,
-          ease: "none",
-          scrollTrigger: { trigger: section, start: "top 80%", once: true },
-        });
+        // Scrub the draw to scroll position so the squiggle visibly draws itself
+        // in as the title moves up through the viewport (rather than finishing
+        // off-screen before you reach it).
+        gsap.fromTo(
+          path,
+          { strokeDashoffset: length },
+          {
+            strokeDashoffset: 0,
+            ease: "none",
+            scrollTrigger: {
+              // Anchor to the underline's own line so the draw spans a comfortable
+              // in-view scroll range as it travels up the viewport.
+              trigger: underline ?? title ?? section,
+              start: "top 75%",
+              end: "top 38%",
+              scrub: true,
+            },
+          },
+        );
       }
     }, section);
 
@@ -80,29 +95,49 @@ export function Future() {
       <div className="mx-auto max-w-6xl">
         {/* Title block — centered */}
         <div className="relative mx-auto max-w-5xl text-center">
-          <Sticker
-            name="heart-hands"
-            size={130}
-            rotate={-8}
-            className="absolute -right-2 top-[38%] z-10 hidden sm:block md:-right-10"
-          />
           <h2
             ref={titleRef}
             className="text-5xl font-black leading-[1.02] tracking-tight text-ua-ink sm:text-6xl md:text-8xl"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
-            {TITLE_WORDS.map((w, i) => (
-              <span
-                key={`t-${w}-${i}`}
-                data-word
-                className="ua-reveal inline-block whitespace-pre"
-                style={{ opacity: 0 }}
-              >
-                {w}{" "}
-              </span>
-            ))}
+            {TITLE_WORDS.map((w, i) => {
+              // Anchor the heart-hands sticker to the final word ("era.") so it
+              // sits just past the period instead of floating at the far right.
+              if (i === TITLE_WORDS.length - 1) {
+                return (
+                  <span key={`t-${w}-${i}`} className="relative inline-block">
+                    <span
+                      data-word
+                      className="ua-reveal inline-block whitespace-pre"
+                      style={{ opacity: 0 }}
+                    >
+                      {w}{" "}
+                    </span>
+                    <Sticker
+                      name="heart-hands"
+                      size={120}
+                      rotate={-8}
+                      className="pointer-events-none absolute -right-12 -top-7 z-10 hidden sm:block md:-right-20 md:-top-8"
+                    />
+                  </span>
+                );
+              }
+              return (
+                <span
+                  key={`t-${w}-${i}`}
+                  data-word
+                  className="ua-reveal inline-block whitespace-pre"
+                  style={{ opacity: 0 }}
+                >
+                  {w}{" "}
+                </span>
+              );
+            })}
             <span className="mt-3 block" style={{ fontFamily: "var(--font-lora)" }}>
-              <span className="relative inline-block font-medium italic">
+              <span
+                ref={underlineRef}
+                className="relative inline-block font-medium italic"
+              >
                 {EMPHASIS_WORDS.map((w, i) => (
                   <span
                     key={`e-${w}-${i}`}
@@ -118,7 +153,7 @@ export function Future() {
                   viewBox="0 0 634 28"
                   fill="none"
                   aria-hidden="true"
-                  className="pointer-events-none absolute -bottom-5 left-0 w-full text-ua-ink"
+                  className="pointer-events-none absolute -bottom-10 left-0 w-full text-ua-ink"
                   preserveAspectRatio="none"
                 >
                   <path
