@@ -79,6 +79,7 @@ export function HorizontalWords() {
 
       // 4) The hand-drawn arrows draw themselves in (stroke reveal) as they sweep in.
       track.querySelectorAll<SVGPathElement>(".hw-arrow path").forEach((el) => {
+        if (typeof el.getTotalLength !== "function") return; // jsdom guard
         const len = el.getTotalLength();
         gsap.set(el, { strokeDasharray: len });
         gsap.from(el, {
