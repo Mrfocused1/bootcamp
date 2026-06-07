@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
 import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type Day = {
   day: string;
@@ -77,135 +80,73 @@ const DAYS: Day[] = [
   },
 ];
 
-// Resting rotations per card index (matches the original "services" fanned deck).
-const REST_ROTATIONS = [3, 0, 6, -1, -8];
+// Resting rotations per card — alternating so the stack looks hand-placed and the
+// buried cards peek out at the edges.
+const REST_ROTATIONS = [3, -2, 4, -1, -3];
 
 export function Curriculum() {
-  const containerRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const cardRefs = useRef<Array<HTMLDivElement | null>>([]);
-  const contentRefs = useRef<Array<HTMLDivElement | null>>([]);
 
   useEffect(() => {
-    const container = containerRef.current;
-    if (!container) return;
+    const section = sectionRef.current;
+    if (!section) return;
 
-    // The fanned deck only runs on md+ pointer screens with motion allowed.
-    // Below that we fall back to a plain readable stacked/grid layout.
-    const mqlDesktop = window.matchMedia?.("(min-width: 768px)");
-    const enabled = () => !!mqlDesktop?.matches && !prefersReducedMotion();
-
-    let activeIndex = -1;
-    let containerWidth = container.getBoundingClientRect().width;
-
-    const ELASTIC = { ease: "elastic.out(1, 0.75)", duration: 0.8 };
-
-    const setResting = (immediate = false) => {
-      cardRefs.current.forEach((card, idx) => {
-        if (!card) return;
-        const props = { rotation: REST_ROTATIONS[idx] ?? 0, scale: 1 };
-        if (immediate) gsap.set(card, props);
-        else gsap.to(card, { ...props, ...ELASTIC });
-      });
-      contentRefs.current.forEach((content) => {
-        if (!content) return;
-        if (immediate) gsap.set(content, { xPercent: 0 });
-        else gsap.to(content, { xPercent: 0, ...ELASTIC });
-      });
-    };
+    // Reduced motion: leave the cards as a plain, fully readable vertical stack.
+    if (prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // Lay z-index so later cards sit on top (deck look) + initial resting state.
-      cardRefs.current.forEach((card, idx) => {
-        if (!card) return;
-        card.style.zIndex = String(idx + 1);
-      });
-      setResting(true);
-    }, container);
+      const cards = cardRefs.current.filter(
+        (c): c is HTMLDivElement => c !== null,
+      );
+      if (!cards.length) return;
 
-    if (!enabled()) {
-      // Reduced motion / mobile: flatten everything so content is fully readable.
-      cardRefs.current.forEach((card) => {
-        if (card) gsap.set(card, { rotation: 0, scale: 1, clearProps: "zIndex" });
-      });
-      contentRefs.current.forEach((content) => {
-        if (content) gsap.set(content, { xPercent: 0 });
-      });
-    }
+      cards.forEach((card, i) => {
+        const wrapper = card.parentElement;
+        if (!wrapper) return;
 
-    const onMouseMove = (e: MouseEvent) => {
-      if (!enabled()) return;
-      const rect = container.getBoundingClientRect();
-      const mouseX = e.clientX - rect.left;
-      const activePortion = Math.ceil((mouseX / containerWidth) * 5);
-      const i = Math.min(Math.max(activePortion, 1), 5) - 1; // clamp to 0..4
-      if (i === activeIndex) return;
+        // Rest the card at a small hand-placed rotation.
+        gsap.set(card, { rotation: REST_ROTATIONS[i] ?? 0 });
 
-      // Reset the previously active card to its resting offset.
-      if (activeIndex >= 0) {
-        const prev = cardRefs.current[activeIndex];
-        if (prev) {
-          gsap.to(prev, {
-            rotation: REST_ROTATIONS[activeIndex] ?? 0,
-            scale: 1,
-            ...ELASTIC,
+        // Each card pins a little further down so the stack fans toward the top:
+        // 6rem below the nav, plus 1.2rem per card so lower cards peek out.
+        const offset = 6 + i * 1.2;
+
+        ScrollTrigger.create({
+          trigger: wrapper,
+          start: `top top+=${offset}rem`,
+          end: "bottom top",
+          pin: true,
+          pinSpacing: false,
+          id: `curriculum-card-${i}`,
+        });
+
+        // Covered cards scale down slightly for depth as the next ones stack over.
+        if (i < cards.length - 1) {
+          gsap.to(card, {
+            scale: 0.95,
+            ease: "none",
+            scrollTrigger: {
+              trigger: cardRefs.current[i + 1]?.parentElement ?? wrapper,
+              start: `top top+=${offset}rem`,
+              end: `+=${typeof window !== "undefined" ? window.innerHeight : 800}`,
+              scrub: true,
+            },
           });
         }
-      }
-
-      activeIndex = i;
-
-      // Bring the new active card forward: pop upright + enlarge.
-      const active = cardRefs.current[i];
-      if (active) {
-        gsap.to(active, { rotation: 0, scale: 1.1, ...ELASTIC });
-      }
-
-      // Spread the other cards' inner content away from the active one.
-      contentRefs.current.forEach((content, idx) => {
-        if (!content) return;
-        const xPercent = idx === i ? 0 : 70 / (idx - i);
-        gsap.to(content, { xPercent, ...ELASTIC });
       });
-    };
 
-    const onMouseLeave = () => {
-      if (!enabled()) return;
-      activeIndex = -1;
-      setResting(false);
-    };
+      ScrollTrigger.refresh();
+    }, section);
 
-    const onResize = () => {
-      containerWidth = container.getBoundingClientRect().width;
-      if (!enabled()) {
-        activeIndex = -1;
-        cardRefs.current.forEach((card, idx) => {
-          if (card) {
-            gsap.set(card, { rotation: 0, scale: 1 });
-            card.style.zIndex = String(idx + 1);
-          }
-        });
-        contentRefs.current.forEach((content) => {
-          if (content) gsap.set(content, { xPercent: 0 });
-        });
-      } else {
-        setResting(true);
-      }
-    };
-
-    container.addEventListener("mousemove", onMouseMove);
-    container.addEventListener("mouseleave", onMouseLeave);
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      container.removeEventListener("mousemove", onMouseMove);
-      container.removeEventListener("mouseleave", onMouseLeave);
-      window.removeEventListener("resize", onResize);
-      ctx.revert();
-    };
+    return () => ctx.revert();
   }, []);
 
   return (
-    <section className="overflow-hidden bg-ua-bg px-6 py-24 md:px-10">
+    <section
+      ref={sectionRef}
+      className="bg-ua-bg px-6 py-24 md:px-10"
+    >
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2
@@ -220,47 +161,59 @@ export function Curriculum() {
         </Reveal>
 
         {/*
-          Mobile (< md): vertical/grid stack — full-width, non-overlapping,
-          non-rotated cards with all content visible.
-          Desktop (md+): horizontal overlapping fanned deck with mouse interaction.
+          Scroll-driven stacking deck. Each card lives in a tall wrapper so there's
+          a viewport of scroll between pins. ScrollTrigger pins each card near the
+          top of the viewport with pinSpacing:false so the next card scrolls up and
+          stacks on top. Without JS / with reduced motion this is just a normal,
+          fully readable vertical stack (no overlap, nothing hidden).
         */}
-        <div
-          ref={containerRef}
-          className="mt-14 flex flex-col gap-6 md:mt-20 md:flex-row md:justify-center md:gap-0"
-        >
+        <div className="mt-14 flex flex-col gap-6 md:mt-20 md:gap-0">
           {DAYS.map((d, i) => {
             const dark = d.color.includes("text-ua-bg");
             return (
               <div
                 key={d.day}
-                ref={(el) => {
-                  cardRefs.current[i] = el;
-                }}
-                className={`relative w-full origin-bottom rounded-3xl border-2 border-ua-ink ${d.color} p-7 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform md:min-h-[30rem] md:w-[19.25em] md:-ml-[4.9em] md:p-8 md:first:ml-0`}
+                className="curriculum-card-wrapper relative flex justify-center md:h-screen md:items-start"
               >
                 <div
                   ref={(el) => {
-                    contentRefs.current[i] = el;
+                    cardRefs.current[i] = el;
                   }}
-                  className="flex h-full flex-col will-change-transform"
+                  className={`relative w-full max-w-2xl origin-center rounded-3xl border-2 border-ua-ink ${d.color} p-7 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform md:min-h-[70vh] md:p-10`}
+                  style={{ zIndex: i + 1 }}
                 >
                   <Sticker
                     name={d.sticker}
-                    size={64}
+                    size={72}
                     className="absolute -right-3 -top-7"
                     rotate={8}
                   />
                   <h3
-                    className="pr-8 text-2xl font-bold"
+                    className="pr-10 text-3xl font-bold md:text-4xl"
                     style={{ fontFamily: "var(--font-epilogue)" }}
                   >
                     {d.day}
                   </h3>
-                  <ul className="mt-5 space-y-3">
+                  {/* Thin hand-drawn divider under the heading. */}
+                  <svg
+                    aria-hidden="true"
+                    className={`mt-4 h-[10px] w-40 ${dark ? "text-ua-bg" : "text-ua-ink"}`}
+                    viewBox="0 0 200 10"
+                    fill="none"
+                    preserveAspectRatio="none"
+                  >
+                    <path
+                      d="M2 6C40 3 70 8 100 5C130 2 160 7 198 4"
+                      stroke="currentColor"
+                      strokeWidth={3}
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                  <ul className="mt-6 space-y-3 md:mt-8 md:space-y-4">
                     {d.bullets.map((b) => (
                       <li
                         key={b}
-                        className="flex items-start gap-3 text-base leading-snug"
+                        className="flex items-start gap-3 text-base leading-snug md:text-lg"
                       >
                         <span
                           aria-hidden
