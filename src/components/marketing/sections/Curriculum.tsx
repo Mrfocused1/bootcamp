@@ -201,18 +201,24 @@ export function Curriculum() {
         {/*
           Mobile (< md): CSS sticky stacking deck. Each card sticks just below the
           nav (top offset grows per card so earlier cards peek above) and the next
-          one scrolls up and stacks over it. Because sticky respects document flow,
-          the next section can never overlap the stack — once the last card lands,
-          the trailing spacer holds the completed stack, then the whole section
-          scrolls away cleanly. With reduced motion this is a plain vertical stack.
+          one scrolls up and stacks over it. Sticky respects document flow, so the
+          next section can never overlap the stack.
+
+          The sticky element is a fixed, UNIFORM-height transparent slot; the
+          colour card sits content-height at its top. Uniform slots are the key:
+          a sticky element releases when its slot's bottom reaches it, so equal
+          slot heights make every card release together — the assembled stack
+          holds its position and exits as one unit instead of the shorter cards
+          sliding down past the taller ones. With reduced motion the slots
+          collapse to content height for a plain vertical stack.
         */}
-        <div className="mt-14 flex flex-col gap-6 md:hidden">
+        <div className="mt-14 flex flex-col md:hidden">
           {DAYS.map((d, i) => {
             const dark = d.color.includes("text-ua-bg");
             return (
               <div
                 key={d.day}
-                className="sticky flex justify-center motion-reduce:static"
+                className="sticky flex h-[37rem] items-start justify-center motion-reduce:static motion-reduce:mb-6 motion-reduce:h-auto"
                 style={{ top: `calc(6rem + ${i * 0.9}rem)`, zIndex: i + 1 }}
               >
                 <div
@@ -239,9 +245,6 @@ export function Curriculum() {
               </div>
             );
           })}
-          {/* Hold spacer: keeps the completed stack parked for a beat before the
-              section scrolls away, so it isn't seen moving the instant Day 5 lands. */}
-          <div aria-hidden className="h-[45vh]" />
         </div>
       </div>
     </section>
