@@ -16,18 +16,18 @@ const UNDERLINE_PATH =
   "M2 26C41.0237 23.1556 79.9927 19.9419 118.634 15.5521C169.106 9.98633 227.314 2.42393 275.206 2C280.46 2.57436 264.768 4.99488 262.462 5.55556C257.837 6.43078 252.529 7.47009 247.317 8.59146C239.594 10.3556 212.496 15.8393 226.932 19.8051C239.594 22.6359 263.663 21.9521 280.978 21.3504C314.817 19.9829 349.311 16.7419 383.204 14.7863C465.931 9.5077 549.191 10.547 632 14.1436";
 
 const FLYING_TAGS = [
-  { label: "no code required!", bg: "bg-ua-pink", rotate: -6, className: "left-2 top-0 md:left-8" },
+  { label: "no code required!", bg: "bg-ua-pink", rotate: -6, className: "md:left-8 md:top-0" },
   {
     label: "AI is your unfair advantage",
     bg: "bg-ua-green",
     rotate: 4,
-    className: "right-2 top-10 md:right-12",
+    className: "md:right-12 md:top-10",
   },
   {
     label: "shipping > perfect",
     bg: "bg-ua-blue text-ua-bg",
     rotate: -3,
-    className: "left-1/2 top-28 -translate-x-1/2",
+    className: "md:left-1/2 md:top-28 md:-translate-x-1/2",
   },
 ];
 
@@ -88,7 +88,10 @@ export function Future() {
         });
       }
 
-      if (tags && tags.length) {
+      const isDesktop =
+        typeof window.matchMedia === "function" &&
+        window.matchMedia("(min-width: 768px)").matches;
+      if (tags && tags.length && isDesktop) {
         tags.forEach((tag, i) => {
           gsap.to(tag, {
             y: "+=10",
@@ -171,13 +174,13 @@ export function Future() {
         {/* Flying tags */}
         <div
           ref={tagsRef}
-          className="relative mt-10 h-44 md:mt-12 md:h-40"
+          className="flex flex-wrap justify-center gap-3 mt-10 md:block md:relative md:mt-12 md:h-40"
         >
           {FLYING_TAGS.map((tag) => (
             <span
               key={tag.label}
               data-tag
-              className={`absolute rounded-full border-2 border-ua-ink px-5 py-2 font-bold whitespace-nowrap ${tag.bg} ${tag.className}`}
+              className={`static md:absolute rounded-full border-2 border-ua-ink px-5 py-2 font-bold whitespace-nowrap ${tag.bg} ${tag.className}`}
               style={{ transform: `rotate(${tag.rotate}deg)` }}
             >
               {tag.label}

@@ -106,7 +106,7 @@ export function HorizontalWords() {
       <div className="hw-content">
         <div ref={trackRef} className="hw-relative">
           <h2
-            className="hw-h2 text-5xl font-bold leading-none md:text-[8.5rem]"
+            className="hw-h2 text-3xl sm:text-5xl font-bold leading-none md:text-[8.5rem]"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
             {HEADLINE.split("").map((c, i) =>

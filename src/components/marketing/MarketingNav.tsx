@@ -9,7 +9,7 @@ export function MarketingNav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <nav aria-label="Primary" className="flex items-center justify-between px-6 py-5 md:px-10">
+      <nav aria-label="Primary" className="flex items-center justify-between px-4 py-5 md:px-10">
         <button
           type="button"
           aria-expanded={open}
@@ -24,7 +24,7 @@ export function MarketingNav() {
 
         <Link
           href="/"
-          className="text-ua-bg text-lg md:text-2xl font-bold italic tracking-tight"
+          className="hidden sm:block text-ua-bg sm:text-base md:text-2xl font-bold italic tracking-tight"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
           {SITE.name}
