@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { HERO } from "@/lib/marketing/content";
@@ -46,10 +46,12 @@ export function Hero() {
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
           {HERO.words.map((w, i) => (
-            <span key={`${w}-${i}`} data-word className="inline-block" style={{ opacity: 0 }}>
-              {w === HERO.emphasis ? <em>{w}</em> : w}
+            <Fragment key={`${w}-${i}`}>
+              <span data-word className="inline-block" style={{ opacity: 0 }}>
+                {w === HERO.emphasis ? <em>{w}</em> : w}
+              </span>
               {i < HERO.words.length - 1 ? " " : ""}
-            </span>
+            </Fragment>
           ))}
         </h1>
 

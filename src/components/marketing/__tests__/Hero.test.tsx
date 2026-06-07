@@ -5,9 +5,14 @@ import { Hero } from "../Hero";
 describe("Hero", () => {
   it("renders the full heading and the enrol CTA", () => {
     render(<Hero />);
-    expect(screen.getByRole("heading").textContent?.toLowerCase()).toContain(
-      "we teach you how to build real websites powered by ai",
-    );
+    // Words render in individual inline-block spans (for the stagger animation),
+    // so normalize whitespace before asserting the readable sentence.
+    const heading = screen
+      .getByRole("heading")
+      .textContent?.toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim();
+    expect(heading).toContain("we teach you how to build real websites powered by ai");
     expect(screen.getByRole("link", { name: /enrol now/i })).toHaveAttribute("href", "/pricing");
   });
 
