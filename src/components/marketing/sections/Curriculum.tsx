@@ -101,6 +101,12 @@ export function Curriculum() {
       );
       if (!cards.length) return;
 
+      // The whole stack releases at one shared point — the last card's wrapper.
+      // Anchoring every pin's end here is what makes earlier cards HOLD their
+      // position (just below the nav) while later cards scroll up and stack on
+      // top, instead of each card scrolling away as soon as its own bottom hits.
+      const lastWrapper = cards[cards.length - 1].parentElement;
+
       cards.forEach((card, i) => {
         const wrapper = card.parentElement;
         if (!wrapper) return;
@@ -115,6 +121,9 @@ export function Curriculum() {
         ScrollTrigger.create({
           trigger: wrapper,
           start: `top top+=${offset}rem`,
+          // Hold the pin until the entire stack has scrolled past, so every card
+          // stays parked below the nav rather than releasing at its own bottom.
+          endTrigger: lastWrapper ?? wrapper,
           end: "bottom top",
           pin: true,
           pinSpacing: false,
