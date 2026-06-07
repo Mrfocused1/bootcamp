@@ -102,23 +102,24 @@
 .hw-relative { position: relative; width: max-content; margin: 0 25vw; }
 .hw-h2 { white-space: nowrap; width: max-content; }
 .hw-bottom { position: absolute; left: 0; bottom: 12svh; width: 100%; text-align: center; }
-/* ── Curriculum desktop hover-fan deck ── */
+/* ── Hover-fan deck (curriculum cards + future photo collage) ── */
 /* Each card carries its own resting rotation (--rot) and vertical stagger (--ty)
    via inline style. Hovering a card straightens it, lifts it, and brings it to
-   front; every card after it is nudged right to open a gap and reveal it. */
-.cur-card {
+   front; every card after it is nudged right to open a gap and reveal it.
+   Cards must be position:relative for the hover z-index to take effect. */
+.ua-fan-card {
   transform: rotate(var(--rot, 0deg)) translateY(var(--ty, 0px));
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.cur-card:hover {
+.ua-fan-card:hover {
   transform: rotate(0deg) translateY(calc(var(--ty, 0px) - 2.5rem));
   z-index: 60;
 }
-.cur-card:hover ~ .cur-card {
+.ua-fan-card:hover ~ .ua-fan-card {
   transform: rotate(var(--rot, 0deg)) translateY(var(--ty, 0px)) translateX(6rem);
 }
 @media (prefers-reduced-motion: reduce) {
-  .cur-card { transition: none; }
+  .ua-fan-card { transition: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {

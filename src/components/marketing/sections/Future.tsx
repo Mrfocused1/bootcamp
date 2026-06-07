@@ -169,14 +169,21 @@ export function Future() {
           </h2>
         </div>
 
-        {/* Photo collage (placeholder images) */}
+        {/* Photo collage (placeholder images) — same hover-fan as the curriculum
+            cards: hovering one straightens + lifts it to the front and nudges the
+            photos after it right (see .ua-fan-card in globals.css). */}
         <Reveal className="mt-16">
           <div className="flex flex-wrap items-center justify-center gap-4 md:-space-x-6 md:gap-0">
             {PHOTOS.map((photo, i) => (
               <div
                 key={i}
-                className="overflow-hidden rounded-3xl border-2 border-ua-ink shadow-[6px_6px_0_var(--ua-ink)]"
-                style={{ transform: `rotate(${photo.rotate}deg)` }}
+                className="ua-fan-card relative overflow-hidden rounded-3xl border-2 border-ua-ink shadow-[6px_6px_0_var(--ua-ink)]"
+                style={
+                  {
+                    "--rot": `${photo.rotate}deg`,
+                    zIndex: i + 1,
+                  } as React.CSSProperties
+                }
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img

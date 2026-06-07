@@ -157,16 +157,16 @@ export function Curriculum() {
         {/*
           Desktop (md+): horizontal hover-fan deck. Cards overlap in a fanned row;
           hovering one straightens + lifts it and nudges the cards after it right
-          to reveal it (see .cur-card rules in globals.css). Pure CSS, no JS.
+          to reveal it (see .ua-fan-card rules in globals.css). Pure CSS, no JS.
         */}
-        <div className="cur-deck mt-20 hidden justify-center md:flex">
+        <div className="mt-20 hidden justify-center md:flex">
           {DAYS.map((d, i) => {
             const dark = d.color.includes("text-ua-bg");
             const { rot, ty } = DESKTOP_LAYOUT[i] ?? { rot: 0, ty: 0 };
             return (
               <article
                 key={d.day}
-                className={`cur-card relative flex h-[24rem] w-[17rem] shrink-0 flex-col justify-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-16 shadow-[6px_6px_0_var(--ua-ink)] ${
+                className={`ua-fan-card relative flex h-[24rem] w-[17rem] shrink-0 flex-col justify-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-16 shadow-[6px_6px_0_var(--ua-ink)] ${
                   i > 0 ? "-ml-24" : ""
                 }`}
                 style={
