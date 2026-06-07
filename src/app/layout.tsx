@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { DM_Sans, Epilogue } from "next/font/google";
+import { DM_Sans, Epilogue, Lora } from "next/font/google";
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -11,6 +11,14 @@ const dmSans = DM_Sans({
 const epilogue = Epilogue({
   variable: "--font-epilogue",
   subsets: ["latin"],
+  display: "swap",
+});
+
+// Serif used (italic) for emphasis lines, matching the original's "from … to …".
+const lora = Lora({
+  variable: "--font-lora",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -28,7 +36,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${epilogue.variable} h-full`}
+      className={`${dmSans.variable} ${epilogue.variable} ${lora.variable} h-full`}
       style={{ fontFamily: "var(--font-dm-sans), DM Sans, sans-serif" }}
     >
       <body className="ua-body flex flex-col min-h-full">

@@ -138,35 +138,35 @@ export function Future() {
                 {w}{" "}
               </span>
             ))}
-            <span className="relative inline-block">
-              <em>
+            <span className="mt-2 block" style={{ fontFamily: "var(--font-lora)" }}>
+              <span className="relative inline-block italic">
                 {EMPHASIS_WORDS.map((w, i) => (
                   <span
                     key={`e-${w}-${i}`}
                     data-word
-                    className="ua-reveal inline-block whitespace-pre not-italic"
+                    className="ua-reveal inline-block whitespace-pre"
                     style={{ opacity: 0 }}
                   >
-                    <em>{w}</em>{" "}
+                    {w}{" "}
                   </span>
                 ))}
-              </em>
-              {/* Hand-drawn underline that draws in on scroll */}
-              <svg
-                viewBox="0 0 634 28"
-                fill="none"
-                aria-hidden="true"
-                className="pointer-events-none absolute -bottom-3 left-0 w-full text-ua-pink"
-                preserveAspectRatio="none"
-              >
-                <path
-                  ref={pathRef}
-                  d={UNDERLINE_PATH}
-                  stroke="currentColor"
-                  strokeWidth={4}
-                  strokeLinecap="round"
-                />
-              </svg>
+                {/* Hand-drawn underline that draws in on scroll */}
+                <svg
+                  viewBox="0 0 634 28"
+                  fill="none"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -bottom-4 left-0 w-full text-ua-ink"
+                  preserveAspectRatio="none"
+                >
+                  <path
+                    ref={pathRef}
+                    d={UNDERLINE_PATH}
+                    stroke="currentColor"
+                    strokeWidth={4}
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </span>
             </span>
           </h2>
         </div>
