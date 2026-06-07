@@ -1,14 +1,5 @@
 @import "tailwindcss";
 
-/* ── Genty custom font (logo only) ── */
-@font-face {
-  font-family: "Genty";
-  src: url("/fonts/GentyDemo-Regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-
 /* ── Brand CSS variables ── */
 :root {
   --ua-bg: #f0ebe6;
@@ -41,11 +32,6 @@
   background-color: var(--ua-bg);
   color: var(--ua-ink);
   min-height: 100vh;
-}
-
-/* ── Genty logo utility ── */
-.font-genty {
-  font-family: "Genty", sans-serif;
 }
 
 /* ── Login page background animations ── */

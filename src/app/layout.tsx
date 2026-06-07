@@ -15,9 +15,9 @@ const epilogue = Epilogue({
 });
 
 export const metadata: Metadata = {
-  title: "Urban AI — Build, launch & grow with AI",
+  title: "Bridgeway AI Bootcamp — Learn to build websites with AI in 5 days",
   description:
-    "A 5-day intensive that teaches you to build and ship real products with AI tools.",
+    "A 5-day live course that teaches you to build and launch real websites using AI — databases, payments, hosting, domains and more. No coding experience needed.",
 };
 
 export default function RootLayout({
