@@ -72,7 +72,8 @@ function initLoaderShort() {
 function initLoader() {
 
   var tl = gsap.timeline();
-  
+  var __isHome = !!document.querySelector('[data-barba-namespace="home"]');
+
   tl.set($('main'), {
     overflow: "clip",
     height: "100svh"
@@ -82,40 +83,65 @@ function initLoader() {
     pointerEvents: "all",
   });
 
-  tl.set($('.transition-scribble path'), {
-    strokeWidth: scribbleWidth,
-  });
-    
-  tl.set('.transition-screen', {
-    autoAlpha: 0.2,
-  }, "<");
-  
-  tl.to($('.transition-scribble path'), {
-    duration: 2,
-    drawSVG: '100% 100%',
-    ease: "Power2.easeInOut",
-  }, 0.25);
-  
-  tl.to('.transition-screen', {
-    autoAlpha: 0,
-    duration: 2,
-    ease: "none"
-  }, "<");
-  
-  tl.to($('.transition-scribble path'), {
-    strokeWidth: scribbleWidthStart,
-    duration: 2,
-    ease: "cubic-default-scribble"
-  }, "<");
-  
-  tl.set($('.transition-logo'), {
-    autoAlpha: 0
-  }, "< 0.95");
-  
-  tl.set($('.transition-scribble path'), {
-    strokeWidth: "0%",
-    drawSVG: '0% 0%',
-  });
+  if (__isHome) {
+    // Homepage intro: a thin scribble draws across the visible page, then clears.
+    // No solid blue fill, no "Urban AI" logo (per request).
+    tl.set('.transition-screen', { autoAlpha: 0 }, 0);
+    tl.set($('.transition-logo'), { autoAlpha: 0 }, 0);
+    tl.set($('.transition-scribble path'), {
+      strokeWidth: "3.5%",
+      drawSVG: '0% 0%',
+    });
+    tl.to($('.transition-scribble path'), {
+      duration: 1.1,
+      drawSVG: '0% 100%',
+      ease: "Power1.easeInOut",
+    }, 0.15);
+    tl.to($('.transition-scribble path'), {
+      duration: 0.9,
+      drawSVG: '100% 100%',
+      ease: "Power2.easeInOut",
+    });
+    tl.set($('.transition-scribble path'), {
+      strokeWidth: "0%",
+      drawSVG: '0% 0%',
+    });
+  } else {
+    tl.set($('.transition-scribble path'), {
+      strokeWidth: scribbleWidth,
+    });
+
+    tl.set('.transition-screen', {
+      autoAlpha: 0.2,
+    }, "<");
+
+    tl.to($('.transition-scribble path'), {
+      duration: 2,
+      drawSVG: '100% 100%',
+      ease: "Power2.easeInOut",
+    }, 0.25);
+
+    tl.to('.transition-screen', {
+      autoAlpha: 0,
+      duration: 2,
+      ease: "none"
+    }, "<");
+
+    tl.to($('.transition-scribble path'), {
+      strokeWidth: scribbleWidthStart,
+      duration: 2,
+      ease: "cubic-default-scribble"
+    }, "<");
+
+    tl.set($('.transition-logo'), {
+      autoAlpha: 0
+    }, "< 0.95");
+
+    tl.set($('.transition-scribble path'), {
+      strokeWidth: "0%",
+      drawSVG: '0% 0%',
+    });
+  }
   
   tl.call(function () {
     lenis.stop();
@@ -123,7 +149,7 @@ function initLoader() {
 
   tl.call(function () {
     pageTransitionOut();
-  }, null, 0.5);
+  }, null, __isHome ? 0.1 : 0.5);
 
 }
 
