@@ -4,7 +4,6 @@ import type { NextConfig } from "next";
 // Files live in public/site/; each page has <base href="/site/truus.co/">
 // so relative assets resolve while the address bar stays clean.
 const MARKETING = [
-  ["/", "/site/truus.co/index.html"],
   ["/syllabus", "/site/truus.co/syllabus.html"],
   ["/pricing", "/site/truus.co/pricing.html"],
   ["/success-stories", "/site/truus.co/success-stories.html"],
