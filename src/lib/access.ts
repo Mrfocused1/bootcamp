@@ -1,8 +1,10 @@
 const MAX_DAYS = 5;
 
-/** Parse an ISO date string 'YYYY-MM-DD' as UTC midnight. */
+/** Parse an ISO date string ('YYYY-MM-DD' or 'YYYY-MM-DDTHH:mm:ssZ') as UTC midnight. */
 function parseUTC(date: string): number {
-  const [year, month, day] = date.split("-").map(Number);
+  const datePart = date.slice(0, 10);
+  const [year, month, day] = datePart.split("-").map(Number);
+  if (!year || !month || !day) throw new Error(`Invalid date string: ${date}`);
   return Date.UTC(year, month - 1, day);
 }
 
@@ -27,6 +29,7 @@ export function isDayUnlocked(
   startDate: string,
   today: string
 ): boolean {
+  if (dayIndex < 1) return false;
   return dayIndex <= maxUnlockedDay(startDate, today);
 }
 
