@@ -32,6 +32,10 @@ export default async function LessonPage({ params }: PageProps) {
   const progress = progressMap[lesson.id];
   const startSeconds = progress?.last_position_seconds ?? 0;
 
+  // Next lesson navigation
+  const nextIndex = dayIndex + 1;
+  const nextUnlocked = nextIndex <= 5 && isDayUnlocked(nextIndex, cohort.start_date, todayISO);
+
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
       {/* ── Header ── */}
@@ -80,6 +84,9 @@ export default async function LessonPage({ params }: PageProps) {
         videoId={lesson.video_id ?? ""}
         startSeconds={startSeconds}
         chapters={lesson.chapters}
+        durationSeconds={lesson.duration_seconds}
+        nextIndex={nextIndex <= 5 ? nextIndex : null}
+        nextUnlocked={nextUnlocked}
       />
 
       {/* ── Resources ── */}

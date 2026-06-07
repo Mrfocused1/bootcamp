@@ -136,14 +136,14 @@ export default async function LoginPage({
               style={{ borderColor: "transparent" }}
             />
             <Link
-              href="/dashboard"
+              href="/onboarding"
               className="w-full inline-flex items-center justify-center rounded-full border-2 px-6 py-2.5 text-sm font-semibold transition-colors hover:opacity-80"
               style={{
                 borderColor: "var(--ua-blue)",
                 color: "var(--ua-blue)",
               }}
             >
-              Enter demo dashboard →
+              Start the demo →
             </Link>
             <p
               className="text-xs text-center"

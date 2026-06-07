@@ -7,6 +7,7 @@ import {
   getLatestAnnouncement,
 } from "@/lib/queries";
 import { isDayUnlocked, unlockDate } from "@/lib/access";
+import { nextLessonDayIndex } from "@/lib/resume";
 import { DayCard } from "@/components/DayCard";
 import { ProgressBar } from "@/components/ProgressBar";
 
@@ -53,10 +54,93 @@ export default async function DashboardPage() {
       ? Math.round(percents.reduce((a, b) => a + b, 0) / percents.length)
       : 0;
 
+  // Resume target: the day index the student should continue from
+  const resumeDayIndex = nextLessonDayIndex(
+    days,
+    progressMap,
+    cohort.start_date,
+    todayISO
+  );
+  const resumeDay = resumeDayIndex !== null
+    ? days.find((d) => d.day_index === resumeDayIndex) ?? null
+    : null;
+  const resumeProgress = resumeDayIndex !== null
+    ? progressMap[`lesson-${resumeDayIndex}`] ?? null
+    : null;
+
   const nextSession = sessions[0] ?? null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-10">
+      {/* ── Continue / All caught up card ── */}
+      {resumeDay ? (
+        <section
+          className="rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4"
+          style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
+        >
+          <div className="flex-1 space-y-2">
+            <p
+              className="text-xs font-semibold uppercase tracking-widest opacity-75"
+            >
+              continue where you left off
+            </p>
+            <h2
+              className="text-xl font-bold leading-snug"
+              style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif" }}
+            >
+              Day {resumeDay.day_index} &middot; {resumeDay.title}
+            </h2>
+            {resumeProgress && resumeProgress.watched_percent > 0 && (
+              <div className="space-y-1 max-w-xs">
+                <div
+                  className="h-1.5 w-full rounded-full overflow-hidden"
+                  style={{ backgroundColor: "rgba(255,255,255,0.25)" }}
+                >
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${resumeProgress.watched_percent}%`,
+                      backgroundColor: "#fff",
+                    }}
+                  />
+                </div>
+                <p className="text-xs opacity-70">
+                  {resumeProgress.watched_percent}% watched
+                </p>
+              </div>
+            )}
+          </div>
+          <Link
+            href={`/day/${resumeDay.day_index}`}
+            className="shrink-0 inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-85"
+            style={{ backgroundColor: "#fff", color: "var(--ua-blue)" }}
+          >
+            Resume Day {resumeDay.day_index} &rarr;
+          </Link>
+        </section>
+      ) : (
+        <section
+          className="rounded-2xl p-6 flex items-center gap-4"
+          style={{ backgroundColor: "var(--ua-green)" }}
+        >
+          <span className="text-2xl" aria-hidden="true">🎉</span>
+          <div>
+            <h2
+              className="font-bold text-lg"
+              style={{
+                fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
+                color: "var(--ua-ink)",
+              }}
+            >
+              You&rsquo;re all caught up
+            </h2>
+            <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.65 }}>
+              Great work — all unlocked lessons are complete.
+            </p>
+          </div>
+        </section>
+      )}
+
       {/* ── Welcome + Overall progress ── */}
       <section className="flex flex-col gap-4">
         <h1

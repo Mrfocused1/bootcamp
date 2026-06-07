@@ -53,4 +53,18 @@ describe("POST /api/progress", () => {
     const res = await POST(req);
     expect(res.status).toBe(400);
   });
+
+  it("{ lessonId, completed: true } shortcut → watched_percent 100, completed true", async () => {
+    const res = await POST(makeRequest({ lessonId: "lesson-1", completed: true }));
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.ok).toBe(true);
+    expect(json.watched_percent).toBe(100);
+    expect(json.completed).toBe(true);
+  });
+
+  it("{ lessonId, completed: false } without position → 400 (ambiguous shortcut)", async () => {
+    const res = await POST(makeRequest({ lessonId: "lesson-1", completed: false }));
+    expect(res.status).toBe(400);
+  });
 });

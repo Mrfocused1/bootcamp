@@ -2,11 +2,20 @@ import { z } from "zod";
 import { computeWatched, isComplete } from "@/lib/progress";
 import { IS_MOCK } from "@/lib/mock";
 
-const BodySchema = z.object({
-  lessonId: z.string().min(1),
-  positionSeconds: z.number().nonnegative(),
-  durationSeconds: z.number().positive(),
-});
+const BodySchema = z.union([
+  // Shortcut: mark complete immediately (no position/duration required)
+  z.object({
+    lessonId: z.string().min(1),
+    completed: z.literal(true),
+  }),
+  // Standard: track position within a video
+  z.object({
+    lessonId: z.string().min(1),
+    positionSeconds: z.number().nonnegative(),
+    durationSeconds: z.number().positive(),
+    completed: z.boolean().optional(),
+  }),
+]);
 
 export async function POST(request: Request) {
   let body: unknown;
@@ -21,9 +30,21 @@ export async function POST(request: Request) {
     return Response.json({ error: parsed.error.issues }, { status: 400 });
   }
 
-  const { lessonId, positionSeconds, durationSeconds } = parsed.data;
-  const watched_percent = computeWatched(positionSeconds, durationSeconds);
-  const completed = isComplete(watched_percent);
+  const data = parsed.data;
+  const { lessonId } = data;
+
+  let watched_percent: number;
+  let completed: boolean;
+
+  if ("positionSeconds" in data) {
+    watched_percent = computeWatched(data.positionSeconds, data.durationSeconds);
+    // Allow explicit `completed: true` override even when position-based
+    completed = data.completed === true ? true : isComplete(watched_percent);
+  } else {
+    // completed: true shortcut — force 100%
+    watched_percent = 100;
+    completed = true;
+  }
 
   if (IS_MOCK) {
     return Response.json({ ok: true, watched_percent, completed }, { status: 200 });
@@ -39,11 +60,14 @@ export async function POST(request: Request) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const lastPosition =
+    "positionSeconds" in data ? data.positionSeconds : undefined;
+
   const { error } = await supabase.from("lesson_progress").upsert(
     {
       user_id: user.id,
       lesson_id: lessonId,
-      last_position_seconds: positionSeconds,
+      ...(lastPosition !== undefined && { last_position_seconds: lastPosition }),
       watched_percent,
       completed,
       updated_at: new Date().toISOString(),

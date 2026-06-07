@@ -12,7 +12,8 @@ export async function signIn(formData: FormData): Promise<never> {
   }
 
   if (IS_MOCK) {
-    redirect("/dashboard");
+    // TODO (real mode): check a DB "onboarded" flag; redirect to /dashboard if already onboarded
+    redirect("/onboarding");
   }
 
   // Real path: send magic link via Supabase
