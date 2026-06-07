@@ -15,11 +15,11 @@ const EMPHASIS_WORDS = ["from", "idea", "to", "live", "site."];
 const UNDERLINE_PATH =
   "M2 26C41.0237 23.1556 79.9927 19.9419 118.634 15.5521C169.106 9.98633 227.314 2.42393 275.206 2C280.46 2.57436 264.768 4.99488 262.462 5.55556C257.837 6.43078 252.529 7.47009 247.317 8.59146C239.594 10.3556 212.496 15.8393 226.932 19.8051C239.594 22.6359 263.663 21.9521 280.978 21.3504C314.817 19.9829 349.311 16.7419 383.204 14.7863C465.931 9.5077 549.191 10.547 632 14.1436";
 
-const CARDS = [
-  { sticker: "earth", label: "A real website", bg: "bg-ua-pink" },
-  { sticker: "hundred", label: "Live payments", bg: "bg-ua-green" },
-  { sticker: "lightning", label: "On the internet, fast", bg: "bg-ua-blue" },
-  { sticker: "camera", label: "Every session recorded", bg: "bg-ua-orange" },
+// TODO(owner): swap these placeholder photos for your own (students, sessions, projects).
+const PHOTOS = [
+  { src: "/marketing/bridgeway-hero.png", rotate: -5, objectPosition: "left center" },
+  { src: "/marketing/bridgeway-hero.png", rotate: 3, objectPosition: "center" },
+  { src: "/marketing/bridgeway-hero.png", rotate: -2, objectPosition: "right center" },
 ];
 
 export function Future() {
@@ -78,17 +78,17 @@ export function Future() {
       className="relative overflow-hidden bg-ua-bg px-6 py-28 md:px-10"
     >
       <div className="mx-auto max-w-6xl">
-        {/* Title block */}
-        <div className="relative">
+        {/* Title block — centered */}
+        <div className="relative mx-auto max-w-5xl text-center">
           <Sticker
             name="heart-hands"
-            size={160}
+            size={130}
             rotate={-8}
-            className="absolute right-0 top-[34%] z-10 hidden md:block"
+            className="absolute -right-2 top-[38%] z-10 hidden sm:block md:-right-10"
           />
           <h2
             ref={titleRef}
-            className="max-w-5xl text-5xl font-black leading-[1.02] tracking-tight text-ua-ink sm:text-6xl md:text-8xl"
+            className="text-5xl font-black leading-[1.02] tracking-tight text-ua-ink sm:text-6xl md:text-8xl"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
             {TITLE_WORDS.map((w, i) => (
@@ -134,34 +134,37 @@ export function Future() {
           </h2>
         </div>
 
+        {/* Photo collage (placeholder images) */}
+        <Reveal className="mt-16">
+          <div className="flex flex-wrap items-center justify-center gap-4 md:-space-x-6 md:gap-0">
+            {PHOTOS.map((photo, i) => (
+              <div
+                key={i}
+                className="overflow-hidden rounded-3xl border-2 border-ua-ink shadow-[6px_6px_0_var(--ua-ink)]"
+                style={{ transform: `rotate(${photo.rotate}deg)` }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.src}
+                  alt=""
+                  aria-hidden="true"
+                  className="h-44 w-56 object-cover md:h-56 md:w-72"
+                  style={{ objectPosition: photo.objectPosition }}
+                />
+              </div>
+            ))}
+          </div>
+        </Reveal>
+
         {/* Paragraph */}
         <Reveal>
-          <p className="mt-16 max-w-3xl text-lg text-ua-ink/80 md:text-xl">
+          <p className="mx-auto mt-14 max-w-3xl text-center text-lg text-ua-ink/80 md:text-xl">
             Over five 1-hour live sessions you&apos;ll learn the exact stack we use to
             ship real products with AI — Cursor, Supabase, Stripe, Resend, GitHub,
             hosting, domains and SEO. Every session is recorded, so you can rewatch
             anytime.
           </p>
         </Reveal>
-
-        {/* Cards */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {CARDS.map((card) => (
-            <Reveal key={card.label}>
-              <div
-                className={`flex h-full flex-col items-start gap-4 rounded-3xl border-2 border-ua-ink p-6 ${card.bg}`}
-              >
-                <Sticker name={card.sticker} size={64} rotate={6} />
-                <span
-                  className="text-xl font-bold text-ua-ink"
-                  style={{ fontFamily: "var(--font-epilogue)" }}
-                >
-                  {card.label}
-                </span>
-              </div>
-            </Reveal>
-          ))}
-        </div>
       </div>
     </section>
   );
