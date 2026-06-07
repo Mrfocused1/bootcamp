@@ -78,22 +78,29 @@ export function HorizontalWords() {
       });
 
       // 4) The hand-drawn arrows draw themselves in (stroke reveal) as they sweep in.
-      track.querySelectorAll<SVGPathElement>(".hw-arrow path").forEach((el) => {
-        if (typeof el.getTotalLength !== "function") return; // jsdom guard
-        const len = el.getTotalLength();
-        gsap.set(el, { strokeDasharray: len });
-        gsap.from(el, {
-          strokeDashoffset: len,
-          ease: "none",
-          scrollTrigger: {
-            trigger: el,
-            containerAnimation: scrollTween,
-            start: "left 70%",
-            end: "left 10%",
-            scrub: 0.5,
-          },
+      const drawArrow = (selector: string, start: string, end: string) => {
+        track.querySelectorAll<SVGPathElement>(selector).forEach((el) => {
+          if (typeof el.getTotalLength !== "function") return; // jsdom guard
+          const len = el.getTotalLength();
+          gsap.set(el, { strokeDasharray: len });
+          gsap.from(el, {
+            strokeDashoffset: len,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el,
+              containerAnimation: scrollTween,
+              start,
+              end,
+              scrub: 0.5,
+            },
+          });
         });
-      });
+      };
+      // Loop arrow draws in while it's on-screen. The end arrow is the last
+      // element, so it must START as it enters from the right and FINISH before
+      // the headline end is centered.
+      drawArrow('[data-arrow="loop"] path', "left 70%", "left 10%");
+      drawArrow('[data-arrow="end"] path', "left 105%", "left 78%");
     }, section);
 
     return () => ctx.revert();
@@ -130,6 +137,7 @@ export function HorizontalWords() {
 
           {/* Hand-drawn arrows (original shapes) — draw in as they sweep across. */}
           <svg
+            data-arrow="loop"
             className="hw-arrow pointer-events-none absolute bottom-full left-[26%] w-56 -translate-y-[30%] text-ua-ink motion-reduce:hidden md:w-80"
             viewBox="0 0 386 127"
             fill="none"
@@ -151,6 +159,7 @@ export function HorizontalWords() {
             />
           </svg>
           <svg
+            data-arrow="end"
             className="hw-arrow pointer-events-none absolute left-full top-1/2 w-[8.5rem] translate-x-1/2 text-ua-ink motion-reduce:hidden"
             viewBox="0 0 140 127"
             fill="none"
