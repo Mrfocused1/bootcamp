@@ -1,4 +1,5 @@
 import { getAiMessages } from "@/lib/queries";
+import { replyToQuestionAction, markResolvedAction } from "@/app/(app)/admin/actions";
 
 function formatTime(isoString: string): string {
   const d = new Date(isoString);
@@ -39,7 +40,7 @@ export default async function AdminQaPage() {
           Q&amp;A log
         </h1>
         <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.55 }}>
-          All AI assistant conversations across students.
+          All AI assistant conversations across students. Reply or mark as resolved.
         </p>
       </section>
 
@@ -108,6 +109,54 @@ export default async function AdminQaPage() {
                   </p>
                 </div>
               )}
+
+              {/* Admin reply form */}
+              <div
+                className="rounded-xl p-3 space-y-2"
+                style={{ backgroundColor: "var(--ua-bg)", border: "1px solid rgba(20,20,20,0.1)" }}
+              >
+                <p
+                  className="text-xs font-semibold uppercase tracking-widest"
+                  style={{ color: "var(--ua-ink)", opacity: 0.5 }}
+                >
+                  Admin reply
+                </p>
+                <form
+                  action={replyToQuestionAction.bind(null, question.id)}
+                  className="flex flex-col gap-2"
+                >
+                  <textarea
+                    name="reply"
+                    rows={3}
+                    placeholder="Write a reply to escalate or clarify..."
+                    required
+                    className="rounded-xl border border-[var(--ua-ink)]/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ua-blue)] resize-none w-full"
+                    style={{ color: "var(--ua-ink)" }}
+                  />
+                  <div className="flex items-center gap-2 justify-between">
+                    <form action={markResolvedAction.bind(null, question.id)}>
+                      <button
+                        type="submit"
+                        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80"
+                        style={{
+                          backgroundColor: "var(--ua-green)",
+                          color: "var(--ua-ink)",
+                          border: "1px solid rgba(20,20,20,0.1)",
+                        }}
+                      >
+                        Mark resolved
+                      </button>
+                    </form>
+                    <button
+                      type="submit"
+                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold transition-opacity hover:opacity-80"
+                      style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
+                    >
+                      Send reply
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           ))}
         </div>

@@ -298,4 +298,21 @@ export function getMockAiMessages(): AiMessage[] {
   ];
 }
 
+export interface DayFunnelEntry {
+  day: number;
+  started: number;
+  completed: number;
+}
+
+/** Realistic drop-off data across the 5-day cohort. */
+export function getMockDayFunnel(): DayFunnelEntry[] {
+  return [
+    { day: 1, started: 20, completed: 18 },
+    { day: 2, started: 20, completed: 14 },
+    { day: 3, started: 18, completed: 9 },
+    { day: 4, started: 15, completed: 6 },
+    { day: 5, started: 12, completed: 4 },
+  ];
+}
+
 export { mockToday };

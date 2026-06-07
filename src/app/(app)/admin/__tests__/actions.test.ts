@@ -107,4 +107,49 @@ describe("admin server actions — authorization", () => {
       await expect(postAnnouncement(new FormData())).resolves.toBeUndefined();
     });
   });
+
+  describe("sendBroadcast", () => {
+    it("throws Forbidden when called by a student", async () => {
+      mockGetCurrentProfile.mockResolvedValue(studentProfile);
+      const { sendBroadcast } = await import("@/app/(app)/admin/actions");
+      await expect(sendBroadcast(new FormData())).rejects.toThrow("Forbidden");
+    });
+
+    it("returns { ok: true, recipients: 20 } for admin in mock mode", async () => {
+      mockGetCurrentProfile.mockResolvedValue(adminProfile);
+      const { sendBroadcast } = await import("@/app/(app)/admin/actions");
+      const result = await sendBroadcast(new FormData());
+      expect(result).toEqual({ ok: true, recipients: 20 });
+    });
+  });
+
+  describe("replyToQuestion", () => {
+    it("throws Forbidden when called by a student", async () => {
+      mockGetCurrentProfile.mockResolvedValue(studentProfile);
+      const { replyToQuestion } = await import("@/app/(app)/admin/actions");
+      await expect(replyToQuestion("msg-1", new FormData())).rejects.toThrow("Forbidden");
+    });
+
+    it("returns { ok: true } for admin in mock mode", async () => {
+      mockGetCurrentProfile.mockResolvedValue(adminProfile);
+      const { replyToQuestion } = await import("@/app/(app)/admin/actions");
+      const result = await replyToQuestion("msg-1", new FormData());
+      expect(result).toEqual({ ok: true });
+    });
+  });
+
+  describe("nudgeStudent", () => {
+    it("throws Forbidden when called by a student", async () => {
+      mockGetCurrentProfile.mockResolvedValue(studentProfile);
+      const { nudgeStudent } = await import("@/app/(app)/admin/actions");
+      await expect(nudgeStudent("student-2")).rejects.toThrow("Forbidden");
+    });
+
+    it("returns { ok: true } for admin in mock mode", async () => {
+      mockGetCurrentProfile.mockResolvedValue(adminProfile);
+      const { nudgeStudent } = await import("@/app/(app)/admin/actions");
+      const result = await nudgeStudent("student-2");
+      expect(result).toEqual({ ok: true });
+    });
+  });
 });

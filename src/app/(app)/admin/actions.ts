@@ -93,3 +93,114 @@ export async function postAnnouncement(formData: FormData): Promise<void> {
   // await supabase.from("announcements").insert({ title, body });
   revalidatePath("/admin/announcements");
 }
+
+// ---------------------------------------------------------------------------
+// Feature 3 — Analytics: nudge an at-risk student
+// ---------------------------------------------------------------------------
+export async function nudgeStudent(userId: string): Promise<{ ok: boolean }> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    // No-op in mock mode
+    return { ok: true };
+  }
+
+  // Real-mode stub — e.g. send a nudge email via Resend:
+  // const { sendEmail } = await import("@/lib/email");
+  // await sendEmail({ to: userEmail, subject: "Keep going!", body: "..." });
+  return { ok: true };
+}
+
+/** Void wrapper for use as a form action. */
+export async function nudgeStudentAction(userId: string): Promise<void> {
+  await nudgeStudent(userId);
+}
+
+// ---------------------------------------------------------------------------
+// Feature 4 — Broadcast email composer
+// ---------------------------------------------------------------------------
+export async function sendBroadcast(
+  formData: FormData
+): Promise<{ ok: boolean; recipients: number }> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    // In mock mode return a fixed mock recipient count
+    return { ok: true, recipients: 20 };
+  }
+
+  // Real-mode stub — fetch recipients and send via Resend:
+  // const cohortId = formData.get("cohort") as string | null;
+  // const subject = formData.get("subject") as string;
+  // const body = formData.get("body") as string;
+  // const { createClient } = await import("@/lib/supabase/admin");
+  // const supabase = createClient();
+  // let query = supabase.from("profiles").select("email").eq("role", "student");
+  // if (cohortId) query = query.eq("cohort_id", cohortId);
+  // const { data: profiles } = await query;
+  // const emails = (profiles ?? []).map((p: { email: string }) => p.email);
+  // const { sendBulkEmail } = await import("@/lib/email");
+  // await sendBulkEmail({ to: emails, subject, body });
+  // return { ok: true, recipients: emails.length };
+  return { ok: true, recipients: 0 };
+}
+
+// ---------------------------------------------------------------------------
+// Feature 5 — Admin reply to AI Q&A question
+// ---------------------------------------------------------------------------
+export async function replyToQuestion(
+  messageId: string,
+  formData: FormData
+): Promise<{ ok: boolean }> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    // No-op in mock mode
+    return { ok: true };
+  }
+
+  // Real-mode stub — insert admin reply and optionally email the student:
+  // const reply = formData.get("reply") as string;
+  // const { createClient } = await import("@/lib/supabase/admin");
+  // const supabase = createClient();
+  // await supabase.from("ai_messages").insert({
+  //   parent_id: messageId,
+  //   role: "admin",
+  //   content: reply,
+  // });
+  // Optionally email student via Resend
+  void messageId;
+  void formData;
+  return { ok: true };
+}
+
+/** Void wrapper for use as a form action. */
+export async function replyToQuestionAction(
+  messageId: string,
+  formData: FormData
+): Promise<void> {
+  await replyToQuestion(messageId, formData);
+}
+
+// ---------------------------------------------------------------------------
+// Feature 5 — Mark Q&A question as resolved
+// ---------------------------------------------------------------------------
+export async function markResolved(messageId: string): Promise<{ ok: boolean }> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    return { ok: true };
+  }
+
+  // Real-mode stub:
+  // const { createClient } = await import("@/lib/supabase/admin");
+  // const supabase = createClient();
+  // await supabase.from("ai_messages").update({ resolved: true }).eq("id", messageId);
+  void messageId;
+  return { ok: true };
+}
+
+/** Void wrapper for use as a form action. */
+export async function markResolvedAction(messageId: string): Promise<void> {
+  await markResolved(messageId);
+}

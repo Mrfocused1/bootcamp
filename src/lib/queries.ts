@@ -20,6 +20,8 @@ import {
   getMockAnnouncement,
   getMockStudents,
   getMockAiMessages,
+  getMockDayFunnel,
+  type DayFunnelEntry,
 } from "@/lib/mock";
 
 // ---------------------------------------------------------------------------
@@ -179,6 +181,21 @@ export async function getStudents(): Promise<StudentSummary[]> {
     overallPercent: row.overall_percent as number,
   }));
 }
+
+// ---------------------------------------------------------------------------
+// Analytics: per-day funnel (started vs completed)
+// ---------------------------------------------------------------------------
+export async function getDayFunnel(): Promise<DayFunnelEntry[]> {
+  if (IS_MOCK) return getMockDayFunnel();
+  // Real-mode stub — query a view or aggregate from a progress table:
+  // const { createClient } = await import("@/lib/supabase/server");
+  // const supabase = await createClient();
+  // const { data } = await supabase.from("day_funnel").select("day, started, completed");
+  // return (data ?? []) as DayFunnelEntry[];
+  return getMockDayFunnel();
+}
+
+export type { DayFunnelEntry };
 
 // ---------------------------------------------------------------------------
 // AI messages
