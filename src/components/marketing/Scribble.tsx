@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 // Our own hand-authored squiggle path (original work).
 const PATH =
@@ -22,22 +23,24 @@ export function Scribble({
   useEffect(() => {
     const path = pathRef.current;
     if (!path) return;
-    const reduce =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const len = path.getTotalLength?.() ?? 0;
-    if (!len) return; // nothing to animate (e.g. jsdom) — leave fully drawn
-    path.style.strokeDasharray = String(len);
-    if (reduce) {
+    if (prefersReducedMotion()) {
       path.style.strokeDashoffset = "0";
       return;
     }
-    path.style.strokeDashoffset = String(len);
+    // Path starts hidden in SSR HTML (dasharray:1 / dashoffset:1 with pathLength=1).
+    // Double rAF guarantees a style recalc between the hidden state and the
+    // animated state so the CSS transition reliably fires (incl. Safari iOS).
     path.style.transition = `stroke-dashoffset ${durationMs}ms cubic-bezier(0.65,0,0.35,1)`;
-    const id = requestAnimationFrame(() => {
-      path.style.strokeDashoffset = "0";
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(() => {
+        path.style.strokeDashoffset = "0";
+      });
     });
-    return () => cancelAnimationFrame(id);
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+    };
   }, [durationMs]);
 
   return (
@@ -45,10 +48,12 @@ export function Scribble({
       <path
         ref={pathRef}
         d={PATH}
+        pathLength={1}
         stroke={color}
         strokeWidth={strokeWidth}
         strokeLinecap="round"
         strokeLinejoin="round"
+        style={{ strokeDasharray: 1, strokeDashoffset: 1 }}
       />
     </svg>
   );

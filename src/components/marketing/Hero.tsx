@@ -5,6 +5,7 @@ import Link from "next/link";
 import { gsap } from "gsap";
 import { HERO } from "@/lib/marketing/content";
 import { Scribble } from "./Scribble";
+import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 export function Hero() {
   const wordsRef = useRef<HTMLHeadingElement>(null);
@@ -12,11 +13,8 @@ export function Hero() {
   useEffect(() => {
     const el = wordsRef.current;
     if (!el) return;
-    const reduce =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const words = el.querySelectorAll("[data-word]");
-    if (reduce) {
+    if (prefersReducedMotion()) {
       gsap.set(words, { opacity: 1, y: 0 });
       return;
     }
@@ -37,6 +35,7 @@ export function Hero() {
         src={HERO.image}
         alt={HERO.imageAlt}
         className="absolute inset-0 h-full w-full object-cover"
+        fetchPriority="high"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ua-ink/70 via-ua-ink/10 to-transparent" />
 
