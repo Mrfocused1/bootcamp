@@ -84,3 +84,6 @@
 @media (prefers-reduced-motion: reduce) {
   .ua-anim-gradient, .ua-blob, .ua-sticker, .ua-pop { animation: none !important; }
 }
+
+/* Brand wordmark — free Epilogue replaces the commercial Genty face. */
+.font-genty { font-family: var(--font-epilogue), sans-serif; }

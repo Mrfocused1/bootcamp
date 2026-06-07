@@ -35,6 +35,6 @@ export const HERO = {
   emphasis: "real",
   ctaLabel: "enrol now",
   ctaHref: "/pricing",
-  image: "/site/truus.co/custom/bridgeway-hero.png",
+  image: "/marketing/bridgeway-hero.png",
   imageAlt: "Student smiling while learning to build websites with AI",
 };
