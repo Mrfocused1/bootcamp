@@ -99,7 +99,7 @@
 .hw-relative { position: relative; width: max-content; margin: 0 25vw; }
 .hw-h2 { white-space: nowrap; width: max-content; }
 .hw-bottom { position: absolute; left: 0; bottom: 12svh; width: 100%; text-align: center; }
-@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
   .hw-section { height: auto; overflow: visible; }
   .hw-content { position: static; height: auto; min-height: 60svh; padding: 5rem 0; flex-direction: column; gap: 1.5rem; justify-content: center; }
   .hw-relative { width: auto; max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }

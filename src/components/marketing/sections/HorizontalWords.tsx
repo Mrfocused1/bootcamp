@@ -24,10 +24,7 @@ export function HorizontalWords() {
     const track = trackRef.current;
     if (!section || !track) return;
 
-    const desktop =
-      typeof window.matchMedia === "function" &&
-      window.matchMedia("(min-width: 768px)").matches;
-    if (prefersReducedMotion() || !desktop) return; // CSS renders the static layout
+    if (prefersReducedMotion()) return; // reduced motion only: CSS renders a static fallback
 
     const ctx = gsap.context(() => {
       // 1) Horizontal scrub of the whole track, tied to scroll through the tall section.
@@ -106,7 +103,7 @@ export function HorizontalWords() {
       <div className="hw-content">
         <div ref={trackRef} className="hw-relative">
           <h2
-            className="hw-h2 text-3xl sm:text-5xl font-bold leading-none md:text-[8.5rem]"
+            className="hw-h2 text-7xl font-bold leading-none md:text-[8.5rem]"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
             {HEADLINE.split("").map((c, i) =>
@@ -120,19 +117,19 @@ export function HorizontalWords() {
             )}
           </h2>
 
-          <span className="hw-sticker pointer-events-none absolute max-md:hidden motion-reduce:hidden left-[17%] top-1/2 -translate-x-1/2 -translate-y-[110%]">
+          <span className="hw-sticker pointer-events-none absolute motion-reduce:hidden left-[17%] top-1/2 -translate-x-1/2 -translate-y-[110%]">
             <Sticker name="thumbs-up" size={92} />
           </span>
-          <span className="hw-sticker pointer-events-none absolute max-md:hidden motion-reduce:hidden left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
+          <span className="hw-sticker pointer-events-none absolute motion-reduce:hidden left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
             <Sticker name="cursor-star" size={110} />
           </span>
-          <span className="hw-sticker pointer-events-none absolute max-md:hidden motion-reduce:hidden left-[80%] top-1/2 -translate-x-1/2 -translate-y-[100%]">
+          <span className="hw-sticker pointer-events-none absolute motion-reduce:hidden left-[80%] top-1/2 -translate-x-1/2 -translate-y-[100%]">
             <Sticker name="phone-hand" size={104} />
           </span>
 
           {/* Hand-drawn arrows (original shapes) — draw in as they sweep across. */}
           <svg
-            className="hw-arrow pointer-events-none absolute bottom-full left-1/2 w-96 -translate-x-[160%] -translate-y-[35%] text-ua-ink max-md:hidden motion-reduce:hidden"
+            className="hw-arrow pointer-events-none absolute bottom-full left-1/2 w-96 -translate-x-[160%] -translate-y-[35%] text-ua-ink motion-reduce:hidden"
             viewBox="0 0 386 127"
             fill="none"
             aria-hidden="true"
@@ -153,7 +150,7 @@ export function HorizontalWords() {
             />
           </svg>
           <svg
-            className="hw-arrow pointer-events-none absolute left-full top-1/2 w-[8.5rem] translate-x-1/2 text-ua-ink max-md:hidden motion-reduce:hidden"
+            className="hw-arrow pointer-events-none absolute left-full top-1/2 w-[8.5rem] translate-x-1/2 text-ua-ink motion-reduce:hidden"
             viewBox="0 0 140 127"
             fill="none"
             aria-hidden="true"
