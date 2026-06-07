@@ -81,10 +81,12 @@ export async function getLessons(): Promise<Lesson[]> {
   const { data } = await supabase
     .from("lessons")
     .select(
-      "id, day_id, day_index, title, video_provider, video_id, duration_seconds, resources, topics, order"
+      "id, day_id, day_index, title, video_provider, video_id, duration_seconds, resources, topics, chapters, order"
     )
     .order("order");
-  return (data ?? []) as Lesson[];
+  return ((data ?? []) as (Omit<Lesson, "chapters"> & { chapters?: Lesson["chapters"] })[]).map(
+    (row) => ({ ...row, chapters: row.chapters ?? [] })
+  ) as Lesson[];
 }
 
 // ---------------------------------------------------------------------------

@@ -10,9 +10,11 @@ export interface VideoPlayerProps {
   videoId: string;
   startSeconds: number;
   onProgress: (positionSeconds: number, durationSeconds: number) => void;
+  /** When seek.nonce changes, immediately seek to seek.seconds and play. */
+  seek?: { seconds: number; nonce: number } | null;
 }
 
-export function VideoPlayer({ provider, videoId, startSeconds, onProgress }: VideoPlayerProps) {
+export function VideoPlayer({ provider, videoId, startSeconds, onProgress, seek }: VideoPlayerProps) {
   switch (provider) {
     case "mp4":
     case "html5":
@@ -21,9 +23,11 @@ export function VideoPlayer({ provider, videoId, startSeconds, onProgress }: Vid
           videoId={videoId}
           startSeconds={startSeconds}
           onProgress={onProgress}
+          seek={seek}
         />
       );
     case "youtube":
+      // TODO: wire up seek prop to YouTube IFrame Player API seekTo()
       return (
         <YoutubePlayer
           videoId={videoId}
@@ -32,6 +36,7 @@ export function VideoPlayer({ provider, videoId, startSeconds, onProgress }: Vid
         />
       );
     case "vimeo":
+      // TODO: wire up seek prop to Vimeo Player SDK setCurrentTime()
       return (
         <VimeoPlayer
           videoId={videoId}
@@ -40,6 +45,7 @@ export function VideoPlayer({ provider, videoId, startSeconds, onProgress }: Vid
         />
       );
     case "mux":
+      // TODO: wire up seek prop to Mux player seekTo()
       return (
         <MuxPlayer
           videoId={videoId}

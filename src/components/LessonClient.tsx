@@ -1,14 +1,17 @@
 "use client";
 
-import { useCallback, useRef } from "react";
+import { useCallback, useRef, useState } from "react";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { ChapterMenu } from "@/components/ChapterMenu";
 import { AiAssistant } from "@/components/AiAssistant";
+import type { Chapter } from "@/lib/types";
 
 interface LessonClientProps {
   lessonId: string;
   videoProvider: string;
   videoId: string;
   startSeconds: number;
+  chapters: Chapter[];
 }
 
 const DEBOUNCE_MS = 10_000; // post progress at most once every 10 seconds
@@ -18,9 +21,12 @@ export function LessonClient({
   videoProvider,
   videoId,
   startSeconds,
+  chapters,
 }: LessonClientProps) {
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastPostedRef = useRef<{ position: number; duration: number } | null>(null);
+  const nonceRef = useRef(0);
+  const [seek, setSeek] = useState<{ seconds: number; nonce: number } | null>(null);
 
   async function postProgress(positionSeconds: number, durationSeconds: number) {
     try {
@@ -46,6 +52,11 @@ export function LessonClient({
     [lessonId] // eslint-disable-line react-hooks/exhaustive-deps
   );
 
+  function handleChapterSelect(seconds: number) {
+    nonceRef.current += 1;
+    setSeek({ seconds, nonce: nonceRef.current });
+  }
+
   // Post immediately on pause (fired by the native video element's pause event via the player)
   // We expose a separate handler the Html5Player could call on pause, but to keep it simple
   // and avoid prop-drilling, we flush the debounce on the video's pause event by re-using
@@ -55,12 +66,16 @@ export function LessonClient({
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Video column */}
-      <div className="flex-1 min-w-0">
+      <div className="flex-1 min-w-0 space-y-3">
+        {chapters.length > 0 && (
+          <ChapterMenu chapters={chapters} onSelect={handleChapterSelect} />
+        )}
         <VideoPlayer
           provider={videoProvider}
           videoId={videoId}
           startSeconds={startSeconds}
           onProgress={handleProgress}
+          seek={seek}
         />
       </div>
 

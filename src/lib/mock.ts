@@ -8,6 +8,7 @@ import type {
   Announcement,
   AiMessage,
   StudentSummary,
+  Chapter,
 } from "@/lib/types";
 
 export const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -71,7 +72,15 @@ export const MOCK_DAYS: Day[] = [
 ];
 
 const SAMPLE_VIDEO_URL =
-  "https://test-videos.co.uk/vids/bigbuckbunny/mp4/h264/360/Big_Buck_Bunny_360_10s_1MB.mp4";
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+
+const DAY1_CHAPTERS: Chapter[] = [
+  { title: "Intro & setup", start_seconds: 0 },
+  { title: "Cursor basics", start_seconds: 60 },
+  { title: "Cloning a website", start_seconds: 180 },
+  { title: "AI images with ChatGPT", start_seconds: 330 },
+  { title: "Voice coding with Whisper", start_seconds: 480 },
+];
 
 export const MOCK_LESSONS: Lesson[] = [
   {
@@ -81,7 +90,8 @@ export const MOCK_LESSONS: Lesson[] = [
     title: "Cursor, cloning & AI images",
     video_provider: "mp4",
     video_id: SAMPLE_VIDEO_URL,
-    duration_seconds: 3600,
+    duration_seconds: 596,
+    chapters: DAY1_CHAPTERS,
     resources: [
       { label: "Cursor IDE", url: "https://cursor.sh" },
       { label: "ChatGPT", url: "https://chat.openai.com" },
@@ -96,7 +106,13 @@ export const MOCK_LESSONS: Lesson[] = [
     title: "Supabase & GitHub",
     video_provider: "mp4",
     video_id: SAMPLE_VIDEO_URL,
-    duration_seconds: 3600,
+    duration_seconds: 596,
+    chapters: [
+      { title: "Intro to Supabase", start_seconds: 0 },
+      { title: "Creating tables & RLS", start_seconds: 120 },
+      { title: "GitHub & version control", start_seconds: 300 },
+      { title: "Connecting to Next.js", start_seconds: 450 },
+    ],
     resources: [
       { label: "Supabase docs", url: "https://supabase.com/docs" },
       { label: "GitHub", url: "https://github.com" },
@@ -111,7 +127,13 @@ export const MOCK_LESSONS: Lesson[] = [
     title: "Stripe, Resend & CRMs",
     video_provider: "mp4",
     video_id: SAMPLE_VIDEO_URL,
-    duration_seconds: 3600,
+    duration_seconds: 596,
+    chapters: [
+      { title: "Setting up Stripe", start_seconds: 0 },
+      { title: "Checkout & webhooks", start_seconds: 150 },
+      { title: "Transactional email with Resend", start_seconds: 350 },
+      { title: "CRM basics", start_seconds: 500 },
+    ],
     resources: [
       { label: "Stripe docs", url: "https://stripe.com/docs" },
       { label: "Resend", url: "https://resend.com" },
@@ -126,7 +148,12 @@ export const MOCK_LESSONS: Lesson[] = [
     title: "Hosting, domains & debugging",
     video_provider: "mp4",
     video_id: SAMPLE_VIDEO_URL,
-    duration_seconds: 3600,
+    duration_seconds: 596,
+    chapters: [
+      { title: "Deploying to Vercel", start_seconds: 0 },
+      { title: "Custom domains on Namecheap", start_seconds: 180 },
+      { title: "Debugging production issues", start_seconds: 390 },
+    ],
     resources: [
       { label: "Vercel", url: "https://vercel.com" },
       { label: "Namecheap", url: "https://namecheap.com" },
@@ -141,7 +168,12 @@ export const MOCK_LESSONS: Lesson[] = [
     title: "SEO, analytics & live Q&A",
     video_provider: "mp4",
     video_id: SAMPLE_VIDEO_URL,
-    duration_seconds: 3600,
+    duration_seconds: 596,
+    chapters: [
+      { title: "SEO fundamentals", start_seconds: 0 },
+      { title: "Setting up analytics", start_seconds: 200 },
+      { title: "Live Q&A highlights", start_seconds: 430 },
+    ],
     resources: [
       { label: "Google Search Console", url: "https://search.google.com/search-console" },
       { label: "Plausible Analytics", url: "https://plausible.io" },

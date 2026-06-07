@@ -79,6 +79,7 @@ export default async function LessonPage({ params }: PageProps) {
         videoProvider={lesson.video_provider ?? "mp4"}
         videoId={lesson.video_id ?? ""}
         startSeconds={startSeconds}
+        chapters={lesson.chapters}
       />
 
       {/* ── Resources ── */}

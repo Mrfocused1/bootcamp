@@ -6,9 +6,11 @@ interface Html5PlayerProps {
   videoId: string; // treated as the video src URL
   startSeconds: number;
   onProgress: (positionSeconds: number, durationSeconds: number) => void;
+  /** When seek.nonce changes, immediately seek to seek.seconds and play. */
+  seek?: { seconds: number; nonce: number } | null;
 }
 
-export function Html5Player({ videoId, startSeconds, onProgress }: Html5PlayerProps) {
+export function Html5Player({ videoId, startSeconds, onProgress, seek }: Html5PlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   // Seek to startSeconds once metadata is loaded
@@ -23,6 +25,17 @@ export function Html5Player({ videoId, startSeconds, onProgress }: Html5PlayerPr
     el.addEventListener("loadedmetadata", onLoaded);
     return () => el.removeEventListener("loadedmetadata", onLoaded);
   }, [startSeconds]);
+
+  // Seek to chapter position when seek.nonce changes
+  useEffect(() => {
+    if (!seek) return;
+    const el = videoRef.current;
+    if (!el) return;
+    el.currentTime = seek.seconds;
+    el.play().catch(() => {
+      // Autoplay may be blocked by the browser — ignore silently
+    });
+  }, [seek?.nonce]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Fire onProgress on each timeupdate event
   useEffect(() => {

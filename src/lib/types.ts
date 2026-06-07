@@ -1,5 +1,10 @@
 export type Role = "student" | "admin";
 
+export interface Chapter {
+  title: string;
+  start_seconds: number;
+}
+
 export interface Profile {
   id: string;
   name: string;
@@ -30,6 +35,7 @@ export interface Lesson {
   duration_seconds: number;
   resources: { label: string; url: string }[];
   topics: string[];
+  chapters: Chapter[];
   order: number;
 }
 
