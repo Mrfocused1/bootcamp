@@ -79,6 +79,23 @@ export function HorizontalWords() {
           },
         });
       });
+
+      // 4) The hand-drawn arrows draw themselves in (stroke reveal) as they sweep in.
+      track.querySelectorAll<SVGPathElement>(".hw-arrow path").forEach((el) => {
+        const len = el.getTotalLength();
+        gsap.set(el, { strokeDasharray: len });
+        gsap.from(el, {
+          strokeDashoffset: len,
+          ease: "none",
+          scrollTrigger: {
+            trigger: el,
+            containerAnimation: scrollTween,
+            start: "left 90%",
+            end: "left 30%",
+            scrub: 0.5,
+          },
+        });
+      });
     }, section);
 
     return () => ctx.revert();
@@ -103,15 +120,59 @@ export function HorizontalWords() {
             )}
           </h2>
 
-          <span className="hw-sticker pointer-events-none absolute left-[17%] top-1/2 -translate-x-1/2 -translate-y-[110%]">
-            <Sticker name="sparkles" size={92} />
+          <span className="hw-sticker pointer-events-none absolute max-md:hidden motion-reduce:hidden left-[17%] top-1/2 -translate-x-1/2 -translate-y-[110%]">
+            <Sticker name="thumbs-up" size={92} />
           </span>
-          <span className="hw-sticker pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
+          <span className="hw-sticker pointer-events-none absolute max-md:hidden motion-reduce:hidden left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
             <Sticker name="cursor-star" size={110} />
           </span>
-          <span className="hw-sticker pointer-events-none absolute left-[80%] top-1/2 -translate-x-1/2 -translate-y-[100%]">
+          <span className="hw-sticker pointer-events-none absolute max-md:hidden motion-reduce:hidden left-[80%] top-1/2 -translate-x-1/2 -translate-y-[100%]">
             <Sticker name="phone-hand" size={104} />
           </span>
+
+          {/* Hand-drawn arrows (original shapes) — draw in as they sweep across. */}
+          <svg
+            className="hw-arrow pointer-events-none absolute bottom-full left-1/2 w-96 -translate-x-[160%] -translate-y-[35%] text-ua-ink max-md:hidden motion-reduce:hidden"
+            viewBox="0 0 386 127"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L356.5 105.5"
+              stroke="currentColor"
+              strokeWidth={3.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2 123C9 35.9999 84.5 17 124 25.9999C217.764 47.3635 207 115 177.5 123C105.777 142.45 110.737 1.99991 232.5 2C310.5 2.00006 366.5 79 376 118L384 97"
+              stroke="currentColor"
+              strokeWidth={3.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <svg
+            className="hw-arrow pointer-events-none absolute left-full top-1/2 w-[8.5rem] translate-x-1/2 text-ua-ink max-md:hidden motion-reduce:hidden"
+            viewBox="0 0 140 127"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.437 125.078L99.6875 107.891"
+              stroke="currentColor"
+              strokeWidth={3.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <path
+              d="M2.03125 2.42188C100.469 2.42188 130.156 52.4219 118.438 125.078L137.969 110.234"
+              stroke="currentColor"
+              strokeWidth={3.5}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
         </div>
 
         <div className="hw-bottom">
