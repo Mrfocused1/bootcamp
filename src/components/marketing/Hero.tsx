@@ -46,7 +46,7 @@ export function Hero() {
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
           {HERO.words.map((w, i) => (
-            <span key={`${w}-${i}`} data-word className="inline-block whitespace-pre" style={{ opacity: 0 }}>
+            <span key={`${w}-${i}`} data-word className="ua-reveal inline-block whitespace-pre" style={{ opacity: 0 }}>
               {w === HERO.emphasis ? <em>{w}</em> : w}{i < HERO.words.length - 1 ? " " : ""}
             </span>
           ))}

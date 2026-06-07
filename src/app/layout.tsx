@@ -32,6 +32,9 @@ export default function RootLayout({
       style={{ fontFamily: "var(--font-dm-sans), DM Sans, sans-serif" }}
     >
       <body className="ua-body flex flex-col min-h-full">
+        <noscript>
+          <style>{`.ua-reveal{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
         {children}
       </body>
     </html>

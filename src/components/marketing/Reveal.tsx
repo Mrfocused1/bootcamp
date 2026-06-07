@@ -42,7 +42,7 @@ export function Reveal({
   }, [y]);
 
   return (
-    <div ref={ref} className={className} style={{ opacity: 0 }}>
+    <div ref={ref} className={`ua-reveal ${className ?? ""}`} style={{ opacity: 0 }}>
       {children}
     </div>
   );

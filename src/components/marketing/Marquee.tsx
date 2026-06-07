@@ -9,7 +9,7 @@ export function Marquee({ items }: { items: string[] }) {
             className="text-2xl font-bold uppercase text-ua-ink"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
-            {t} <span className="text-ua-blue">✷</span>
+            {t} <span className="text-ua-blue" aria-hidden="true">✷</span>
           </span>
         ))}
       </div>

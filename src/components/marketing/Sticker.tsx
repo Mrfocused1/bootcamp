@@ -55,7 +55,7 @@ export function Sticker({
       aria-hidden={alt === "" ? true : undefined}
       width={size}
       height={size}
-      className={className}
+      className={`ua-reveal ${className ?? ""}`}
       style={{ width: size, height: "auto", opacity: 0, transform: `rotate(${rotate}deg)` }}
     />
   );
