@@ -1,12 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
-
-gsap.registerPlugin(ScrollTrigger);
 
 type Day = {
   day: string;
@@ -79,9 +74,9 @@ const DAYS: Day[] = [
   },
 ];
 
-// Resting rotations per card — alternating so the stack looks hand-placed and the
-// buried cards peek out at the edges. Shared by both layouts.
-const REST_ROTATIONS = [3, -2, 4, -1, -3];
+// Resting rotations for the mobile stacked cards — small alternating tilts so the
+// stack looks hand-placed without the rotated tall cards overflowing narrow screens.
+const MOBILE_ROTATIONS = [2, -1.5, 2.5, -1.5, -2];
 
 // Desktop hover-fan: each card's resting rotation + vertical stagger (px), so the
 // row reads like a hand-fanned deck rather than a flat strip.
@@ -144,77 +139,8 @@ function Bullets({
 }
 
 export function Curriculum() {
-  const sectionRef = useRef<HTMLElement>(null);
-  // Refs for the mobile scroll-stack cards only (desktop deck is pure-CSS hover).
-  const mobileCardRefs = useRef<Array<HTMLDivElement | null>>([]);
-
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    // The scroll-stack only applies to mobile. gsap.matchMedia scopes the
-    // ScrollTriggers to the (max-width:767px) query and auto-reverts them when
-    // the viewport grows past it (or on unmount). Desktop gets the CSS hover-fan.
-    const mm = gsap.matchMedia();
-    mm.add(
-      "(max-width: 767px) and (prefers-reduced-motion: no-preference)",
-      () => {
-        const cards = mobileCardRefs.current.filter(
-          (c): c is HTMLDivElement => c !== null,
-        );
-        if (!cards.length) return;
-
-        const lastWrapper = cards[cards.length - 1].parentElement;
-
-        // ScrollTrigger start/end strings don't parse "rem", so compute px. The
-        // fixed nav is ~80px tall; park the topmost card just below it.
-        const rootFontPx =
-          parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-        const NAV_GAP = 6 * rootFontPx; // ~96px — clears the 80px fixed header
-        const FAN = 0.9 * rootFontPx; // ~14px peek between stacked cards
-
-        cards.forEach((card, i) => {
-          const wrapper = card.parentElement;
-          if (!wrapper) return;
-
-          gsap.set(card, { rotation: REST_ROTATIONS[i] ?? 0 });
-          const offset = Math.round(NAV_GAP + i * FAN);
-
-          ScrollTrigger.create({
-            trigger: wrapper,
-            start: `top top+=${offset}`,
-            // Hold each pin until the whole stack has scrolled past, so earlier
-            // cards stay parked below the nav rather than scrolling away.
-            endTrigger: lastWrapper ?? wrapper,
-            end: "bottom top",
-            pin: true,
-            pinSpacing: false,
-            id: `curriculum-card-${i}`,
-          });
-
-          if (i < cards.length - 1) {
-            gsap.to(card, {
-              scale: 0.95,
-              ease: "none",
-              scrollTrigger: {
-                trigger: mobileCardRefs.current[i + 1]?.parentElement ?? wrapper,
-                start: `top top+=${offset}`,
-                end: `+=${window.innerHeight}`,
-                scrub: true,
-              },
-            });
-          }
-        });
-
-        ScrollTrigger.refresh();
-      },
-    );
-
-    return () => mm.revert();
-  }, []);
-
   return (
-    <section ref={sectionRef} className="bg-ua-bg px-6 py-24 md:px-10">
+    <section className="bg-ua-bg px-6 py-24 md:px-10">
       <div className="mx-auto max-w-6xl">
         <Reveal>
           <h2
@@ -273,10 +199,12 @@ export function Curriculum() {
         </div>
 
         {/*
-          Mobile (< md): GSAP scroll-driven stacking deck. Each card lives in a
-          tall wrapper; ScrollTrigger pins it just below the nav and the next card
-          scrolls up and stacks over it. With reduced motion this is a plain,
-          fully readable vertical stack.
+          Mobile (< md): CSS sticky stacking deck. Each card sticks just below the
+          nav (top offset grows per card so earlier cards peek above) and the next
+          one scrolls up and stacks over it. Because sticky respects document flow,
+          the next section can never overlap the stack — once the last card lands,
+          the trailing spacer holds the completed stack, then the whole section
+          scrolls away cleanly. With reduced motion this is a plain vertical stack.
         */}
         <div className="mt-14 flex flex-col gap-6 md:hidden">
           {DAYS.map((d, i) => {
@@ -284,14 +212,12 @@ export function Curriculum() {
             return (
               <div
                 key={d.day}
-                className="curriculum-card-wrapper relative flex h-screen items-start justify-center"
+                className="sticky flex justify-center motion-reduce:static"
+                style={{ top: `calc(6rem + ${i * 0.9}rem)`, zIndex: i + 1 }}
               >
                 <div
-                  ref={(el) => {
-                    mobileCardRefs.current[i] = el;
-                  }}
-                  className={`relative w-full max-w-[22rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-8 pt-14 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform`}
-                  style={{ zIndex: i + 1 }}
+                  className={`relative w-full max-w-[21rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-8 pt-14 shadow-[6px_6px_0_var(--ua-ink)]`}
+                  style={{ transform: `rotate(${MOBILE_ROTATIONS[i] ?? 0}deg)` }}
                 >
                   <Sticker
                     name={d.sticker}
@@ -313,6 +239,9 @@ export function Curriculum() {
               </div>
             );
           })}
+          {/* Hold spacer: keeps the completed stack parked for a beat before the
+              section scrolls away, so it isn't seen moving the instant Day 5 lands. */}
+          <div aria-hidden className="h-[45vh]" />
         </div>
       </div>
     </section>
