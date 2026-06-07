@@ -1,0 +1,12 @@
+const puppeteer=require('puppeteer');
+(async()=>{const b=await puppeteer.launch();const pg=await b.newPage();
+ await pg.setViewport({width:1000,height:620});
+ await pg.goto('http://localhost:3000/',{waitUntil:'domcontentloaded',timeout:30000});
+ await new Promise(r=>setTimeout(r,600));
+ const s=await pg.evaluate(()=>{const e=document.getElementById('ua-intro');return e?('present op='+getComputedStyle(e).opacity+' bg='+getComputedStyle(e).backgroundColor):'GONE';});
+ console.log('@600ms:',s);
+ await pg.screenshot({path:'/tmp/fin_a.png'});
+ await new Promise(r=>setTimeout(r,2200));
+ await pg.screenshot({path:'/tmp/fin_b.png'});
+ console.log('@2800ms:',await pg.evaluate(()=>document.getElementById('ua-intro')?'present':'GONE'));
+ await b.close();})().catch(e=>console.error(e.message));
