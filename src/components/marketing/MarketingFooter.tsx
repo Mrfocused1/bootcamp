@@ -48,6 +48,7 @@ export function MarketingFooter() {
         </div>
 
         <p
+          aria-hidden="true"
           className="mt-16 text-center text-5xl font-bold italic md:text-7xl"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >

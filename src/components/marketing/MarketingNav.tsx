@@ -9,11 +9,12 @@ export function MarketingNav() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <nav className="flex items-center justify-between px-6 py-5 md:px-10">
+      <nav aria-label="Primary" className="flex items-center justify-between px-6 py-5 md:px-10">
         <button
           type="button"
           aria-expanded={open}
           aria-label="menu"
+          aria-controls="nav-menu"
           onClick={() => setOpen((v) => !v)}
           className="font-bold tracking-tight text-ua-bg bg-ua-orange rounded-full px-5 py-2"
           style={{ fontFamily: "var(--font-epilogue)" }}
@@ -35,7 +36,7 @@ export function MarketingNav() {
       </nav>
 
       {open && (
-        <div className="mx-4 rounded-3xl bg-ua-ink/95 p-6 backdrop-blur">
+        <div id="nav-menu" className="mx-4 rounded-3xl bg-ua-ink/95 p-6 backdrop-blur">
           <ul className="flex flex-col gap-3">
             {NAV_LINKS.map((l) => (
               <li key={l.href}>
