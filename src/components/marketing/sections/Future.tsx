@@ -15,22 +15,6 @@ const EMPHASIS_WORDS = ["from", "idea", "to", "live", "site."];
 const UNDERLINE_PATH =
   "M2 26C41.0237 23.1556 79.9927 19.9419 118.634 15.5521C169.106 9.98633 227.314 2.42393 275.206 2C280.46 2.57436 264.768 4.99488 262.462 5.55556C257.837 6.43078 252.529 7.47009 247.317 8.59146C239.594 10.3556 212.496 15.8393 226.932 19.8051C239.594 22.6359 263.663 21.9521 280.978 21.3504C314.817 19.9829 349.311 16.7419 383.204 14.7863C465.931 9.5077 549.191 10.547 632 14.1436";
 
-const FLYING_TAGS = [
-  { label: "no code required!", bg: "bg-ua-pink", rotate: -6, className: "md:left-8 md:top-0" },
-  {
-    label: "AI is your unfair advantage",
-    bg: "bg-ua-green",
-    rotate: 4,
-    className: "md:right-12 md:top-10",
-  },
-  {
-    label: "shipping > perfect",
-    bg: "bg-ua-blue text-ua-bg",
-    rotate: -3,
-    className: "md:left-1/2 md:top-28 md:-translate-x-1/2",
-  },
-];
-
 const CARDS = [
   { sticker: "earth", label: "A real website", bg: "bg-ua-pink" },
   { sticker: "hundred", label: "Live payments", bg: "bg-ua-green" },
@@ -42,22 +26,18 @@ export function Future() {
   const sectionRef = useRef<HTMLElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
-  const tagsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const section = sectionRef.current;
     const title = titleRef.current;
     const path = pathRef.current;
-    const tagsContainer = tagsRef.current;
     if (!section) return;
 
     const words = title?.querySelectorAll("[data-word]");
-    const tags = tagsContainer?.querySelectorAll("[data-tag]");
 
     if (prefersReducedMotion()) {
       if (words) gsap.set(words, { opacity: 1, y: 0 });
       if (path) gsap.set(path, { strokeDashoffset: 0 });
-      if (tags) gsap.set(tags, { y: 0, rotation: 0 });
       return;
     }
 
@@ -87,23 +67,6 @@ export function Future() {
           scrollTrigger: { trigger: section, start: "top 80%", once: true },
         });
       }
-
-      const isDesktop =
-        typeof window.matchMedia === "function" &&
-        window.matchMedia("(min-width: 768px)").matches;
-      if (tags && tags.length && isDesktop) {
-        tags.forEach((tag, i) => {
-          gsap.to(tag, {
-            y: "+=10",
-            rotation: "+=2",
-            duration: 2.5,
-            ease: "sine.inOut",
-            yoyo: true,
-            repeat: -1,
-            delay: i * 0.3,
-          });
-        });
-      }
     }, section);
 
     return () => ctx.revert();
@@ -119,13 +82,13 @@ export function Future() {
         <div className="relative">
           <Sticker
             name="heart-hands"
-            size={120}
+            size={160}
             rotate={-8}
-            className="absolute -top-16 right-0 hidden md:block"
+            className="absolute right-0 top-[34%] z-10 hidden md:block"
           />
           <h2
             ref={titleRef}
-            className="max-w-4xl text-4xl font-bold leading-[1.05] text-ua-ink md:text-7xl"
+            className="max-w-5xl text-5xl font-black leading-[1.02] tracking-tight text-ua-ink sm:text-6xl md:text-8xl"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
             {TITLE_WORDS.map((w, i) => (
@@ -138,8 +101,8 @@ export function Future() {
                 {w}{" "}
               </span>
             ))}
-            <span className="mt-2 block" style={{ fontFamily: "var(--font-lora)" }}>
-              <span className="relative inline-block italic">
+            <span className="mt-3 block" style={{ fontFamily: "var(--font-lora)" }}>
+              <span className="relative inline-block font-medium italic">
                 {EMPHASIS_WORDS.map((w, i) => (
                   <span
                     key={`e-${w}-${i}`}
@@ -155,7 +118,7 @@ export function Future() {
                   viewBox="0 0 634 28"
                   fill="none"
                   aria-hidden="true"
-                  className="pointer-events-none absolute -bottom-4 left-0 w-full text-ua-ink"
+                  className="pointer-events-none absolute -bottom-5 left-0 w-full text-ua-ink"
                   preserveAspectRatio="none"
                 >
                   <path
@@ -171,26 +134,9 @@ export function Future() {
           </h2>
         </div>
 
-        {/* Flying tags */}
-        <div
-          ref={tagsRef}
-          className="flex flex-wrap justify-center gap-3 mt-10 md:block md:relative md:mt-12 md:h-40"
-        >
-          {FLYING_TAGS.map((tag) => (
-            <span
-              key={tag.label}
-              data-tag
-              className={`static md:absolute rounded-full border-2 border-ua-ink px-5 py-2 font-bold whitespace-nowrap ${tag.bg} ${tag.className}`}
-              style={{ transform: `rotate(${tag.rotate}deg)` }}
-            >
-              {tag.label}
-            </span>
-          ))}
-        </div>
-
         {/* Paragraph */}
         <Reveal>
-          <p className="mt-6 max-w-3xl text-lg text-ua-ink/80 md:text-xl">
+          <p className="mt-16 max-w-3xl text-lg text-ua-ink/80 md:text-xl">
             Over five 1-hour live sessions you&apos;ll learn the exact stack we use to
             ship real products with AI — Cursor, Supabase, Stripe, Resend, GitHub,
             hosting, domains and SEO. Every session is recorded, so you can rewatch
