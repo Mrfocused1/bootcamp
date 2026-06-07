@@ -1,3 +1,4 @@
+import Link from "next/link";
 import {
   getCohort,
   getDays,
@@ -77,6 +78,26 @@ export default async function DashboardPage() {
           <ProgressBar percent={overallPercent} label={`${overallPercent}% complete`} />
         </div>
       </section>
+
+      {/* ── Choose your schedule CTA ── */}
+      <Link
+        href="/book"
+        className="flex items-center gap-3 rounded-2xl p-5 transition-colors hover:opacity-90"
+        style={{ backgroundColor: "var(--ua-blue)", color: "#fff", textDecoration: "none" }}
+      >
+        <span className="text-2xl" aria-hidden="true">📅</span>
+        <div>
+          <p
+            className="font-bold text-base lowercase"
+            style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif" }}
+          >
+            choose your study schedule →
+          </p>
+          <p className="text-sm opacity-75">
+            Pick your start date and daily time — we'll schedule your 5 sessions.
+          </p>
+        </div>
+      </Link>
 
       {/* ── Announcements + Next session ── */}
       {(announcement || nextSession) && (

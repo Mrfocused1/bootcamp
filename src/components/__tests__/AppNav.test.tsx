@@ -24,4 +24,14 @@ describe("NavLinks", () => {
     expect(screen.getByRole("link", { name: /dashboard/i })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /schedule/i })).toBeInTheDocument();
   });
+
+  it("renders Book link for a student", () => {
+    render(<NavLinks role="student" />);
+    expect(screen.getByRole("link", { name: /book/i })).toBeInTheDocument();
+  });
+
+  it("renders Book link for an admin", () => {
+    render(<NavLinks role="admin" />);
+    expect(screen.getByRole("link", { name: /book/i })).toBeInTheDocument();
+  });
 });

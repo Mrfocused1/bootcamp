@@ -22,6 +22,12 @@ export function NavLinks({ role }: NavLinksProps) {
       >
         Schedule
       </Link>
+      <Link
+        href="/book"
+        className="px-3 py-1.5 rounded-full text-sm font-medium transition-colors hover:bg-[var(--ua-blue)] hover:text-white"
+      >
+        Book
+      </Link>
       {role === "admin" && (
         <Link
           href="/admin"
