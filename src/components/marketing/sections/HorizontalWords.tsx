@@ -130,7 +130,7 @@ export function HorizontalWords() {
 
           {/* Hand-drawn arrows (original shapes) — draw in as they sweep across. */}
           <svg
-            className="hw-arrow pointer-events-none absolute bottom-full left-1/2 w-96 -translate-x-[160%] -translate-y-[35%] text-ua-ink motion-reduce:hidden"
+            className="hw-arrow pointer-events-none absolute bottom-full left-[26%] w-56 -translate-y-[30%] text-ua-ink motion-reduce:hidden md:w-80"
             viewBox="0 0 386 127"
             fill="none"
             aria-hidden="true"
