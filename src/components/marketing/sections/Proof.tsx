@@ -83,7 +83,7 @@ export function Proof() {
               {/* TODO(owner): swap placeholder photos */}
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/marketing/bridgeway-hero.png"
+                src={`/marketing/placeholders/p${(i % 8) + 1}.png`}
                 alt=""
                 aria-hidden="true"
                 className="aspect-[4/3] w-full object-cover"

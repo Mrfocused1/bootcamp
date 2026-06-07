@@ -158,7 +158,7 @@ export function Build() {
             ref={trackRef}
             className="flex w-max cursor-grab gap-6"
           >
-            {PROJECT_TITLES.map((title) => (
+            {PROJECT_TITLES.map((title, i) => (
               <article
                 key={title}
                 className="w-72 shrink-0 overflow-hidden rounded-3xl border-2 border-ua-ink bg-white shadow-[6px_6px_0_var(--ua-ink)]"
@@ -166,7 +166,7 @@ export function Build() {
                 {/* TODO(owner): swap placeholder images */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/marketing/bridgeway-hero.png"
+                  src={`/marketing/placeholders/p${(i % 8) + 1}.png`}
                   alt=""
                   aria-hidden="true"
                   draggable={false}
