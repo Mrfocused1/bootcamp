@@ -47,3 +47,54 @@
 .font-genty {
   font-family: "Genty", sans-serif;
 }
+
+/* ── Login page background animations ── */
+@keyframes ua-blob-move {
+  0%   { transform: translate(0, 0) scale(1)    rotate(0deg); }
+  33%  { transform: translate(28px, -34px) scale(1.12) rotate(40deg); }
+  66%  { transform: translate(-22px, 24px) scale(0.92) rotate(-30deg); }
+  100% { transform: translate(0, 0) scale(1)    rotate(0deg); }
+}
+@keyframes ua-drift {
+  0%   { transform: translateY(0) rotate(-6deg); }
+  50%  { transform: translateY(-22px) rotate(8deg); }
+  100% { transform: translateY(0) rotate(-6deg); }
+}
+@keyframes ua-gradient-pan {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+@keyframes ua-pop-in {
+  0%   { opacity: 0; transform: translateY(16px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.ua-anim-gradient {
+  background: linear-gradient(120deg, #4b69f0, #82a0ff, #6b4bf0, #4b69f0);
+  background-size: 300% 300%;
+  animation: ua-blob 1ms; /* placeholder to keep specificity */
+  animation: ua-gradient-pan 14s ease infinite;
+}
+.ua-blob {
+  position: absolute;
+  border-radius: 42% 58% 63% 37% / 41% 44% 56% 59%;
+  filter: blur(14px);
+  opacity: 0.55;
+  animation: ua-blob-move 16s ease-in-out infinite;
+  will-change: transform;
+  pointer-events: none;
+}
+.ua-sticker {
+  position: absolute;
+  font-size: 2.2rem;
+  animation: ua-drift 7s ease-in-out infinite;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.18));
+}
+.ua-pop { animation: ua-pop-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .ua-anim-gradient, .ua-blob, .ua-sticker, .ua-pop { animation: none !important; }
+}
