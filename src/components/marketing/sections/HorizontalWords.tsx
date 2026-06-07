@@ -88,8 +88,8 @@ export function HorizontalWords() {
           scrollTrigger: {
             trigger: el,
             containerAnimation: scrollTween,
-            start: "left 90%",
-            end: "left 30%",
+            start: "left 70%",
+            end: "left 10%",
             scrub: 0.5,
           },
         });
