@@ -179,7 +179,7 @@ export function Curriculum() {
                   ref={(el) => {
                     cardRefs.current[i] = el;
                   }}
-                  className={`relative w-full max-w-2xl origin-center rounded-3xl border-2 border-ua-ink ${d.color} p-7 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform md:min-h-[70vh] md:p-10`}
+                  className={`relative w-full max-w-[22rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-14 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform min-h-[30rem]`}
                   style={{ zIndex: i + 1 }}
                 >
                   <Sticker
@@ -189,7 +189,7 @@ export function Curriculum() {
                     rotate={8}
                   />
                   <h3
-                    className="pr-10 text-3xl font-bold md:text-4xl"
+                    className="pr-8 text-3xl font-bold"
                     style={{ fontFamily: "var(--font-epilogue)" }}
                   >
                     {d.day}
@@ -213,7 +213,7 @@ export function Curriculum() {
                     {d.bullets.map((b) => (
                       <li
                         key={b}
-                        className="flex items-start gap-3 text-base leading-snug md:text-lg"
+                        className="flex items-start gap-3 text-xl leading-tight"
                       >
                         <span
                           aria-hidden
