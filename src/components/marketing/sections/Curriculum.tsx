@@ -240,7 +240,7 @@ export function Curriculum() {
             return (
               <article
                 key={d.day}
-                className={`cur-card relative flex h-[30rem] w-[17rem] shrink-0 flex-col justify-end rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-16 shadow-[6px_6px_0_var(--ua-ink)] ${
+                className={`cur-card relative flex h-[24rem] w-[17rem] shrink-0 flex-col justify-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-16 shadow-[6px_6px_0_var(--ua-ink)] ${
                   i > 0 ? "-ml-24" : ""
                 }`}
                 style={
@@ -284,13 +284,13 @@ export function Curriculum() {
             return (
               <div
                 key={d.day}
-                className="curriculum-card-wrapper relative flex h-screen justify-center"
+                className="curriculum-card-wrapper relative flex h-screen items-start justify-center"
               >
                 <div
                   ref={(el) => {
                     mobileCardRefs.current[i] = el;
                   }}
-                  className={`relative min-h-[30rem] w-full max-w-[22rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-6 pt-14 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform`}
+                  className={`relative w-full max-w-[22rem] origin-center rounded-3xl border-2 border-ua-ink ${d.color} px-6 pb-8 pt-14 shadow-[6px_6px_0_var(--ua-ink)] will-change-transform`}
                   style={{ zIndex: i + 1 }}
                 >
                   <Sticker
