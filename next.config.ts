@@ -13,6 +13,19 @@ const MARKETING = [
   ["/contact", "/site/truus.co/contact.html"],
 ];
 
+// Long-lived immutable caching for the static marketing ASSETS (not the html
+// pages). These files never change at a given URL, so this eliminates the
+// hundreds of revalidation (304) round-trips that were slowing every load.
+const ASSET_DIRS = [
+  "/site/cdn.prod.website-files.com/:path*",
+  "/site/fonts/:path*",
+  "/site/cdn.jsdelivr.net/:path*",
+  "/site/code.jquery.com/:path*",
+  "/site/d3e54v103j8qbb.cloudfront.net/:path*",
+  "/site/slater.app/:path*",
+  "/site/player.vimeo.com/:path*",
+];
+
 const nextConfig: NextConfig = {
   async rewrites() {
     return {
@@ -21,6 +34,14 @@ const nextConfig: NextConfig = {
         destination,
       })),
     };
+  },
+  async headers() {
+    return ASSET_DIRS.map((source) => ({
+      source,
+      headers: [
+        { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+      ],
+    }));
   },
 };
 
