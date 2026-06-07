@@ -92,3 +92,9 @@
 @keyframes ua-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .ua-marquee { animation: ua-marquee 24s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .ua-marquee { animation: none; } }
+
+/* Horizontal-words: static, wrapped fallback when motion is reduced. */
+@media (prefers-reduced-motion: reduce) {
+  .hw-track { transform: none !important; width: auto !important; max-width: 64rem; }
+  .hw-h2 { white-space: normal !important; text-align: center; }
+}
