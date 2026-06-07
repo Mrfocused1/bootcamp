@@ -98,7 +98,7 @@ export function BookingClient({ todayISO }: BookingClientProps) {
           </ul>
 
           <Link
-            href="/"
+            href="/dashboard"
             className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold transition-colors hover:opacity-80"
             style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
           >

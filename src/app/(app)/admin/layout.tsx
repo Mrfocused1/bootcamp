@@ -19,7 +19,7 @@ export default async function AdminLayout({
 }) {
   const profile = await getCurrentProfile();
   if (!isAdmin(profile)) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   return (

@@ -1,5 +1,5 @@
 import { getLatestAnnouncement } from "@/lib/queries";
-import { postAnnouncement } from "@/app/admin/actions";
+import { postAnnouncement } from "@/app/(app)/admin/actions";
 
 function formatDate(isoString: string): string {
   const d = new Date(isoString);

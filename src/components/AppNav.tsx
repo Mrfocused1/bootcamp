@@ -13,7 +13,7 @@ export async function AppNav() {
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4 sm:px-6">
         {/* Logo */}
         <Link
-          href="/"
+          href="/dashboard"
           className="font-genty text-2xl leading-none tracking-tight select-none"
           style={{ color: "var(--ua-blue)" }}
         >

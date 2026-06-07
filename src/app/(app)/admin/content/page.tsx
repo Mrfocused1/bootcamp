@@ -1,5 +1,5 @@
 import { getDays, getLessons } from "@/lib/queries";
-import { saveLesson } from "@/app/admin/actions";
+import { saveLesson } from "@/app/(app)/admin/actions";
 import type { Lesson } from "@/lib/types";
 
 function LessonEditForm({ lesson }: { lesson: Lesson }) {

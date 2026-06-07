@@ -1,5 +1,5 @@
 import { getCohort, getUpcomingSessions } from "@/lib/queries";
-import { saveCohort, saveLiveSession } from "@/app/admin/actions";
+import { saveCohort, saveLiveSession } from "@/app/(app)/admin/actions";
 
 function formatDate(isoString: string): string {
   const d = new Date(isoString);

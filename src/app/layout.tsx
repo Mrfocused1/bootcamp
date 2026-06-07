@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { DM_Sans, Epilogue } from "next/font/google";
 import "./globals.css";
-import { AppNav } from "@/components/AppNav";
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -33,8 +32,7 @@ export default function RootLayout({
       style={{ fontFamily: "var(--font-dm-sans), DM Sans, sans-serif" }}
     >
       <body className="ua-body flex flex-col min-h-full">
-        <AppNav />
-        <main className="flex-1">{children}</main>
+        {children}
       </body>
     </html>
   );

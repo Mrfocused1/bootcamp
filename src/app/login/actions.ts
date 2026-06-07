@@ -12,7 +12,7 @@ export async function signIn(formData: FormData): Promise<never> {
   }
 
   if (IS_MOCK) {
-    redirect("/");
+    redirect("/dashboard");
   }
 
   // Real path: send magic link via Supabase

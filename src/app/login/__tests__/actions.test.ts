@@ -22,14 +22,14 @@ describe("signIn server action", () => {
     });
   });
 
-  it("redirects to / with a valid email in mock mode", async () => {
+  it("redirects to /dashboard with a valid email in mock mode", async () => {
     const { signIn } = await import("@/app/login/actions");
 
     const fd = new FormData();
     fd.append("email", "user@example.com");
 
-    await expect(signIn(fd)).rejects.toThrow("NEXT_REDIRECT:/");
-    expect(mockRedirect).toHaveBeenCalledWith("/");
+    await expect(signIn(fd)).rejects.toThrow("NEXT_REDIRECT:/dashboard");
+    expect(mockRedirect).toHaveBeenCalledWith("/dashboard");
   });
 
   it("redirects to /login?error=1 when email is empty", async () => {

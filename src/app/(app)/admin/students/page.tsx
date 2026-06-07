@@ -1,5 +1,5 @@
 import { getStudents } from "@/lib/queries";
-import { setAccess } from "@/app/admin/actions";
+import { setAccess } from "@/app/(app)/admin/actions";
 
 export default async function AdminStudentsPage() {
   const students = await getStudents();
