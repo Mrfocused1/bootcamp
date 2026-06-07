@@ -87,3 +87,8 @@
 
 /* Brand wordmark — free Epilogue replaces the commercial Genty face. */
 .font-genty { font-family: var(--font-epilogue), sans-serif; }
+
+/* ── Marquee band ── */
+@keyframes ua-marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+.ua-marquee { animation: ua-marquee 24s linear infinite; }
+@media (prefers-reduced-motion: reduce) { .ua-marquee { animation: none; } }
