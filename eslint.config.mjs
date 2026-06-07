@@ -12,6 +12,9 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Vendored static marketing clone (to be deleted once the React rebuild is
+    // complete); not our source, must not be linted.
+    "public/**",
   ]),
 ]);
 
