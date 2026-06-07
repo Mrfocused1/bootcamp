@@ -107,6 +107,14 @@ export function Curriculum() {
       // top, instead of each card scrolling away as soon as its own bottom hits.
       const lastWrapper = cards[cards.length - 1].parentElement;
 
+      // ScrollTrigger start/end strings don't parse "rem" units, so compute the
+      // pin offset in pixels. The fixed nav is ~80px tall; park the topmost card
+      // just below it and fan each subsequent card a little lower.
+      const rootFontPx =
+        parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+      const NAV_GAP = 6 * rootFontPx; // ~96px — clears the 80px fixed header
+      const FAN = 0.9 * rootFontPx; // ~14px peek between stacked cards
+
       cards.forEach((card, i) => {
         const wrapper = card.parentElement;
         if (!wrapper) return;
@@ -115,12 +123,12 @@ export function Curriculum() {
         gsap.set(card, { rotation: REST_ROTATIONS[i] ?? 0 });
 
         // Each card pins a little further down so the stack fans toward the top:
-        // 6rem below the nav, plus 1.2rem per card so lower cards peek out.
-        const offset = 6 + i * 1.2;
+        // just below the nav, plus a small peek per card.
+        const offset = Math.round(NAV_GAP + i * FAN);
 
         ScrollTrigger.create({
           trigger: wrapper,
-          start: `top top+=${offset}rem`,
+          start: `top top+=${offset}`,
           // Hold the pin until the entire stack has scrolled past, so every card
           // stays parked below the nav rather than releasing at its own bottom.
           endTrigger: lastWrapper ?? wrapper,
@@ -137,7 +145,7 @@ export function Curriculum() {
             ease: "none",
             scrollTrigger: {
               trigger: cardRefs.current[i + 1]?.parentElement ?? wrapper,
-              start: `top top+=${offset}rem`,
+              start: `top top+=${offset}`,
               end: `+=${typeof window !== "undefined" ? window.innerHeight : 800}`,
               scrub: true,
             },
