@@ -1,26 +1,49 @@
 @import "tailwindcss";
 
+/* ── Genty custom font (logo only) ── */
+@font-face {
+  font-family: "Genty";
+  src: url("/fonts/GentyDemo-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Brand CSS variables ── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --ua-bg: #f0ebe6;
+  --ua-ink: #141414;
+  --ua-blue: #4b69f0;
+  --ua-sky: #82a0ff;
+  --ua-pink: #f0befa;
+  --ua-green: #e6fab9;
+  --ua-orange: #f5693c;
+
+  /* Tailwind compat aliases */
+  --background: var(--ua-bg);
+  --foreground: var(--ua-ink);
 }
 
 @theme inline {
+  --color-ua-bg: var(--ua-bg);
+  --color-ua-ink: var(--ua-ink);
+  --color-ua-blue: var(--ua-blue);
+  --color-ua-sky: var(--ua-sky);
+  --color-ua-pink: var(--ua-pink);
+  --color-ua-green: var(--ua-green);
+  --color-ua-orange: var(--ua-orange);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base body styles ── */
+.ua-body {
+  background-color: var(--ua-bg);
+  color: var(--ua-ink);
+  min-height: 100vh;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Genty logo utility ── */
+.font-genty {
+  font-family: "Genty", sans-serif;
 }
