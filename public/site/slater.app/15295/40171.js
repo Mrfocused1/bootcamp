@@ -84,27 +84,29 @@ function initLoader() {
   });
 
   if (__isHome) {
-    // Homepage intro: a thin scribble draws across the visible page, then clears.
-    // No solid blue fill, no "Urban AI" logo (per request).
+    // Homepage intro: a thick scribble covers the screen, then erases to REVEAL
+    // the home screen. No flat-blue screen, no "Urban AI" logo. The covering state
+    // for the first paint (before this timeline runs) is enforced by the
+    // #ua-home-intro CSS in index.html to avoid any flash; we remove that CSS once
+    // the reveal is done so navigation to other pages is unaffected. Stroke width
+    // is held by that CSS (~40%) during the erase.
     tl.set('.transition-screen', { autoAlpha: 0 }, 0);
     tl.set($('.transition-logo'), { autoAlpha: 0 }, 0);
     tl.set($('.transition-scribble path'), {
-      strokeWidth: "3.5%",
-      drawSVG: '0% 0%',
+      drawSVG: '0% 100%',
     });
     tl.to($('.transition-scribble path'), {
       duration: 1.1,
-      drawSVG: '0% 100%',
-      ease: "Power1.easeInOut",
-    }, 0.15);
-    tl.to($('.transition-scribble path'), {
-      duration: 0.9,
       drawSVG: '100% 100%',
       ease: "Power2.easeInOut",
-    });
+    }, 0.15);
     tl.set($('.transition-scribble path'), {
       strokeWidth: "0%",
       drawSVG: '0% 0%',
+    });
+    tl.call(function () {
+      var s = document.getElementById('ua-home-intro');
+      if (s) s.remove();
     });
   } else {
     tl.set($('.transition-scribble path'), {
@@ -149,7 +151,7 @@ function initLoader() {
 
   tl.call(function () {
     pageTransitionOut();
-  }, null, __isHome ? 0.1 : 0.5);
+  }, null, 0.5);
 
 }
 
