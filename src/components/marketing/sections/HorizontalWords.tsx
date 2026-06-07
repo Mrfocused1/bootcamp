@@ -8,72 +8,114 @@ import { Sticker } from "@/components/marketing/Sticker";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Recreation of the original homepage's post-hero "horizontal words" moment:
-// a big nowrap statement that sweeps horizontally across the screen while the
-// section is pinned, with sticker accents over the words and a sub-line below.
-// Mobile / reduced-motion fall back to a static, wrapped statement (no pin).
+const HEADLINE = "No code. No agency. Just you and AI.";
+
+// Faithful recreation of the original homepage's post-hero section
+// ("Made With GSAP" effect #11): the statement track scrubs horizontally while
+// pinned (sticky), and each letter + sticker bounces in (elastic, from a random
+// vertical offset + rotation) as it sweeps across the viewport. Mobile /
+// reduced-motion fall back to a static, wrapped statement (handled in CSS).
 export function HorizontalWords() {
-  const pinRef = useRef<HTMLDivElement>(null);
+  const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const pin = pinRef.current;
+    const section = sectionRef.current;
     const track = trackRef.current;
-    if (!pin || !track) return;
+    if (!section || !track) return;
 
     const desktop =
       typeof window.matchMedia === "function" &&
       window.matchMedia("(min-width: 768px)").matches;
-    if (prefersReducedMotion() || !desktop) return; // CSS handles the static layout
+    if (prefersReducedMotion() || !desktop) return; // CSS renders the static layout
 
     const ctx = gsap.context(() => {
-      const distance = () => Math.max(0, track.scrollWidth - window.innerWidth);
-      gsap.to(track, {
-        x: () => -distance(),
-        ease: "none",
-        scrollTrigger: {
-          trigger: pin,
-          start: "top top",
-          end: () => "+=" + distance(),
-          scrub: 0.5,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true,
+      // 1) Horizontal scrub of the whole track, tied to scroll through the tall section.
+      const scrollTween = gsap.fromTo(
+        track,
+        { xPercent: 50 },
+        {
+          xPercent: -100,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "-30% top",
+            end: "125% bottom",
+            scrub: 0.5,
+          },
         },
+      );
+
+      // 2) Each letter bounces in from a random vertical position + rotation as it
+      //    sweeps across the viewport (driven by the horizontal scrollTween).
+      track.querySelectorAll<HTMLElement>(".letter").forEach((el) => {
+        gsap.from(el, {
+          yPercent: (Math.random() - 0.5) * 500,
+          rotation: (Math.random() - 0.5) * 60,
+          ease: "elastic.out(1.2, 1)",
+          scrollTrigger: {
+            trigger: el,
+            containerAnimation: scrollTween,
+            start: "left 90%",
+            end: "left 10%",
+            scrub: 0.5,
+          },
+        });
       });
-    }, pin);
+
+      // 3) Each sticker scales up from nothing (also random y + rotation) as it sweeps in.
+      track.querySelectorAll<HTMLElement>(".hw-sticker").forEach((el) => {
+        gsap.from(el, {
+          scale: 0,
+          yPercent: (Math.random() - 0.5) * 400,
+          rotation: (Math.random() - 0.5) * 60,
+          ease: "elastic.out(1.2, 1)",
+          scrollTrigger: {
+            trigger: el,
+            containerAnimation: scrollTween,
+            start: "left 90%",
+            end: "left 10%",
+            scrub: 0.5,
+          },
+        });
+      });
+    }, section);
+
     return () => ctx.revert();
   }, []);
 
   return (
-    <section className="relative bg-ua-bg text-ua-ink">
-      <div
-        ref={pinRef}
-        className="relative flex min-h-svh flex-col items-center justify-center overflow-hidden py-24"
-      >
-        <div
-          ref={trackRef}
-          className="hw-track relative flex w-full justify-center px-6 will-change-transform md:w-max md:justify-start md:px-[10vw]"
-        >
+    <section ref={sectionRef} className="hw-section relative bg-ua-bg text-ua-ink">
+      <div className="hw-content">
+        <div ref={trackRef} className="hw-relative">
           <h2
-            className="hw-h2 relative whitespace-normal text-center text-5xl font-bold leading-[1.05] md:whitespace-nowrap md:text-left md:text-[8.5rem] md:leading-none"
+            className="hw-h2 text-5xl font-bold leading-none md:text-[8.5rem]"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
-            No code. No agency. Just you and AI.
-            <span className="pointer-events-none absolute left-[10%] top-0 hidden -translate-y-1/2 md:block">
-              <Sticker name="cursor-star" size={96} rotate={-10} />
-            </span>
-            <span className="pointer-events-none absolute left-[52%] -bottom-10 hidden md:block">
-              <Sticker name="sparkles" size={80} rotate={8} />
-            </span>
-            <span className="pointer-events-none absolute left-[86%] top-0 hidden -translate-y-1/3 md:block">
-              <Sticker name="phone-hand" size={104} rotate={10} />
-            </span>
+            {HEADLINE.split("").map((c, i) =>
+              c === " " ? (
+                <span key={i}> </span>
+              ) : (
+                <span key={i} className="letter inline-block">
+                  {c}
+                </span>
+              ),
+            )}
           </h2>
+
+          <span className="hw-sticker pointer-events-none absolute left-[17%] top-1/2 -translate-x-1/2 -translate-y-[110%]">
+            <Sticker name="sparkles" size={92} />
+          </span>
+          <span className="hw-sticker pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
+            <Sticker name="cursor-star" size={110} />
+          </span>
+          <span className="hw-sticker pointer-events-none absolute left-[80%] top-1/2 -translate-x-1/2 -translate-y-[100%]">
+            <Sticker name="phone-hand" size={104} />
+          </span>
         </div>
 
-        <div className="mt-14 max-w-xl px-6 text-center">
-          <p className="text-lg text-ua-ink/80 md:text-2xl">
+        <div className="hw-bottom">
+          <p className="mx-auto max-w-xl px-6 text-lg text-ua-ink/80 md:text-2xl">
             Building software used to take a developer <em>and</em> a big budget.
             With AI, you build and launch a real website yourself — in days, not
             months.
