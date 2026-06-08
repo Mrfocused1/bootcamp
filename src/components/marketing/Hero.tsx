@@ -135,7 +135,7 @@ export function Hero() {
                       fill="none"
                       aria-hidden="true"
                       preserveAspectRatio="none"
-                      className="pointer-events-none absolute -left-[5%] -top-[30%] h-[160%] w-[110%] text-ua-bg"
+                      className="pointer-events-none absolute -left-[13%] -top-[52%] h-[204%] w-[126%] text-ua-bg"
                     >
                       <path
                         ref={scribbleRef}
