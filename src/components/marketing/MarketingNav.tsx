@@ -24,8 +24,8 @@ export function MarketingNav() {
 
         <Link
           href="/"
-          className="hidden sm:block text-ua-bg sm:text-base md:text-2xl font-bold italic tracking-tight"
-          style={{ fontFamily: "var(--font-epilogue)" }}
+          className="hidden sm:block text-ua-bg sm:text-lg md:text-3xl font-extrabold tracking-tight"
+          style={{ fontFamily: "var(--font-chewy)" }}
         >
           {SITE.name}
         </Link>

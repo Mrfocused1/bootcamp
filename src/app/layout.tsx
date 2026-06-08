@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
-import { DM_Sans, Epilogue, Lora } from "next/font/google";
+import { Baloo_2, DM_Sans, Epilogue, Lora } from "next/font/google";
 import "./globals.css";
+
+// Chunky, rounded "chewy" display face for the brand wordmark.
+const baloo = Baloo_2({
+  variable: "--font-chewy",
+  subsets: ["latin"],
+  weight: ["600", "700", "800"],
+  display: "swap",
+});
 
 const dmSans = DM_Sans({
   variable: "--font-dm-sans",
@@ -36,7 +44,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${epilogue.variable} ${lora.variable} h-full`}
+      className={`${dmSans.variable} ${epilogue.variable} ${lora.variable} ${baloo.variable} h-full`}
       style={{ fontFamily: "var(--font-dm-sans), DM Sans, sans-serif" }}
     >
       <body className="ua-body flex flex-col min-h-full">

@@ -49,8 +49,8 @@ export function MarketingFooter() {
 
         <p
           aria-hidden="true"
-          className="mt-16 text-center text-5xl font-bold italic md:text-7xl"
-          style={{ fontFamily: "var(--font-epilogue)" }}
+          className="mt-16 text-center text-5xl font-extrabold md:text-7xl"
+          style={{ fontFamily: "var(--font-chewy)" }}
         >
           {SITE.name}
         </p>
