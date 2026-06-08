@@ -14,6 +14,39 @@ export function Hero() {
   const wordsRef = useRef<HTMLHeadingElement>(null);
   const circleRef = useRef<SVGPathElement>(null);
   const scribbleRef = useRef<SVGPathElement>(null);
+  const slidesRef = useRef<Array<HTMLImageElement | null>>([]);
+
+  // Background slideshow: hold each image, then fade it out to dark and the next
+  // one in from dark (a "dark fade" between slides). Looping.
+  useEffect(() => {
+    const slides = slidesRef.current.filter(
+      (s): s is HTMLImageElement => s !== null,
+    );
+    if (slides.length < 2) return;
+    if (prefersReducedMotion()) {
+      gsap.set(slides, { opacity: 0 });
+      gsap.set(slides[0], { opacity: 1 });
+      return;
+    }
+
+    const HOLD = 5;
+    const FADE = 1.3;
+    const BLACK = 0.25;
+
+    const ctx = gsap.context(() => {
+      gsap.set(slides, { opacity: 0 });
+      gsap.set(slides[0], { opacity: 1 });
+      const tl = gsap.timeline({ repeat: -1 });
+      slides.forEach((slide, i) => {
+        const next = slides[(i + 1) % slides.length];
+        tl.to(slide, { opacity: 1, duration: HOLD }); // hold current
+        tl.to(slide, { opacity: 0, duration: FADE, ease: "power2.inOut" }); // fade to dark
+        tl.to({}, { duration: BLACK }); // dwell on dark
+        tl.to(next, { opacity: 1, duration: FADE, ease: "power2.inOut" }); // fade next in
+      });
+    });
+    return () => ctx.revert();
+  }, []);
 
   useEffect(() => {
     const el = wordsRef.current;
@@ -75,14 +108,23 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-svh w-full overflow-hidden">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={HERO.image}
-        alt={HERO.imageAlt}
-        className="absolute inset-0 h-full w-full object-cover"
-        fetchPriority="high"
-      />
+    <section className="relative min-h-svh w-full overflow-hidden bg-ua-ink">
+      {/* Cross-fading background slideshow (fades through the dark bg). */}
+      {HERO.images.map((src, i) => (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          key={src}
+          ref={(el) => {
+            slidesRef.current[i] = el;
+          }}
+          src={src}
+          alt={i === 0 ? HERO.imageAlt : ""}
+          aria-hidden={i === 0 ? undefined : true}
+          className="absolute inset-0 h-full w-full object-cover"
+          style={{ opacity: i === 0 ? 1 : 0 }}
+          fetchPriority={i === 0 ? "high" : undefined}
+        />
+      ))}
       <div className="absolute inset-0 bg-gradient-to-t from-ua-ink/70 via-ua-ink/10 to-transparent" />
 
       <div className="relative z-10 flex min-h-svh flex-col items-center justify-end px-6 pb-8 text-center md:px-10">

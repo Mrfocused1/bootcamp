@@ -36,6 +36,11 @@ export const HERO = {
   emphasis: "premium",
   ctaLabel: "enrol now",
   ctaHref: "/pricing",
+  // Background slideshow images (cross-fade through dark). Add more here later.
+  images: [
+    "/marketing/bridgeway-hero.png",
+    "/marketing/bridgeway-hero-2.png",
+  ],
   image: "/marketing/bridgeway-hero.png",
   imageAlt: "Founder learning to build websites with AI",
 };
