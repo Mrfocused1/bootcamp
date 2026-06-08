@@ -172,12 +172,12 @@ export function Future() {
         {/* Photo collage (placeholder images) — same hover-fan as the curriculum
             cards: hovering one straightens + lifts it to the front and nudges the
             photos after it right (see .ua-fan-card in globals.css). */}
-        <Reveal className="mt-16">
+        <Reveal className="mt-28 md:mt-36">
           <div className="relative mx-auto flex w-fit max-w-full items-center justify-center">
             {/* Blue organic blob behind the photos (decorative). */}
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 h-[132%] w-[88%] -translate-x-1/2 -translate-y-1/2 -rotate-6 bg-ua-blue"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[118%] w-[90%] -translate-x-1/2 -translate-y-1/2 -rotate-6 bg-ua-blue"
               style={{ borderRadius: "62% 38% 56% 44% / 56% 48% 52% 44%" }}
             />
             {/* Photos stay in one overlapping row at every width (no wrap),
@@ -201,7 +201,7 @@ export function Future() {
                     alt=""
                     aria-hidden="true"
                     draggable={false}
-                    className="h-20 w-28 object-cover sm:h-32 sm:w-44 md:h-44 md:w-56 lg:h-56 lg:w-72"
+                    className="h-32 w-24 object-cover sm:h-44 sm:w-32 md:h-52 md:w-40 lg:h-60 lg:w-44"
                     style={{ objectPosition: photo.objectPosition }}
                   />
                 </div>
