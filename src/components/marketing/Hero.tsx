@@ -13,18 +13,30 @@ const CIRCLE_PATH =
 export function Hero() {
   const wordsRef = useRef<HTMLHeadingElement>(null);
   const circleRef = useRef<SVGPathElement>(null);
+  const scribbleRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
     const el = wordsRef.current;
     if (!el) return;
     const words = el.querySelectorAll("[data-word]");
     const circle = circleRef.current;
+    const scribble = scribbleRef.current;
 
     if (prefersReducedMotion()) {
       gsap.set(words, { opacity: 1, y: 0 });
       if (circle) circle.style.strokeDashoffset = "0";
+      if (scribble) scribble.style.strokeDashoffset = "0";
       return;
     }
+
+    // Draw a hand-drawn line in after the words have appeared.
+    const drawIn = (path: SVGPathElement | null, delay: number) => {
+      if (!path || typeof path.getTotalLength !== "function") return;
+      const len = path.getTotalLength();
+      if (!len) return;
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+      gsap.to(path, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut", delay });
+    };
 
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -33,14 +45,8 @@ export function Hero() {
         { opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: "power3.out", delay: 0.2 },
       );
 
-      // Draw the hand-drawn circle in, after the words have appeared.
-      if (circle && typeof circle.getTotalLength === "function") {
-        const len = circle.getTotalLength();
-        if (len) {
-          gsap.set(circle, { strokeDasharray: len, strokeDashoffset: len });
-          gsap.to(circle, { strokeDashoffset: 0, duration: 0.7, ease: "power2.inOut", delay: 1 });
-        }
-      }
+      drawIn(scribble, 1);
+      drawIn(circle, 1.5);
     }, el);
     return () => ctx.revert();
   }, []);
@@ -103,6 +109,39 @@ export function Hero() {
                         d={CIRCLE_PATH}
                         stroke="currentColor"
                         strokeWidth={6}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  {space}
+                </span>
+              );
+            }
+
+            // "websites" gets a white hand-drawn scribble loop that draws in.
+            if (w === "websites") {
+              return (
+                <span
+                  key={`${w}-${i}`}
+                  data-word
+                  className="ua-reveal relative inline-block whitespace-pre"
+                  style={{ opacity: 0 }}
+                >
+                  <span className="relative inline-block">
+                    {w}
+                    <svg
+                      viewBox="0 0 230 120"
+                      fill="none"
+                      aria-hidden="true"
+                      preserveAspectRatio="none"
+                      className="pointer-events-none absolute -left-[5%] -top-[30%] h-[160%] w-[110%] text-ua-bg"
+                    >
+                      <path
+                        ref={scribbleRef}
+                        d={CIRCLE_PATH}
+                        stroke="currentColor"
+                        strokeWidth={5}
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       />
