@@ -235,7 +235,7 @@ export function getMockUpcomingSessions(): LiveSession[] {
 export function getMockAnnouncement(): Announcement {
   return {
     id: "ann-1",
-    title: "Welcome to Urban AI!",
+    title: "Welcome to Bridgeway AI Bootcamp!",
     body: "We're thrilled to have you in the June cohort. Day 1 is live — jump in and start building. See you at the live Q&A on Day 4!",
     created_at: offsetDate(-3) + "T09:00:00Z",
   };

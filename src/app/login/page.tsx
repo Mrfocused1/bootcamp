@@ -53,7 +53,7 @@ export default async function LoginPage({
         <span aria-hidden className="ua-sticker" style={{ top: "38%", left: "8%", animationDelay: "3.5s" }}>⚡</span>
 
         {/* content */}
-        <div className="relative z-10 font-genty text-4xl leading-none">Urban AI</div>
+        <div className="relative z-10 font-genty text-4xl leading-none">Bridgeway AI</div>
         <div className="relative z-10 ua-pop">
           <h2
             className="text-4xl font-extrabold leading-[0.95] lowercase"
@@ -83,7 +83,7 @@ export default async function LoginPage({
           {/* Wordmark (mobile shows it here since the panel is hidden) */}
           <div className="text-center md:hidden">
             <span className="font-genty text-4xl leading-none" style={{ color: "var(--ua-blue)" }}>
-              Urban AI
+              Bridgeway AI
             </span>
           </div>
 

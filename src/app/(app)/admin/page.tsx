@@ -57,7 +57,7 @@ export default async function AdminOverviewPage() {
           admin overview
         </h1>
         <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.55 }}>
-          Urban AI — cohort management dashboard.
+          Bridgeway AI Bootcamp — cohort management dashboard.
         </p>
       </section>
 

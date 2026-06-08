@@ -42,7 +42,7 @@ export function OnboardingClient() {
             className="font-genty text-4xl leading-none"
             style={{ color: "var(--ua-blue)" }}
           >
-            Urban AI
+            Bridgeway AI
           </span>
         </div>
 
@@ -130,7 +130,7 @@ function StepWelcome() {
           color: "var(--ua-ink)",
         }}
       >
-        Welcome to Urban AI 👋
+        Welcome to Bridgeway AI Bootcamp 👋
       </h1>
       <p className="text-base leading-relaxed" style={{ color: "var(--ua-ink)", opacity: 0.7 }}>
         Over the next 5 days you&rsquo;ll go from idea to a fully deployed, AI-powered product —

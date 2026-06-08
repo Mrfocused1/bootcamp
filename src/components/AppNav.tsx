@@ -17,7 +17,7 @@ export async function AppNav() {
           className="font-genty text-2xl leading-none tracking-tight select-none"
           style={{ color: "var(--ua-blue)" }}
         >
-          Urban AI
+          Bridgeway AI
         </Link>
 
         {/* Centre nav */}

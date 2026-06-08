@@ -1,7 +1,7 @@
 import { BookingClient } from "@/components/BookingClient";
 
 export const metadata = {
-  title: "Book your sessions — Urban AI",
+  title: "Book your sessions — Bridgeway AI Bootcamp",
 };
 
 export default function BookPage() {
