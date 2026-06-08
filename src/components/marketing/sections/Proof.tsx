@@ -10,7 +10,7 @@ import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const TARGET = 500;
+const TARGET = 50;
 
 export function Proof() {
   // Animated count-up number node — kept separate from the static heading text
@@ -64,7 +64,7 @@ export function Proof() {
               className="text-4xl font-black leading-[1.05] tracking-tight text-ua-ink sm:text-5xl md:text-6xl"
               style={{ fontFamily: "var(--font-epilogue)" }}
             >
-              We&apos;ve helped students build over{" "}
+              We&apos;ve helped clients build over{" "}
               <span className="relative inline-block">
                 <span ref={numberRef} className="text-ua-blue">
                   {TARGET}+
