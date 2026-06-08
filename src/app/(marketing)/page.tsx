@@ -1,7 +1,6 @@
 import { Hero } from "@/components/marketing/Hero";
 import { HorizontalWords } from "@/components/marketing/sections/HorizontalWords";
 import { Future } from "@/components/marketing/sections/Future";
-import { Build } from "@/components/marketing/sections/Build";
 import { Proof } from "@/components/marketing/sections/Proof";
 import { Curriculum } from "@/components/marketing/sections/Curriculum";
 import { Marquee } from "@/components/marketing/Marquee";
@@ -16,7 +15,6 @@ export default function HomePage() {
       <Hero />
       <HorizontalWords />
       <Future />
-      <Build />
       <Proof />
       <Curriculum />
       <Marquee items={MARQUEE_ITEMS} />
