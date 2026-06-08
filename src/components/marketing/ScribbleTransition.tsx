@@ -84,17 +84,23 @@ function ScribbleOverlay({ color, angle }: { color: string; angle: number }) {
   const pathRef = useRef<SVGPathElement>(null);
 
   useEffect(() => {
+    // Let the page (e.g. the hero) know the transition has finished revealing,
+    // so its own entrance animations can start only after this completes.
+    const fireDone = () =>
+      window.dispatchEvent(new CustomEvent("ua:scribble-done"));
+
     const overlay = overlayRef.current;
     const path = pathRef.current;
     if (!overlay || !path || typeof path.getTotalLength !== "function") {
       if (overlay) gsap.set(overlay, { autoAlpha: 0 });
+      fireDone();
       return;
     }
     const len = path.getTotalLength();
 
     const ctx = gsap.context(() => {
       gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-      const tl = gsap.timeline();
+      const tl = gsap.timeline({ onComplete: fireDone });
       // Draw the scribble on to cover the page…
       tl.to(path, { strokeDashoffset: 0, duration: 1.2, ease: "none" });
       // …hold, then un-draw it to reveal the page.

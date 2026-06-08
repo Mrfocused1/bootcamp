@@ -29,26 +29,49 @@ export function Hero() {
       return;
     }
 
-    // Draw a hand-drawn line in after the words have appeared.
+    // Keep the hand-drawn lines hidden until the entrance starts.
+    [scribble, circle].forEach((p) => {
+      if (p && typeof p.getTotalLength === "function") {
+        const len = p.getTotalLength();
+        if (len) gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
+      }
+    });
+
     const drawIn = (path: SVGPathElement | null, delay: number) => {
       if (!path || typeof path.getTotalLength !== "function") return;
       const len = path.getTotalLength();
       if (!len) return;
-      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
       gsap.to(path, { strokeDashoffset: 0, duration: 0.8, ease: "power2.inOut", delay });
     };
 
-    const ctx = gsap.context(() => {
-      gsap.fromTo(
-        words,
-        { opacity: 0, y: 30 },
-        { opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: "power3.out", delay: 0.2 },
-      );
+    // Start the hero entrance only AFTER the page-transition scribble has
+    // finished revealing the page (fires "ua:scribble-done"). Fallback timer in
+    // case the event is missed.
+    let ctx: gsap.Context | undefined;
+    let started = false;
+    const start = () => {
+      if (started) return;
+      started = true;
+      ctx = gsap.context(() => {
+        gsap.fromTo(
+          words,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: "power3.out" },
+        );
+        // The "websites" scribble draws in alongside the words.
+        drawIn(scribble, 0.25);
+        drawIn(circle, 0.6);
+      }, el);
+    };
 
-      drawIn(scribble, 1);
-      drawIn(circle, 1.5);
-    }, el);
-    return () => ctx.revert();
+    window.addEventListener("ua:scribble-done", start, { once: true });
+    const fallback = window.setTimeout(start, 3200);
+
+    return () => {
+      window.removeEventListener("ua:scribble-done", start);
+      clearTimeout(fallback);
+      ctx?.revert();
+    };
   }, []);
 
   return (

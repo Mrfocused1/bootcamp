@@ -228,7 +228,7 @@ export function Testimonials() {
       <div className="mx-auto max-w-6xl">
         {/* Heading */}
         <h2
-          className="mx-auto max-w-4xl text-center text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-7xl"
+          className="mx-auto max-w-5xl text-center text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
           meet the{" "}
@@ -272,8 +272,7 @@ export function Testimonials() {
               />
             </svg>
           </span>{" "}
-          in 5 days.{" "}
-          <span className="whitespace-nowrap">proud of them!</span>
+          in 5 days.
         </h2>
 
         {/* ───────── Desktop: tall vertical scatter (scroll to reveal) ───────── */}
