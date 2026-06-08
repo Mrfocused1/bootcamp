@@ -12,7 +12,7 @@ describe("Hero", () => {
       .textContent?.toLowerCase()
       .replace(/\s+/g, " ")
       .trim();
-    expect(heading).toContain("we teach you how to build real websites powered by ai");
+    expect(heading).toContain("we teach you how to build premium websites powered by ai");
     expect(screen.getByRole("link", { name: /enrol now/i })).toHaveAttribute("href", "/pricing");
   });
 

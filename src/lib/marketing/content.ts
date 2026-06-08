@@ -31,8 +31,8 @@ export const SOCIALS: NavLink[] = [
 ];
 
 export const HERO = {
-  words: ["we", "teach", "you", "how", "to", "build", "real", "websites", "powered", "by", "ai"],
-  emphasis: "real",
+  words: ["we", "teach", "you", "how", "to", "build", "premium", "websites", "powered", "by", "ai"],
+  emphasis: "premium",
   ctaLabel: "enrol now",
   ctaHref: "/pricing",
   image: "/marketing/bridgeway-hero.png",

@@ -4,7 +4,6 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { HERO } from "@/lib/marketing/content";
-import { Sticker } from "@/components/marketing/Sticker";
 import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 // Our own hand-drawn loop (original) — circles the final word for emphasis.
@@ -57,10 +56,10 @@ export function Hero() {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ua-ink/70 via-ua-ink/10 to-transparent" />
 
-      <div className="relative z-10 flex min-h-svh flex-col justify-end px-6 pb-16 md:px-10">
+      <div className="relative z-10 flex min-h-svh flex-col items-center justify-end px-6 pb-20 text-center md:px-10">
         <h1
           ref={wordsRef}
-          className="max-w-5xl text-5xl font-bold lowercase leading-[0.95] text-ua-bg md:text-8xl"
+          className="mx-auto max-w-5xl text-5xl font-bold lowercase leading-[0.95] text-ua-bg md:text-8xl"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
           {HERO.words.map((w, i) => {
@@ -75,27 +74,6 @@ export function Hero() {
                   className="ua-reveal inline-block whitespace-pre italic"
                   style={{ opacity: 0, fontFamily: "var(--font-lora)" }}
                 >
-                  {w}
-                  {space}
-                </span>
-              );
-            }
-
-            // "build" carries the smiley SVG sticker.
-            if (w === "build") {
-              return (
-                <span
-                  key={`${w}-${i}`}
-                  data-word
-                  className="ua-reveal relative inline-block whitespace-pre"
-                  style={{ opacity: 0 }}
-                >
-                  <Sticker
-                    name="smiley"
-                    size={70}
-                    rotate={-8}
-                    className="pointer-events-none absolute -right-3 -top-12 md:-top-16"
-                  />
                   {w}
                   {space}
                 </span>
