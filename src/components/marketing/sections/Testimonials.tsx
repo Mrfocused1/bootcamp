@@ -285,9 +285,12 @@ export function Testimonials() {
             style={{ borderRadius: "48% 52% 42% 58% / 55% 44% 56% 45%" }}
           />
 
-          {/* Squiggly connector arrows that draw themselves in */}
-          <ArrowSquiggle className="left-[40%] top-[30rem] z-[7] h-[12rem] w-[12rem]" />
-          <ArrowSquiggle className="left-[34%] top-[96rem] z-[7] h-[11rem] w-[11rem] -scale-x-100" />
+          {/* Squiggly connector arrows that draw themselves in — each arrowhead
+              points at a nearby card rather than into empty space. */}
+          {/* Points right into the cool-smiley card (card 2). */}
+          <ArrowSquiggle className="left-[44%] top-[21rem] z-[7] h-[12rem] w-[12rem]" />
+          {/* Points right into the join-the-club card (card 6). */}
+          <ArrowSquiggle className="left-[32%] top-[110rem] z-[7] h-[11rem] w-[11rem]" />
 
           {PHOTOS.map((photo, i) => (
             <div
