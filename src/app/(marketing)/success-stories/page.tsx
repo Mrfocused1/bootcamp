@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PageHero } from "@/components/marketing/PageHero";
+import { CrossingMarqueeHero } from "@/components/marketing/CrossingMarqueeHero";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
@@ -25,12 +25,7 @@ const STORIES = [
 export default function SuccessStoriesPage() {
   return (
     <>
-      <PageHero
-        eyebrow="real people · real websites"
-        title="success stories"
-        intro="From total beginners to live, money-making websites. Here's a taste of what our students, founders and teams have built with AI."
-        sticker="shooting-star"
-      />
+      <CrossingMarqueeHero />
 
       {/* Stories grid */}
       <section className="bg-ua-bg px-6 py-24 md:px-10">
