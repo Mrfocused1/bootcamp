@@ -28,7 +28,8 @@ function generateScribblePath(): string {
   const rng = mulberry32(42);
   let path = "M 50 120";
   let y = 120;
-  const stepY = 9;
+  // Denser rows so a thinner stroke still fully covers the screen.
+  const stepY = 4;
   while (y > -30) {
     y -= stepY;
     path += ` C ${30 + rng() * 30} ${y + 5}, ${80 - rng() * 20} ${y + 5}, 130 ${y}`;
@@ -95,9 +96,9 @@ function ScribbleOverlay({ color, angle }: { color: string; angle: number }) {
       gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
       const tl = gsap.timeline();
       // Draw the scribble on to cover the page…
-      tl.to(path, { strokeDashoffset: 0, duration: 0.8, ease: "none" });
+      tl.to(path, { strokeDashoffset: 0, duration: 1.2, ease: "none" });
       // …hold, then un-draw it to reveal the page.
-      tl.to(path, { strokeDashoffset: len, duration: 0.8, ease: "none" }, "+=0.05");
+      tl.to(path, { strokeDashoffset: len, duration: 1.2, ease: "none" }, "+=0.1");
       tl.set(overlay, { autoAlpha: 0 });
     }, overlay);
 
@@ -130,7 +131,7 @@ function ScribbleOverlay({ color, angle }: { color: string; angle: number }) {
           d={SCRIBBLE_PATH}
           fill="none"
           stroke="currentColor"
-          strokeWidth={26}
+          strokeWidth={12}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
