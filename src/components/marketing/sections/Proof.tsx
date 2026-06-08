@@ -12,16 +12,10 @@ gsap.registerPlugin(ScrollTrigger);
 
 const TARGET = 500;
 
-// Six photo cards behind/around the statement. The grid gently cross-fades
-// on a staggered loop to give the results section some life.
-// TODO(owner): swap placeholder photos
-const PHOTOS = Array.from({ length: 6 }, (_, i) => i);
-
 export function Proof() {
   // Animated count-up number node — kept separate from the static heading text
   // so the heading always contains the literal words "real websites".
   const numberRef = useRef<HTMLSpanElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const numEl = numberRef.current;
@@ -47,53 +41,11 @@ export function Proof() {
     }
   }, []);
 
-  useEffect(() => {
-    const grid = gridRef.current;
-    if (!grid) return;
-    if (prefersReducedMotion()) return;
-
-    const cards = gsap.utils.toArray<HTMLElement>(".ua-proof-card", grid);
-    const ctx = gsap.context(() => {
-      // Gentle staggered opacity pulse — tasteful, not flashy.
-      gsap.to(cards, {
-        opacity: 0.4,
-        duration: 1.4,
-        ease: "sine.inOut",
-        repeat: -1,
-        yoyo: true,
-        stagger: { each: 0.5, from: "random" },
-      });
-    }, grid);
-    return () => ctx.revert();
-  }, []);
-
   return (
     <section className="relative overflow-hidden bg-ua-bg px-6 py-28 md:px-10">
       <div className="mx-auto max-w-6xl">
-        {/* Photo grid (behind/around the statement) */}
-        <div
-          ref={gridRef}
-          className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6"
-        >
-          {PHOTOS.map((i) => (
-            <div
-              key={i}
-              className="ua-proof-card overflow-hidden rounded-2xl border-2 border-ua-ink bg-white shadow-[6px_6px_0_var(--ua-ink)]"
-            >
-              {/* TODO(owner): swap placeholder photos */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={`/marketing/placeholders/p${(i % 8) + 1}.png`}
-                alt=""
-                aria-hidden="true"
-                className="aspect-[4/3] w-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-
         {/* Centered results statement */}
-        <div className="relative mx-auto mt-16 max-w-4xl text-center">
+        <div className="relative mx-auto max-w-4xl text-center">
           <Sticker
             name="hundred"
             size={96}
