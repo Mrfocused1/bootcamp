@@ -28,7 +28,7 @@ function generateScribblePath(): string {
   const rng = mulberry32(42);
   let path = "M 50 120";
   let y = 120;
-  // Denser rows so a thinner stroke still fully covers the screen.
+  // Dense rows so the thin stroke still covers even when the path is rotated.
   const stepY = 4;
   while (y > -30) {
     y -= stepY;
@@ -51,11 +51,11 @@ const SCRIBBLE_PATH = generateScribblePath();
 const PAGE_STYLE: Record<string, { color: string; angle: number }> = {
   "/": { color: "text-ua-blue", angle: 58 },
   "/about": { color: "text-ua-pink", angle: -52 },
-  "/pricing": { color: "text-ua-green", angle: 74 },
-  "/syllabus": { color: "text-ua-orange", angle: -67 },
+  "/pricing": { color: "text-ua-green", angle: 63 },
+  "/syllabus": { color: "text-ua-orange", angle: -57 },
   "/success-stories": { color: "text-ua-sky", angle: 47 },
-  "/faq": { color: "text-ua-pink", angle: -83 },
-  "/contact": { color: "text-ua-blue", angle: 69 },
+  "/faq": { color: "text-ua-pink", angle: -61 },
+  "/contact": { color: "text-ua-blue", angle: 54 },
 };
 
 // Fallback for any other route.
@@ -111,24 +111,20 @@ function ScribbleOverlay({ color, angle }: { color: string; angle: number }) {
       aria-hidden="true"
       className="pointer-events-none fixed inset-0 z-[200] overflow-hidden"
     >
-      {/* Oversized + rotated so the diagonal scribble still covers every corner. */}
+      {/* Near-full-size SVG (slight 130% oversize, axis-aligned) so the scribble
+          renders fine (not magnified like a big oversize) yet still covers the
+          corners. The diagonal angle is baked into the PATH (rotated within the
+          viewBox), which already extends beyond 0–100 so it covers when rotated. */}
       <svg
         className={`absolute ${color}`}
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        style={{
-          top: "-60%",
-          left: "-60%",
-          width: "220%",
-          height: "220%",
-          overflow: "visible",
-          transform: `rotate(${angle}deg)`,
-          transformOrigin: "center",
-        }}
+        style={{ top: "-15%", left: "-15%", width: "130%", height: "130%", overflow: "visible" }}
       >
         <path
           ref={pathRef}
           d={SCRIBBLE_PATH}
+          transform={`rotate(${angle} 50 50)`}
           fill="none"
           stroke="currentColor"
           strokeWidth={12}
