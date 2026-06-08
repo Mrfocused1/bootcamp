@@ -174,16 +174,16 @@ export function Future() {
             photos after it right (see .ua-fan-card in globals.css). */}
         <Reveal className="mt-28 md:mt-36">
           <div className="relative mx-auto flex w-fit max-w-full items-center justify-center">
-            {/* Blue organic blob behind the photos (desktop only; the mobile
-                vertical stack reads cleaner without it). */}
+            {/* Blue organic blob behind the photos (decorative). */}
             <div
               aria-hidden
-              className="pointer-events-none absolute left-1/2 top-1/2 hidden h-[118%] w-[90%] -translate-x-1/2 -translate-y-1/2 -rotate-6 bg-ua-blue sm:block"
+              className="pointer-events-none absolute left-1/2 top-1/2 h-[118%] w-[90%] -translate-x-1/2 -translate-y-1/2 -rotate-6 bg-ua-blue"
               style={{ borderRadius: "62% 38% 56% 44% / 56% 48% 52% 44%" }}
             />
-            {/* Mobile: a vertical stack of large, fully-visible cards. From sm up
-                it becomes the overlapping hover-fan row (see .ua-fan-card). */}
-            <div className="relative flex flex-col items-center justify-center gap-6 sm:flex-row sm:gap-0 sm:-space-x-4 md:-space-x-5 lg:-space-x-6">
+            {/* One overlapping row at every width — slightly overlapping, sized to
+                stay within the mobile frame. Same hover-fan as the curriculum
+                cards from sm up (see .ua-fan-card). */}
+            <div className="relative flex items-center justify-center -space-x-10 sm:-space-x-4 md:-space-x-5 lg:-space-x-6">
               {PHOTOS.map((photo, i) => (
                 <div
                   key={i}
@@ -201,7 +201,7 @@ export function Future() {
                     alt=""
                     aria-hidden="true"
                     draggable={false}
-                    className="h-72 w-56 object-cover sm:h-44 sm:w-32 md:h-52 md:w-40 lg:h-60 lg:w-44"
+                    className="h-44 w-32 object-cover md:h-52 md:w-40 lg:h-60 lg:w-44"
                     style={{ objectPosition: photo.objectPosition }}
                   />
                 </div>
