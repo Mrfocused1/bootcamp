@@ -59,7 +59,7 @@ export default function AboutPage() {
                 name="rock-on"
                 size={104}
                 rotate={-12}
-                className="absolute -right-5 -top-7 z-10"
+                className="absolute -right-1 -top-6 z-10 md:-right-5 md:-top-7"
               />
             </div>
           </Reveal>
