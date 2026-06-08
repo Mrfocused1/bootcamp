@@ -2,8 +2,8 @@ import Link from "next/link";
 import { IS_MOCK } from "@/lib/mock";
 import { signIn } from "./actions";
 
-const HERO_IMG =
-  "/site/cdn.prod.website-files.com/683863cbe1f5a81b667b9939/68a4378358ddc6fb679dd962_fenna-p-800.avif";
+// TODO(owner): swap for a real brand photo. IP-clean placeholder for now.
+const HERO_IMG = "/marketing/placeholders/p2.png";
 
 export default async function LoginPage({
   searchParams,
