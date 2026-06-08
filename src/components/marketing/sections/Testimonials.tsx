@@ -16,12 +16,12 @@ const CIRCLE_PATH =
 const UNDERLINE_PATH =
   "M4 20C70 9 150 7 220 12C260 15 244 22 214 24C300 18 360 14 420 19";
 
-// Squiggly connector arrow between two photos (draws itself in).
+// Squiggly connector arrows between photos (draw themselves in).
 const ARROW_PATH =
   "M6 14C70 -6 150 60 120 96C96 124 30 110 40 78C48 52 96 50 132 66";
 const ARROW_HEAD = "M118 52L134 68L112 74";
 
-type Sticker = {
+type StickerSpec = {
   name: string;
   size: number;
   rotate: number;
@@ -33,22 +33,22 @@ type Photo = {
   className: string; // size + absolute position (desktop)
   rotate: number;
   z: number;
-  sticker?: Sticker;
+  sticker?: StickerSpec;
 };
 
-// Scattered, overlapping collage — placeholder portraits/landscapes at the same
-// proportions as the reference (portrait 3:4, landscape 4:3). Swap the src for
-// real client photos later.
+// Tall vertical scatter — photos are spread down the section so you scroll to
+// reveal each one. Placeholder portraits (3:4) / landscapes (4:3) at the same
+// proportions as the reference; swap the src for real client photos later.
 const PHOTOS: Photo[] = [
   {
     src: "/marketing/placeholders/p1.png",
-    className: "left-[1%] top-[3rem] w-[15rem] aspect-[3/4]",
+    className: "left-[6%] top-0 w-[15rem] aspect-[3/4]",
     rotate: -4,
     z: 2,
   },
   {
     src: "/marketing/placeholders/p2.png",
-    className: "left-[22%] top-[0.5rem] w-[13rem] aspect-[3/4]",
+    className: "left-[57%] top-[16rem] w-[14rem] aspect-[3/4]",
     rotate: 3,
     z: 3,
     sticker: {
@@ -60,9 +60,9 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/marketing/placeholders/p4.png",
-    className: "left-[38%] top-[18rem] w-[20rem] aspect-[4/3]",
+    className: "left-[24%] top-[40rem] w-[21rem] aspect-[4/3]",
     rotate: -2,
-    z: 6,
+    z: 5,
     sticker: {
       name: "lets-go",
       size: 92,
@@ -72,7 +72,7 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/marketing/placeholders/p5.png",
-    className: "left-[70%] top-[2.5rem] w-[15rem] aspect-[3/4]",
+    className: "left-[60%] top-[62rem] w-[15rem] aspect-[3/4]",
     rotate: 3,
     z: 4,
     sticker: {
@@ -84,15 +84,15 @@ const PHOTOS: Photo[] = [
   },
   {
     src: "/marketing/placeholders/p7.png",
-    className: "left-[71%] top-[25rem] w-[16rem] aspect-[4/3]",
+    className: "left-[6%] top-[84rem] w-[20rem] aspect-[4/3]",
     rotate: -3,
     z: 3,
   },
   {
     src: "/marketing/placeholders/p3.png",
-    className: "left-[5%] top-[26rem] w-[13rem] aspect-[3/4]",
+    className: "left-[44%] top-[104rem] w-[14rem] aspect-[3/4]",
     rotate: 2,
-    z: 5,
+    z: 4,
     sticker: {
       name: "join-the-club",
       size: 98,
@@ -129,6 +129,34 @@ function PhotoCard({
   );
 }
 
+function ArrowSquiggle({ className }: { className: string }) {
+  return (
+    <svg
+      viewBox="0 0 150 130"
+      fill="none"
+      aria-hidden="true"
+      className={`pointer-events-none absolute text-ua-bg ${className}`}
+    >
+      <path
+        data-draw
+        d={ARROW_PATH}
+        stroke="currentColor"
+        strokeWidth={3.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        data-draw
+        d={ARROW_HEAD}
+        stroke="currentColor"
+        strokeWidth={3.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
 
@@ -148,29 +176,44 @@ export function Testimonials() {
     }
 
     const ctx = gsap.context(() => {
-      // Squiggly lines / circles / underlines draw themselves in on scroll.
+      // Squiggly lines / circles / underlines draw themselves in, scrubbed to
+      // scroll position so the draw is visible as each travels up the viewport.
       draws.forEach((path) => {
         if (typeof path.getTotalLength !== "function") return;
         const len = path.getTotalLength();
         if (!len) return;
-        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-        gsap.to(path, {
-          strokeDashoffset: 0,
-          duration: 1.1,
-          ease: "power2.inOut",
-          scrollTrigger: { trigger: path, start: "top 88%", once: true },
-        });
+        gsap.set(path, { strokeDasharray: len });
+        gsap.fromTo(
+          path,
+          { strokeDashoffset: len },
+          {
+            strokeDashoffset: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: path,
+              start: "top 90%",
+              end: "top 55%",
+              scrub: true,
+            },
+          },
+        );
       });
 
-      // Photos pop in with a gentle bounce + stagger as the collage enters.
-      gsap.to(photos, {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        duration: 0.6,
-        ease: "back.out(1.4)",
-        stagger: 0.08,
-        scrollTrigger: { trigger: section, start: "top 65%", once: true },
+      // Each photo pops in with a bounce as it scrolls into view, so scrolling
+      // down reveals the cards one after another.
+      photos.forEach((ph) => {
+        gsap.fromTo(
+          ph,
+          { opacity: 0, scale: 0.85, y: 36 },
+          {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+            duration: 0.65,
+            ease: "back.out(1.5)",
+            scrollTrigger: { trigger: ph, start: "top 82%", once: true },
+          },
+        );
       });
     }, section);
 
@@ -233,44 +276,23 @@ export function Testimonials() {
           <span className="whitespace-nowrap">proud of them!</span>
         </h2>
 
-        {/* ───────── Desktop collage (absolute scatter) ───────── */}
-        <div className="relative mt-20 hidden h-[46rem] md:block">
-          {/* Organic blobs behind the photos */}
+        {/* ───────── Desktop: tall vertical scatter (scroll to reveal) ───────── */}
+        <div className="relative mt-20 hidden h-[126rem] md:block">
+          {/* Organic blobs interspersed down the column */}
           <div
             aria-hidden
-            className="pointer-events-none absolute left-[40%] top-[1rem] h-[24rem] w-[24rem] bg-ua-green"
+            className="pointer-events-none absolute left-[40%] top-[28rem] h-[24rem] w-[24rem] bg-ua-green"
             style={{ borderRadius: "60% 40% 55% 45% / 52% 48% 52% 48%" }}
           />
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-[4%] top-[22rem] h-[16rem] w-[16rem] bg-ua-blue"
+            className="pointer-events-none absolute -left-[5%] top-[80rem] h-[18rem] w-[18rem] bg-ua-blue"
             style={{ borderRadius: "48% 52% 42% 58% / 55% 44% 56% 45%" }}
           />
 
-          {/* Squiggly connector arrow that draws itself in */}
-          <svg
-            viewBox="0 0 150 130"
-            fill="none"
-            aria-hidden="true"
-            className="pointer-events-none absolute left-[34%] top-[12rem] z-[7] h-[12rem] w-[12rem] text-ua-bg"
-          >
-            <path
-              data-draw
-              d={ARROW_PATH}
-              stroke="currentColor"
-              strokeWidth={3.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              data-draw
-              d={ARROW_HEAD}
-              stroke="currentColor"
-              strokeWidth={3.5}
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          {/* Squiggly connector arrows that draw themselves in */}
+          <ArrowSquiggle className="left-[40%] top-[30rem] z-[7] h-[12rem] w-[12rem]" />
+          <ArrowSquiggle className="left-[34%] top-[96rem] z-[7] h-[11rem] w-[11rem] -scale-x-100" />
 
           {PHOTOS.map((photo, i) => (
             <div
@@ -292,15 +314,14 @@ export function Testimonials() {
           ))}
         </div>
 
-        {/* ───────── Mobile collage (stacked scatter) ───────── */}
+        {/* ───────── Mobile: stacked scatter (scroll to reveal) ───────── */}
         <div className="relative mt-14 md:hidden">
-          {/* Single blob behind the stack */}
           <div
             aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[18%] h-[18rem] w-[18rem] -translate-x-1/2 bg-ua-green"
+            className="pointer-events-none absolute left-1/2 top-[24%] h-[18rem] w-[18rem] -translate-x-1/2 bg-ua-green"
             style={{ borderRadius: "60% 40% 55% 45% / 52% 48% 52% 48%" }}
           />
-          <div className="relative flex flex-col items-center gap-10">
+          <div className="relative flex flex-col items-center gap-16">
             {PHOTOS.map((photo, i) => (
               <div
                 key={i}
