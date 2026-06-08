@@ -16,7 +16,7 @@ export function FinalCta() {
         </Reveal>
         <Reveal>
           <p className="mx-auto mt-5 max-w-xl text-xl text-ua-ink/80">
-            Five days from now you could have a real website, live on the internet. No coding experience needed.
+            Five days from now you — or your whole tech team — could be building, refreshing and shipping real websites with AI. For founders, businesses, charities and organisations. No coding experience needed.
           </p>
         </Reveal>
         <Reveal>

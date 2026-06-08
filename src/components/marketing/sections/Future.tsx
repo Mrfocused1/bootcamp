@@ -215,8 +215,10 @@ export function Future() {
           <p className="mx-auto mt-14 max-w-3xl text-center text-lg text-ua-ink/80 md:text-xl">
             Over five 1-hour live sessions you&apos;ll learn the exact stack we use to
             ship real products with AI — Cursor, Supabase, Stripe, Resend, GitHub,
-            hosting, domains and SEO. Every session is recorded, so you can rewatch
-            anytime.
+            hosting, domains and SEO. Whether you&apos;re a founder building your first
+            product, or a business, charity or organisation training its tech team to
+            refresh, update and ship sites in-house, you&apos;ll leave able to do it
+            yourself. Every session is recorded, so you can rewatch anytime.
           </p>
         </Reveal>
       </div>

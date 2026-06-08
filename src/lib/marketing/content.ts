@@ -36,7 +36,7 @@ export const HERO = {
   ctaLabel: "enrol now",
   ctaHref: "/pricing",
   image: "/marketing/bridgeway-hero.png",
-  imageAlt: "Student smiling while learning to build websites with AI",
+  imageAlt: "Founder learning to build websites with AI",
 };
 
 export const STATS = [

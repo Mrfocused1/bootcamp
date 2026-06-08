@@ -169,6 +169,11 @@ export function Hero() {
           })}
         </h1>
 
+        <p className="mx-auto mt-5 max-w-xl text-base text-ua-bg/90 md:text-lg">
+          For founders, entrepreneurs, teams and organisations — even charities —
+          who want to build with AI in-house, not wait on an agency.
+        </p>
+
         <div className="mt-8">
           <Link
             href={HERO.ctaHref}

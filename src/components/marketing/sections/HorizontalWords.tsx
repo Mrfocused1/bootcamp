@@ -185,8 +185,8 @@ export function HorizontalWords() {
         <div className="hw-bottom">
           <p className="mx-auto max-w-xl px-6 text-lg text-ua-ink/80 md:text-2xl">
             Building software used to take a developer <em>and</em> a big budget.
-            With AI, you build and launch a real website yourself — in days, not
-            months.
+            With AI, you — or your team — build and launch real websites
+            in-house, in days, not months.
           </p>
         </div>
       </div>

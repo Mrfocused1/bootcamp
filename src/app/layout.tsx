@@ -25,7 +25,7 @@ const lora = Lora({
 export const metadata: Metadata = {
   title: "Bridgeway AI Bootcamp — Learn to build websites with AI in 5 days",
   description:
-    "A 5-day live course that teaches you to build and launch real websites using AI — databases, payments, hosting, domains and more. No coding experience needed.",
+    "A 5-day live course teaching founders, entrepreneurs, teams and organisations (including charities) to build, refresh and launch real websites with AI — databases, payments, hosting and more. Train yourself or your tech team to ship in-house. No coding experience needed.",
 };
 
 export default function RootLayout({

@@ -150,7 +150,8 @@ export function Curriculum() {
             what you&apos;ll learn
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-center text-lg text-ua-ink/70">
-            five 1-hour live sessions, from idea to launch.
+            five 1-hour live sessions, from idea to launch — for founders, teams
+            and organisations alike.
           </p>
         </Reveal>
 

@@ -9,7 +9,7 @@ describe("HorizontalWords", () => {
       "No code. No agency. Just you and AI.",
     );
     expect(
-      screen.getByText(/build and launch a real website yourself/i),
+      screen.getByText(/build and launch real websites\s*in-house/i),
     ).toBeInTheDocument();
   });
 });
