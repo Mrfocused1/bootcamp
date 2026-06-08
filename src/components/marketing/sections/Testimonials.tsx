@@ -278,12 +278,7 @@ export function Testimonials() {
 
         {/* ───────── Desktop: tall vertical scatter (scroll to reveal) ───────── */}
         <div className="relative mt-20 hidden h-[126rem] md:block">
-          {/* Organic blobs interspersed down the column */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-[40%] top-[28rem] h-[24rem] w-[24rem] bg-ua-green"
-            style={{ borderRadius: "60% 40% 55% 45% / 52% 48% 52% 48%" }}
-          />
+          {/* Organic blob low in the column (kept clear of the squiggle/sticker). */}
           <div
             aria-hidden
             className="pointer-events-none absolute -left-[5%] top-[80rem] h-[18rem] w-[18rem] bg-ua-blue"
@@ -316,11 +311,6 @@ export function Testimonials() {
 
         {/* ───────── Mobile: stacked scatter (scroll to reveal) ───────── */}
         <div className="relative mt-14 md:hidden">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute left-1/2 top-[24%] h-[18rem] w-[18rem] -translate-x-1/2 bg-ua-green"
-            style={{ borderRadius: "60% 40% 55% 45% / 52% 48% 52% 48%" }}
-          />
           <div className="relative flex flex-col items-center gap-16">
             {PHOTOS.map((photo, i) => (
               <div
