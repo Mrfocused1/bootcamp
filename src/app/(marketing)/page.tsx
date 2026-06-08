@@ -3,6 +3,7 @@ import { HorizontalWords } from "@/components/marketing/sections/HorizontalWords
 import { Future } from "@/components/marketing/sections/Future";
 import { Proof } from "@/components/marketing/sections/Proof";
 import { Curriculum } from "@/components/marketing/sections/Curriculum";
+import { Testimonials } from "@/components/marketing/sections/Testimonials";
 import { Marquee } from "@/components/marketing/Marquee";
 import { Features } from "@/components/marketing/sections/Features";
 import { JoinClub } from "@/components/marketing/sections/JoinClub";
@@ -18,6 +19,7 @@ export default function HomePage() {
       <Proof />
       <Curriculum />
       <Marquee items={MARQUEE_ITEMS} />
+      <Testimonials />
       <Features />
       <JoinClub />
       <FinalCta />
