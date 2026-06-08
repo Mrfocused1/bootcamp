@@ -10,6 +10,7 @@ export const SITE = {
 
 // FAQ intentionally lives in the footer, not the nav.
 export const NAV_LINKS: NavLink[] = [
+  { label: "Home", href: "/" },
   { label: "Syllabus", href: "/syllabus" },
   { label: "Pricing", href: "/pricing" },
   { label: "Success stories", href: "/success-stories" },

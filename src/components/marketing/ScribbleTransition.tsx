@@ -5,15 +5,14 @@ import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 
 /**
- * Page-entry transition (marker-scribble style, à la the reference site):
- * a thick hand-drawn scribble zig-zags up the whole screen to COVER it, holds
- * briefly, then un-draws (erases) to REVEAL the page. No solid panel — the
- * thick overlapping stroke itself is the cover. Plays on every marketing route
+ * Page-entry transition (marker-scribble style): a thick hand-drawn scribble
+ * zig-zags across the whole screen to COVER it, holds briefly, then un-draws to
+ * REVEAL the page. The colour and the diagonal direction (angle) vary per page,
+ * derived deterministically from the pathname. Plays on every marketing route
  * (incl. home) and regardless of the OS reduced-motion preference.
  */
 
-// Deterministic so server and client render the same path (no hydration
-// mismatch). A small seeded RNG drives the chaotic zig-zag.
+// Deterministic so server and client render the same path (no hydration mismatch).
 function mulberry32(seed: number) {
   let a = seed;
   return () => {
@@ -31,16 +30,12 @@ function generateScribblePath(): string {
   let y = 120;
   const stepY = 9;
   while (y > -30) {
-    // zig right
     y -= stepY;
     path += ` C ${30 + rng() * 30} ${y + 5}, ${80 - rng() * 20} ${y + 5}, 130 ${y}`;
-    // loop right edge
     y -= stepY / 3;
     path += ` C 140 ${y}, 120 ${y - 5}, 90 ${y}`;
-    // zag left
     y -= stepY;
     path += ` C ${60 + rng() * 20} ${y + 5}, ${20 - rng() * 20} ${y - 5}, -30 ${y}`;
-    // loop left edge
     y -= stepY / 3;
     path += ` C -40 ${y}, -10 ${y - 5}, 10 ${y}`;
   }
@@ -49,13 +44,41 @@ function generateScribblePath(): string {
 
 const SCRIBBLE_PATH = generateScribblePath();
 
-export function ScribbleTransition() {
-  const pathname = usePathname();
-  // Remount on every navigation so the cover→reveal replays each time.
-  return <ScribbleOverlay key={pathname} />;
+// Per-page variety: each route gets its own brand colour and a diagonal sweep
+// angle (mixed magnitudes between ~45–90°, both directions). Colour covers the
+// whole screen, so these are solid brand colours.
+const PAGE_STYLE: Record<string, { color: string; angle: number }> = {
+  "/": { color: "text-ua-blue", angle: 58 },
+  "/about": { color: "text-ua-pink", angle: -52 },
+  "/pricing": { color: "text-ua-green", angle: 74 },
+  "/syllabus": { color: "text-ua-orange", angle: -67 },
+  "/success-stories": { color: "text-ua-sky", angle: 47 },
+  "/faq": { color: "text-ua-pink", angle: -83 },
+  "/contact": { color: "text-ua-blue", angle: 69 },
+};
+
+// Fallback for any other route.
+const COLORS = ["text-ua-blue", "text-ua-pink", "text-ua-green", "text-ua-orange", "text-ua-sky"];
+const ANGLES = [58, -52, 74, -67, 47, 83, -61, 69, -78, 51];
+function hashPath(s: string): number {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+  return h;
 }
 
-function ScribbleOverlay() {
+export function ScribbleTransition() {
+  const pathname = usePathname();
+  const style =
+    PAGE_STYLE[pathname] ??
+    (() => {
+      const h = hashPath(pathname);
+      return { color: COLORS[h % COLORS.length], angle: ANGLES[h % ANGLES.length] };
+    })();
+  // Remount on every navigation so the cover→reveal replays each time.
+  return <ScribbleOverlay key={pathname} color={style.color} angle={style.angle} />;
+}
+
+function ScribbleOverlay({ color, angle }: { color: string; angle: number }) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const pathRef = useRef<SVGPathElement>(null);
 
@@ -85,13 +108,22 @@ function ScribbleOverlay() {
     <div
       ref={overlayRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[200]"
+      className="pointer-events-none fixed inset-0 z-[200] overflow-hidden"
     >
+      {/* Oversized + rotated so the diagonal scribble still covers every corner. */}
       <svg
-        className="h-full w-full text-ua-blue"
+        className={`absolute ${color}`}
         viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        style={{ overflow: "visible" }}
+        style={{
+          top: "-60%",
+          left: "-60%",
+          width: "220%",
+          height: "220%",
+          overflow: "visible",
+          transform: `rotate(${angle}deg)`,
+          transformOrigin: "center",
+        }}
       >
         <path
           ref={pathRef}
