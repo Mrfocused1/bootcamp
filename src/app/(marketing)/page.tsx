@@ -5,7 +5,6 @@ import { Proof } from "@/components/marketing/sections/Proof";
 import { Curriculum } from "@/components/marketing/sections/Curriculum";
 import { Testimonials } from "@/components/marketing/sections/Testimonials";
 import { Marquee } from "@/components/marketing/Marquee";
-import { Features } from "@/components/marketing/sections/Features";
 import { JoinClub } from "@/components/marketing/sections/JoinClub";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
 import { MARQUEE_ITEMS } from "@/lib/marketing/content";
@@ -20,7 +19,6 @@ export default function HomePage() {
       <Curriculum />
       <Marquee items={MARQUEE_ITEMS} />
       <Testimonials />
-      <Features />
       <JoinClub />
       <FinalCta />
     </>
