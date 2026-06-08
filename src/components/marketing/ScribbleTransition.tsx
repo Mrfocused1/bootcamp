@@ -3,7 +3,6 @@
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
-import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 // A wide hand-drawn scribble swept across the cover panel.
 const SCRIBBLE =
@@ -12,16 +11,16 @@ const SCRIBBLE =
 /**
  * Page-entry transition: a full-screen panel covers the viewport with a
  * hand-drawn scribble that draws itself in, then the panel sweeps away to
- * reveal the page. Plays on every route EXCEPT the home page. Keyed on the
+ * reveal the page. Plays on EVERY marketing route (incl. home). Keyed on the
  * pathname so it remounts (and starts covering) on each navigation, avoiding a
  * flash of the incoming page.
+ *
+ * Note: this brand intro intentionally plays even with the OS "reduce motion"
+ * setting on, so it's always visible; the rest of the site's scroll/entrance
+ * animations still respect that preference.
  */
 export function ScribbleTransition() {
   const pathname = usePathname();
-
-  // No transition on the home page.
-  if (pathname === "/") return null;
-
   return <ScribbleOverlay key={pathname} />;
 }
 
@@ -33,11 +32,6 @@ function ScribbleOverlay() {
     const overlay = overlayRef.current;
     const path = pathRef.current;
     if (!overlay) return;
-
-    if (prefersReducedMotion()) {
-      gsap.set(overlay, { autoAlpha: 0 });
-      return;
-    }
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline();
