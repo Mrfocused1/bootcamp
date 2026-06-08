@@ -4,23 +4,54 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 
-// A wide hand-drawn scribble swept across the cover panel.
-const SCRIBBLE =
-  "M20 70C120 18 220 120 340 64S560 14 700 76S920 124 1060 60";
-
 /**
- * Page-entry transition: a full-screen panel covers the viewport with a
- * hand-drawn scribble that draws itself in, then the panel sweeps away to
- * reveal the page. Plays on EVERY marketing route (incl. home). Keyed on the
- * pathname so it remounts (and starts covering) on each navigation, avoiding a
- * flash of the incoming page.
- *
- * Note: this brand intro intentionally plays even with the OS "reduce motion"
- * setting on, so it's always visible; the rest of the site's scroll/entrance
- * animations still respect that preference.
+ * Page-entry transition (marker-scribble style, à la the reference site):
+ * a thick hand-drawn scribble zig-zags up the whole screen to COVER it, holds
+ * briefly, then un-draws (erases) to REVEAL the page. No solid panel — the
+ * thick overlapping stroke itself is the cover. Plays on every marketing route
+ * (incl. home) and regardless of the OS reduced-motion preference.
  */
+
+// Deterministic so server and client render the same path (no hydration
+// mismatch). A small seeded RNG drives the chaotic zig-zag.
+function mulberry32(seed: number) {
+  let a = seed;
+  return () => {
+    a |= 0;
+    a = (a + 0x6d2b79f5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function generateScribblePath(): string {
+  const rng = mulberry32(42);
+  let path = "M 50 120";
+  let y = 120;
+  const stepY = 9;
+  while (y > -30) {
+    // zig right
+    y -= stepY;
+    path += ` C ${30 + rng() * 30} ${y + 5}, ${80 - rng() * 20} ${y + 5}, 130 ${y}`;
+    // loop right edge
+    y -= stepY / 3;
+    path += ` C 140 ${y}, 120 ${y - 5}, 90 ${y}`;
+    // zag left
+    y -= stepY;
+    path += ` C ${60 + rng() * 20} ${y + 5}, ${20 - rng() * 20} ${y - 5}, -30 ${y}`;
+    // loop left edge
+    y -= stepY / 3;
+    path += ` C -40 ${y}, -10 ${y - 5}, 10 ${y}`;
+  }
+  return path;
+}
+
+const SCRIBBLE_PATH = generateScribblePath();
+
 export function ScribbleTransition() {
   const pathname = usePathname();
+  // Remount on every navigation so the cover→reveal replays each time.
   return <ScribbleOverlay key={pathname} />;
 }
 
@@ -31,20 +62,19 @@ function ScribbleOverlay() {
   useEffect(() => {
     const overlay = overlayRef.current;
     const path = pathRef.current;
-    if (!overlay) return;
+    if (!overlay || !path || typeof path.getTotalLength !== "function") {
+      if (overlay) gsap.set(overlay, { autoAlpha: 0 });
+      return;
+    }
+    const len = path.getTotalLength();
 
     const ctx = gsap.context(() => {
+      gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
       const tl = gsap.timeline();
-      // Scribble draws itself in across the covering panel…
-      if (path && typeof path.getTotalLength === "function") {
-        const len = path.getTotalLength();
-        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
-        tl.to(path, { strokeDashoffset: 0, duration: 0.5, ease: "power2.inOut" });
-      } else {
-        tl.to({}, { duration: 0.4 });
-      }
-      // …then the panel sweeps up and off, revealing the page.
-      tl.to(overlay, { yPercent: -100, duration: 0.6, ease: "power3.inOut" }, "+=0.05");
+      // Draw the scribble on to cover the page…
+      tl.to(path, { strokeDashoffset: 0, duration: 0.8, ease: "none" });
+      // …hold, then un-draw it to reveal the page.
+      tl.to(path, { strokeDashoffset: len, duration: 0.8, ease: "none" }, "+=0.05");
       tl.set(overlay, { autoAlpha: 0 });
     }, overlay);
 
@@ -55,19 +85,20 @@ function ScribbleOverlay() {
     <div
       ref={overlayRef}
       aria-hidden="true"
-      className="pointer-events-none fixed inset-0 z-[100] flex items-center justify-center bg-ua-ink"
+      className="pointer-events-none fixed inset-0 z-[200]"
     >
       <svg
-        viewBox="0 0 1080 140"
-        fill="none"
+        className="h-full w-full text-ua-blue"
+        viewBox="0 0 100 100"
         preserveAspectRatio="none"
-        className="w-[82%] max-w-3xl text-ua-pink"
+        style={{ overflow: "visible" }}
       >
         <path
           ref={pathRef}
-          d={SCRIBBLE}
+          d={SCRIBBLE_PATH}
+          fill="none"
           stroke="currentColor"
-          strokeWidth={11}
+          strokeWidth={26}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
