@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import Link from "next/link";
 import { gsap } from "gsap";
 import { HERO } from "@/lib/marketing/content";
@@ -56,10 +56,10 @@ export function Hero() {
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ua-ink/70 via-ua-ink/10 to-transparent" />
 
-      <div className="relative z-10 flex min-h-svh flex-col items-center justify-end px-6 pb-20 text-center md:px-10">
+      <div className="relative z-10 flex min-h-svh flex-col items-center justify-end px-6 pb-8 text-center md:px-10">
         <h1
           ref={wordsRef}
-          className="mx-auto max-w-5xl text-5xl font-bold lowercase leading-[0.95] text-ua-bg md:text-8xl"
+          className="mx-auto max-w-5xl text-3xl font-bold lowercase leading-[1.05] text-ua-bg sm:text-4xl md:text-5xl"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
           {HERO.words.map((w, i) => {
@@ -114,15 +114,18 @@ export function Hero() {
             }
 
             return (
-              <span
-                key={`${w}-${i}`}
-                data-word
-                className="ua-reveal inline-block whitespace-pre"
-                style={{ opacity: 0 }}
-              >
-                {w}
-                {space}
-              </span>
+              <Fragment key={`${w}-${i}`}>
+                <span
+                  data-word
+                  className="ua-reveal inline-block whitespace-pre"
+                  style={{ opacity: 0 }}
+                >
+                  {w}
+                  {space}
+                </span>
+                {/* Force the heading onto two lines: break after "build". */}
+                {w === "build" && <br aria-hidden="true" />}
+              </Fragment>
             );
           })}
         </h1>
