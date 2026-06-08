@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/PageHero";
-import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
 
@@ -89,10 +88,15 @@ export default function SyllabusPage() {
         sticker="sparkles"
       />
 
-      {/* Days */}
-      <section className="bg-ua-bg px-6 py-24 md:px-10">
-        <div className="mx-auto flex max-w-4xl flex-col gap-12">
-          {DAYS.map((day) => {
+      {/*
+        Days — CSS sticky scroll-stack (same as the homepage curriculum deck):
+        each card sticks just below the nav and the next one stacks on top as you
+        scroll; uniform-height slots make them hold then exit together. Reduced
+        motion falls back to a plain spaced vertical list.
+      */}
+      <section className="bg-ua-bg px-6 pb-24 pt-10 md:px-10">
+        <div className="mx-auto flex max-w-4xl flex-col">
+          {DAYS.map((day, i) => {
             const dark = day.color.includes("text-ua-bg");
             const bodyText = dark ? "text-ua-bg/90" : "text-ua-ink/80";
             const labelText = dark ? "text-ua-bg/70" : "text-ua-ink/60";
@@ -100,9 +104,13 @@ export default function SyllabusPage() {
             const borderText = dark ? "border-ua-bg/40" : "border-ua-ink/40";
 
             return (
-              <Reveal key={day.n}>
+              <div
+                key={day.n}
+                className="sticky flex h-[40rem] items-start justify-center motion-reduce:static motion-reduce:mb-10 motion-reduce:h-auto"
+                style={{ top: `calc(6rem + ${i * 0.8}rem)`, zIndex: i + 1 }}
+              >
                 <div
-                  className={`relative rounded-3xl border-2 border-ua-ink ${day.color} px-6 pb-10 pt-12 shadow-[6px_6px_0_var(--ua-ink)] md:px-10`}
+                  className={`relative w-full rounded-3xl border-2 border-ua-ink ${day.color} px-6 pb-8 pt-10 shadow-[6px_6px_0_var(--ua-ink)] md:px-10`}
                 >
                   <Sticker
                     name={day.sticker}
@@ -111,11 +119,11 @@ export default function SyllabusPage() {
                     className="absolute -right-4 -top-8 z-10"
                   />
 
-                  <div className="flex flex-col gap-8 md:flex-row md:gap-10">
+                  <div className="flex flex-col gap-5 md:flex-row md:gap-10">
                     {/* Left: big day number */}
                     <div className="flex-shrink-0">
                       <span
-                        className={`block text-7xl font-black leading-none md:text-8xl ${numText}`}
+                        className={`block text-6xl font-black leading-none md:text-8xl ${numText}`}
                         style={{ fontFamily: "var(--font-epilogue)" }}
                       >
                         {day.n}
@@ -135,9 +143,9 @@ export default function SyllabusPage() {
                       >
                         {day.title}
                       </h2>
-                      <p className={`mt-4 text-lg ${bodyText}`}>{day.promise}</p>
+                      <p className={`mt-3 text-lg ${bodyText}`}>{day.promise}</p>
 
-                      <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+                      <ul className="mt-5 grid gap-3 sm:grid-cols-2">
                         {day.topics.map((topic) => (
                           <li
                             key={topic}
@@ -152,9 +160,9 @@ export default function SyllabusPage() {
                         ))}
                       </ul>
 
-                      {/* Video placeholder */}
+                      {/* Video placeholder (compact so the card fits when stacked) */}
                       <div
-                        className={`mt-8 flex aspect-video w-full items-center justify-center rounded-2xl border-2 border-dashed ${borderText} ${labelText}`}
+                        className={`mt-6 flex h-36 w-full items-center justify-center rounded-2xl border-2 border-dashed ${borderText} ${labelText} md:h-40`}
                       >
                         <span className="px-4 text-center text-sm font-bold uppercase tracking-[0.15em]">
                           Day {day.n} tutorial — video slot
@@ -163,7 +171,7 @@ export default function SyllabusPage() {
                     </div>
                   </div>
                 </div>
-              </Reveal>
+              </div>
             );
           })}
         </div>
