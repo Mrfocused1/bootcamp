@@ -107,7 +107,7 @@ function PhotoCard({
 }) {
   return (
     <div
-      className="ua-wiggle-card h-full w-full overflow-hidden rounded-2xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_rgba(0,0,0,0.45)]"
+      className="ua-wiggle-card h-full w-full overflow-hidden rounded-2xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_var(--ua-ink)]"
       style={{ transform: `rotate(${rotate}deg)` }}
     >
       {/* TODO(owner): swap placeholder for a real client photo. */}
@@ -129,7 +129,7 @@ function ArrowSquiggle({ className }: { className: string }) {
       viewBox="0 0 150 130"
       fill="none"
       aria-hidden="true"
-      className={`pointer-events-none absolute text-ua-bg ${className}`}
+      className={`pointer-events-none absolute text-ua-ink ${className}`}
     >
       <path
         data-draw
@@ -266,8 +266,7 @@ export function Testimonials() {
   return (
     <section
       ref={sectionRef}
-      data-nav-theme="dark"
-      className="relative overflow-hidden bg-ua-ink px-6 py-24 text-ua-bg md:px-10 md:py-32"
+      className="relative overflow-hidden bg-ua-bg px-6 py-24 text-ua-ink md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-6xl">
         {/* Heading */}
