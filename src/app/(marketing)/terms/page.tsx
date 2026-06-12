@@ -34,7 +34,7 @@ const SECTIONS: LegalSection[] = [
     heading: "payment and refunds",
     paras: [
       "Prices are shown at checkout and are payable in full to enrol, unless a payment plan is offered. Payments are handled by our third-party payment provider.",
-      "We offer a 14-day money-back guarantee: if the course isn't right for you, email us within 14 days of purchase for a full refund. This guarantee is our standard refund policy and sits alongside any rights you have under applicable consumer law.",
+      "If something isn't right with your purchase, contact us and we'll look into it. Nothing in these terms affects any rights you have under applicable consumer law.",
     ],
   },
   {
@@ -49,12 +49,6 @@ const SECTIONS: LegalSection[] = [
     paras: [
       "All course materials — including videos, recordings, slides, templates, prompts and written content — are owned by Bridgeway or our licensors and are provided for your personal learning only.",
       "You may not copy, record, redistribute, resell, publish or share the course materials, in whole or in part, without our written permission. You keep ownership of the projects and websites you build during the course.",
-    ],
-  },
-  {
-    heading: "no guarantee of results",
-    paras: [
-      "We teach you the skills and the workflow, but the results you get depend on the effort you put in and factors outside our control. We don't guarantee any specific outcome, income, or business result from taking the course.",
     ],
   },
   {

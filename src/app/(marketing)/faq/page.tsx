@@ -8,7 +8,7 @@ import { FinalCta } from "@/components/marketing/sections/FinalCta";
 export const metadata: Metadata = {
   title: "FAQ — Bridgeway AI Bootcamp",
   description:
-    "Answers to common questions about Bridgeway AI Bootcamp — experience needed, what's included, live sessions, recordings, access, and our money-back guarantee.",
+    "Answers to common questions about Bridgeway AI Bootcamp — experience needed, what's included, live sessions, recordings and access.",
 };
 
 const FAQS = [
@@ -39,10 +39,6 @@ const FAQS = [
   {
     q: "How long do I keep access?",
     a: "Forever. Lifetime access to all recordings and resources is included.",
-  },
-  {
-    q: "Is there a guarantee?",
-    a: "Yes — a 14-day money-back guarantee. If it's not for you, email us for a full refund.",
   },
 ];
 

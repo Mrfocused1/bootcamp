@@ -9,7 +9,7 @@ import { HERO } from "@/lib/marketing/content";
 export const metadata: Metadata = {
   title: "Pricing — Bridgeway AI Bootcamp",
   description:
-    "One simple price for the full Bridgeway AI Bootcamp: 5 live sessions, lifetime access to recordings, the complete curriculum and the support to launch a real website.",
+    "Simple pricing for the Bridgeway AI Bootcamp: one price for the full course — 5 live sessions, lifetime recordings and the complete curriculum — plus group sessions for teams and organisations, priced on request.",
 };
 
 const INCLUDED = [
@@ -46,6 +46,14 @@ const TESTIMONIALS = [
   },
 ];
 
+const GROUP_INCLUDED = [
+  "Everything in the full course",
+  "Train your whole team together",
+  "Sessions scheduled around your organisation",
+  "Private Q&A for your group",
+  "Volume pricing for larger teams",
+];
+
 const QUESTIONS = [
   "Do I need any coding experience?",
   "What if I miss a live session?",
@@ -56,17 +64,17 @@ export default function PricingPage() {
   return (
     <>
       <PageHero
-        eyebrow="one simple price"
+        eyebrow="simple pricing"
         title="pricing"
         intro="Everything you need to learn to build and launch real websites with AI."
         sticker="hundred"
       />
 
-      {/* Pricing card */}
+      {/* Pricing cards */}
       <section className="bg-ua-bg px-6 py-24 md:px-10">
-        <div className="mx-auto max-w-md">
+        <div className="mx-auto grid max-w-4xl gap-12 md:grid-cols-2 md:gap-8">
           <Reveal>
-            <div className="relative rounded-3xl border-2 border-ua-ink bg-white px-7 pb-9 pt-12 shadow-[6px_6px_0_var(--ua-ink)]">
+            <div className="relative flex h-full flex-col rounded-3xl border-2 border-ua-ink bg-white px-7 pb-9 pt-12 shadow-[6px_6px_0_var(--ua-ink)]">
               <Sticker
                 name="lets-go"
                 size={96}
@@ -105,17 +113,75 @@ export default function PricingPage() {
                 ))}
               </ul>
 
-              <Link
-                href={HERO.ctaHref}
-                className="mt-9 block rounded-full bg-ua-orange px-7 py-3 text-center text-lg font-bold text-ua-bg hover:opacity-90"
+              <div className="mt-auto">
+                <Link
+                  href={HERO.ctaHref}
+                  className="mt-9 block rounded-full bg-ua-orange px-7 py-3 text-center text-lg font-bold text-ua-bg hover:opacity-90"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
+                >
+                  {HERO.ctaLabel} →
+                </Link>
+
+                <p className="mt-5 text-center text-sm text-ua-ink/60">
+                  Secure checkout via Stripe.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          <Reveal>
+            <div className="relative flex h-full flex-col rounded-3xl border-2 border-ua-ink bg-white px-7 pb-9 pt-12 shadow-[6px_6px_0_var(--ua-ink)]">
+              <Sticker
+                name="join-the-club"
+                size={96}
+                rotate={-8}
+                className="absolute -left-4 -top-8 z-10"
+              />
+
+              <h2
+                className="text-3xl font-bold lowercase text-ua-ink"
                 style={{ fontFamily: "var(--font-epilogue)" }}
               >
-                {HERO.ctaLabel} →
-              </Link>
+                group sessions
+              </h2>
 
-              <p className="mt-5 text-center text-sm text-ua-ink/60">
-                Secure checkout via Stripe. 14-day money-back guarantee.
+              <p
+                className="mt-5 text-5xl font-black lowercase text-ua-ink md:text-6xl"
+                style={{ fontFamily: "var(--font-epilogue)" }}
+              >
+                on request
               </p>
+              <p className="mt-2 text-sm font-bold uppercase tracking-[0.15em] text-ua-ink/60">
+                for teams, organisations &amp; charities
+              </p>
+
+              <ul className="mt-8 space-y-3">
+                {GROUP_INCLUDED.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-ua-ink/80">
+                    <span
+                      aria-hidden="true"
+                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-ua-sky text-xs font-black text-ua-ink"
+                    >
+                      ✓
+                    </span>
+                    <span className="text-lg">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="mt-auto">
+                <Link
+                  href="/contact#contact-form"
+                  className="mt-9 block rounded-full bg-ua-blue px-7 py-3 text-center text-lg font-bold text-ua-bg hover:opacity-90"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
+                >
+                  enquire →
+                </Link>
+
+                <p className="mt-5 text-center text-sm text-ua-ink/60">
+                  Tell us about your team and we&apos;ll tailor a quote.
+                </p>
+              </div>
             </div>
           </Reveal>
         </div>
