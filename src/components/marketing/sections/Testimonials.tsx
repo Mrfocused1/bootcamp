@@ -89,7 +89,7 @@ const PHOTOS: Photo[] = [
     },
   },
   {
-    src: "/marketing/placeholders/p7.png",
+    src: "/marketing/people-5.jpg",
     className: "left-[6%] top-[84rem] w-[20rem] aspect-[4/3]",
     rotate: -3,
     z: 3,
@@ -258,6 +258,14 @@ export function Testimonials() {
           end: "bottom top",
           onEnter: replay,
           onEnterBack: replay,
+        });
+        // Reset only once the card is FULLY out of view (top past the bottom
+        // edge, or bottom past the top), so it never blinks out while still
+        // visible — it scrolls out naturally and replays on the next entrance.
+        ScrollTrigger.create({
+          trigger: ph,
+          start: "top bottom",
+          end: "bottom top",
           onLeave: reset,
           onLeaveBack: reset,
         });
