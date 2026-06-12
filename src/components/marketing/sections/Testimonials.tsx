@@ -53,7 +53,7 @@ const PHOTOS: Photo[] = [
     },
   },
   {
-    src: "/marketing/placeholders/p2.png",
+    src: "/marketing/people-2.jpg",
     className: "left-[57%] top-[16rem] w-[14rem] aspect-[3/4]",
     rotate: 3,
     z: 3,
