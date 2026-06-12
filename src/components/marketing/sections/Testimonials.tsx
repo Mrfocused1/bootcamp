@@ -79,10 +79,10 @@ const PHOTOS: Photo[] = [
     },
   },
   {
-    src: "/marketing/work-1.jpg",
+    src: "/marketing/people-6.jpg",
     className: "left-[6%] top-[60rem] w-[20rem] aspect-[4/3]",
-    // The bottle sits right-of-centre; focus it on the tall mobile crop.
-    imgClassName: "object-[72%_center] md:object-center",
+    // Tall selfie in a landscape card — bias the crop up toward the face.
+    imgClassName: "object-[center_30%]",
     rotate: -3,
     z: 3,
   },
