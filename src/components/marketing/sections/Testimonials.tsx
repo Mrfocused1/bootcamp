@@ -41,7 +41,7 @@ type Photo = {
 // proportions as the reference; swap the src for real client photos later.
 const PHOTOS: Photo[] = [
   {
-    src: "/marketing/placeholders/p1.png",
+    src: "/marketing/people-1.jpg",
     className: "left-[6%] top-0 w-[15rem] aspect-[3/4]",
     rotate: -4,
     z: 2,
