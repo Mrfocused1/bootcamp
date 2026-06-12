@@ -77,7 +77,7 @@ const PHOTOS: Photo[] = [
     },
   },
   {
-    src: "/marketing/placeholders/p5.png",
+    src: "/marketing/people-3.jpg",
     className: "left-[60%] top-[62rem] w-[15rem] aspect-[3/4]",
     rotate: 3,
     z: 4,
@@ -95,7 +95,7 @@ const PHOTOS: Photo[] = [
     z: 3,
   },
   {
-    src: "/marketing/placeholders/p3.png",
+    src: "/marketing/people-4.jpg",
     className: "left-[44%] top-[104rem] w-[14rem] aspect-[3/4]",
     rotate: 2,
     z: 4,
