@@ -65,20 +65,8 @@ const PHOTOS: Photo[] = [
     },
   },
   {
-    src: "/marketing/placeholders/p4.png",
-    className: "left-[24%] top-[40rem] w-[21rem] aspect-[4/3]",
-    rotate: -2,
-    z: 5,
-    sticker: {
-      name: "lets-go",
-      size: 92,
-      rotate: 8,
-      className: "-right-7 top-1/4",
-    },
-  },
-  {
     src: "/marketing/people-3.jpg",
-    className: "left-[60%] top-[62rem] w-[15rem] aspect-[3/4]",
+    className: "left-[60%] top-[38rem] w-[15rem] aspect-[3/4]",
     rotate: 3,
     z: 4,
     sticker: {
@@ -89,14 +77,14 @@ const PHOTOS: Photo[] = [
     },
   },
   {
-    src: "/marketing/people-5.jpg",
-    className: "left-[6%] top-[84rem] w-[20rem] aspect-[4/3]",
+    src: "/marketing/work-1.jpg",
+    className: "left-[6%] top-[60rem] w-[20rem] aspect-[4/3]",
     rotate: -3,
     z: 3,
   },
   {
     src: "/marketing/people-4.jpg",
-    className: "left-[44%] top-[104rem] w-[14rem] aspect-[3/4]",
+    className: "left-[44%] top-[80rem] w-[14rem] aspect-[3/4]",
     rotate: 2,
     z: 4,
     sticker: {
@@ -332,11 +320,11 @@ export function Testimonials() {
         </h2>
 
         {/* ───────── Desktop: tall vertical scatter (scroll to reveal) ───────── */}
-        <div className="relative mt-20 hidden h-[126rem] md:block">
+        <div className="relative mt-20 hidden h-[102rem] md:block">
           {/* Organic blob low in the column (kept clear of the squiggle/sticker). */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -left-[5%] top-[80rem] h-[18rem] w-[18rem] bg-ua-blue"
+            className="pointer-events-none absolute -left-[5%] top-[56rem] h-[18rem] w-[18rem] bg-ua-blue"
             style={{ borderRadius: "48% 52% 42% 58% / 55% 44% 56% 45%" }}
           />
 
@@ -345,7 +333,7 @@ export function Testimonials() {
           {/* Points right into the cool-smiley card (card 2). */}
           <ArrowSquiggle className="left-[44%] top-[21rem] z-[7] h-[12rem] w-[12rem]" />
           {/* Points right into the join-the-club card (card 6). */}
-          <ArrowSquiggle className="left-[32%] top-[110rem] z-[7] h-[11rem] w-[11rem]" />
+          <ArrowSquiggle className="left-[32%] top-[86rem] z-[7] h-[11rem] w-[11rem]" />
 
           {PHOTOS.map((photo, i) => (
             <div
