@@ -34,6 +34,8 @@ type Photo = {
   rotate: number;
   z: number;
   sticker?: StickerSpec;
+  /** Extra classes for the <img>, e.g. a crop focus like object-[72%_center]. */
+  imgClassName?: string;
 };
 
 // Tall vertical scatter — photos are spread down the section so you scroll to
@@ -79,6 +81,8 @@ const PHOTOS: Photo[] = [
   {
     src: "/marketing/work-1.jpg",
     className: "left-[6%] top-[60rem] w-[20rem] aspect-[4/3]",
+    // The bottle sits right-of-centre; focus it on the tall mobile crop.
+    imgClassName: "object-[72%_center] md:object-center",
     rotate: -3,
     z: 3,
   },
@@ -100,10 +104,12 @@ function PhotoCard({
   src,
   rotate,
   alt = "",
+  imgClassName = "",
 }: {
   src: string;
   rotate: number;
   alt?: string;
+  imgClassName?: string;
 }) {
   return (
     <div
@@ -117,7 +123,7 @@ function PhotoCard({
         alt={alt}
         aria-hidden={alt === "" ? true : undefined}
         draggable={false}
-        className="h-full w-full object-cover"
+        className={`h-full w-full object-cover ${imgClassName}`}
       />
     </div>
   );
@@ -341,7 +347,7 @@ export function Testimonials() {
               className={`ua-reveal ua-wiggle-pair absolute ${photo.className}`}
               style={{ zIndex: photo.z, opacity: 0 }}
             >
-              <PhotoCard src={photo.src} rotate={photo.rotate} />
+              <PhotoCard src={photo.src} rotate={photo.rotate} imgClassName={photo.imgClassName} />
               {photo.sticker && (
                 <div
                   data-sticker
@@ -373,7 +379,7 @@ export function Testimonials() {
                   alignSelf: i % 2 === 0 ? "flex-start" : "flex-end",
                 }}
               >
-                <PhotoCard src={photo.src} rotate={photo.rotate} />
+                <PhotoCard src={photo.src} rotate={photo.rotate} imgClassName={photo.imgClassName} />
                 {photo.sticker && (
                   <div
                     data-sticker
