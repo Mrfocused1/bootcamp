@@ -95,6 +95,12 @@ export function Future() {
       <div className="mx-auto max-w-6xl">
         {/* Title block — centered */}
         <div className="relative mx-auto max-w-5xl text-center">
+          <Sticker
+            name="video-player"
+            size={112}
+            rotate={-10}
+            className="pointer-events-none absolute -left-4 top-1/3 z-10 hidden lg:block md:-left-20"
+          />
           <h2
             ref={titleRef}
             className="text-5xl font-black leading-[1.02] tracking-tight text-ua-ink sm:text-6xl md:text-8xl"

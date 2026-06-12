@@ -143,12 +143,20 @@ export function Curriculum() {
     <section className="bg-ua-bg px-6 py-24 md:px-10">
       <div className="mx-auto max-w-6xl">
         <Reveal>
-          <h2
-            className="text-center text-4xl font-bold text-ua-ink md:text-6xl"
-            style={{ fontFamily: "var(--font-epilogue)" }}
-          >
-            what you&apos;ll learn
-          </h2>
+          <div className="text-center">
+            <h2
+              className="relative inline-block text-4xl font-bold text-ua-ink md:text-6xl"
+              style={{ fontFamily: "var(--font-epilogue)" }}
+            >
+              what you&apos;ll learn
+              <Sticker
+                name="checklist"
+                size={92}
+                rotate={10}
+                className="pointer-events-none absolute -right-14 -top-10 z-10 hidden sm:block md:-right-24 md:-top-12"
+              />
+            </h2>
+          </div>
           <p className="mx-auto mt-4 max-w-xl text-center text-lg text-ua-ink/70">
             five 1-hour live sessions, from idea to launch — for founders, teams
             and organisations alike.

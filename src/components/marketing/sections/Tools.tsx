@@ -1,4 +1,5 @@
 import { Reveal } from "@/components/marketing/Reveal";
+import { Sticker } from "@/components/marketing/Sticker";
 
 // Official brand logos in their real colours — wordmark lockups where that IS
 // the brand's logo (Stripe, Google, GitHub, Cursor), icon marks otherwise
@@ -20,12 +21,20 @@ export function Tools() {
   return (
     <section className="overflow-hidden bg-ua-bg pb-24 pt-2 md:pb-32">
       <Reveal>
-        <h2
-          className="px-6 text-center text-4xl font-black tracking-tight text-ua-ink md:text-6xl"
-          style={{ fontFamily: "var(--font-epilogue)" }}
-        >
-          Tools that will be used
-        </h2>
+        <div className="px-6 text-center">
+          <h2
+            className="relative inline-block text-4xl font-black tracking-tight text-ua-ink md:text-6xl"
+            style={{ fontFamily: "var(--font-epilogue)" }}
+          >
+            Tools that will be used
+            <Sticker
+              name="laptop-2"
+              size={104}
+              rotate={-9}
+              className="pointer-events-none absolute -left-16 -top-12 z-10 hidden sm:block md:-left-28 md:-top-14"
+            />
+          </h2>
+        </div>
       </Reveal>
 
       {/* Auto-scrolling logo band; the mask fades both edges to transparent. */}

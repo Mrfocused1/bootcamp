@@ -45,7 +45,7 @@ const FAQS = [
 export default function FaqPage() {
   return (
     <>
-      <PageHero eyebrow="questions?" title="frequently asked" sticker="peace" />
+      <PageHero eyebrow="questions?" title="frequently asked" sticker="magnifier" />
 
       {/* FAQ accordion */}
       <section className="relative overflow-hidden bg-ua-bg px-6 py-24 md:px-10">
