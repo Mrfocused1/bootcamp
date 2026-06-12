@@ -69,7 +69,10 @@ export default function ContactPage() {
 
           {/* RIGHT — send a message card */}
           <Reveal>
-            <div className="rounded-3xl border-2 border-ua-ink bg-white p-6 shadow-[6px_6px_0_var(--ua-ink)] md:p-8">
+            <div
+              id="contact-form"
+              className="scroll-mt-28 rounded-3xl border-2 border-ua-ink bg-white p-6 shadow-[6px_6px_0_var(--ua-ink)] md:p-8"
+            >
               <h2
                 className="text-3xl font-bold lowercase text-ua-ink md:text-4xl"
                 style={{ fontFamily: "var(--font-epilogue)" }}

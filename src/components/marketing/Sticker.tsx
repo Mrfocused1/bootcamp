@@ -13,18 +13,21 @@ export function Sticker({
   className,
   size = 96,
   rotate = 0,
+  animate = true,
 }: {
   name: string;
   alt?: string;
   className?: string;
   size?: number;
   rotate?: number;
+  /** Set false when a parent timeline sequences the reveal itself. */
+  animate?: boolean;
 }) {
   const ref = useRef<HTMLImageElement>(null);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
+    if (!el || !animate) return;
     if (prefersReducedMotion()) {
       gsap.set(el, { opacity: 1, scale: 1, rotate });
       return;
@@ -44,7 +47,7 @@ export function Sticker({
       );
     }, el);
     return () => ctx.revert();
-  }, [rotate]);
+  }, [rotate, animate]);
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
@@ -55,8 +58,13 @@ export function Sticker({
       aria-hidden={alt === "" ? true : undefined}
       width={size}
       height={size}
-      className={`ua-reveal ${className ?? ""}`}
-      style={{ width: size, height: "auto", opacity: 0, transform: `rotate(${rotate}deg)` }}
+      className={`${animate ? "ua-reveal " : ""}${className ?? ""}`}
+      style={{
+        width: size,
+        height: "auto",
+        opacity: animate ? 0 : undefined,
+        transform: `rotate(${rotate}deg)`,
+      }}
     />
   );
 }

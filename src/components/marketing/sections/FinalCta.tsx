@@ -20,14 +20,24 @@ export function FinalCta() {
           </p>
         </Reveal>
         <Reveal>
-          <Link
-            href={HERO.ctaHref}
-            className="group mt-10 inline-flex items-center gap-2 rounded-full border-2 border-ua-ink bg-white px-9 py-4 text-xl font-bold text-ua-ink shadow-[5px_5px_0_var(--ua-ink)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-ua-ink hover:text-white hover:shadow-[8px_8px_0_var(--ua-ink)] active:translate-y-0 active:shadow-[2px_2px_0_var(--ua-ink)]"
-            style={{ fontFamily: "var(--font-epilogue)" }}
-          >
-            {HERO.ctaLabel}
-            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-          </Link>
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
+            <Link
+              href={HERO.ctaHref}
+              className="group inline-flex items-center gap-2 rounded-full border-2 border-ua-ink bg-white px-9 py-4 text-xl font-bold text-ua-ink shadow-[5px_5px_0_var(--ua-ink)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-ua-ink hover:text-white hover:shadow-[8px_8px_0_var(--ua-ink)] active:translate-y-0 active:shadow-[2px_2px_0_var(--ua-ink)]"
+              style={{ fontFamily: "var(--font-epilogue)" }}
+            >
+              {HERO.ctaLabel}
+              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </Link>
+            <Link
+              href="/contact#contact-form"
+              className="group inline-flex items-center gap-2 rounded-full border-2 border-ua-ink bg-ua-sky px-9 py-4 text-xl font-bold text-ua-ink shadow-[5px_5px_0_var(--ua-ink)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-ua-ink hover:text-white hover:shadow-[8px_8px_0_var(--ua-ink)] active:translate-y-0 active:shadow-[2px_2px_0_var(--ua-ink)]"
+              style={{ fontFamily: "var(--font-epilogue)" }}
+            >
+              enquire
+              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+            </Link>
+          </div>
         </Reveal>
       </div>
     </section>

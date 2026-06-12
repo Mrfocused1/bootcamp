@@ -98,11 +98,23 @@ export function Hero() {
     };
 
     window.addEventListener("ua:scribble-done", start, { once: true });
-    const fallback = window.setTimeout(start, 3200);
+    // Fallback in case the event is missed. While the IntroSplash is still
+    // covering the page it re-fires the event itself at its hand-off, so give
+    // it longer before forcing the entrance unseen behind the splash.
+    let fallback2: number | undefined;
+    const fallback = window.setTimeout(() => {
+      const intro = document.querySelector(".ua-intro");
+      if (intro && getComputedStyle(intro).display !== "none") {
+        fallback2 = window.setTimeout(start, 8000);
+        return;
+      }
+      start();
+    }, 3200);
 
     return () => {
       window.removeEventListener("ua:scribble-done", start);
       clearTimeout(fallback);
+      clearTimeout(fallback2);
       ctx?.revert();
     };
   }, []);

@@ -107,6 +107,40 @@
 .ua-marquee-rev { animation: ua-marquee-rev 24s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .ua-marquee-rev { animation: none; } }
 
+/* ── Header logo jiggle on hover ── */
+@keyframes ua-jiggle {
+  0% { transform: rotate(0deg) scale(1); }
+  20% { transform: rotate(-8deg) scale(1.06); }
+  40% { transform: rotate(7deg) scale(1.06); }
+  60% { transform: rotate(-5deg) scale(1.03); }
+  80% { transform: rotate(3deg) scale(1.01); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.ua-jiggle-hover:hover .ua-jiggle-target { animation: ua-jiggle 500ms ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .ua-jiggle-hover:hover .ua-jiggle-target { animation: none; } }
+
+/* ── Testimonial card + sticker hover wiggle (opposite directions). Uses the
+   standalone `rotate` property so it composes with the cards' inline
+   `transform` tilt and GSAP's entrance transforms instead of overriding them. ── */
+@keyframes ua-wiggle {
+  0%, 100% { rotate: 0deg; }
+  25% { rotate: 3deg; }
+  75% { rotate: -3deg; }
+}
+@keyframes ua-wiggle-rev {
+  0%, 100% { rotate: 0deg; }
+  25% { rotate: -5deg; }
+  75% { rotate: 5deg; }
+}
+/* Settle back smoothly when the cursor leaves mid-wiggle. */
+.ua-wiggle-card, .ua-wiggle-icon { transition: rotate 180ms ease-out; }
+.ua-wiggle-pair:hover .ua-wiggle-card { animation: ua-wiggle 600ms ease-in-out infinite; }
+.ua-wiggle-pair:hover .ua-wiggle-icon { animation: ua-wiggle-rev 600ms ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .ua-wiggle-pair:hover .ua-wiggle-card,
+  .ua-wiggle-pair:hover .ua-wiggle-icon { animation: none; }
+}
+
 /* ── Horizontal-words pinned section (post-hero) ── */
 .hw-section { height: 300svh; overflow: clip; }
 .hw-content { position: sticky; top: 0; display: flex; align-items: center; height: 100svh; overflow: hidden; }

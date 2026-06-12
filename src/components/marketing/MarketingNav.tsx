@@ -126,8 +126,8 @@ export function MarketingNav({ hideLogin = false }: { hideLogin?: boolean }) {
           <span className="text-sm font-black uppercase tracking-wider text-ua-ink transition-colors duration-200 group-hover:text-white">menu</span>
         </button>
 
-        <Link href="/" aria-label={SITE.name} className="shrink-0">
-          <BrandLogo color={fg} className="h-16 w-[74px] md:h-20 md:w-[93px]" />
+        <Link href="/" aria-label={SITE.name} className="ua-jiggle-hover shrink-0">
+          <BrandLogo color={fg} className="ua-jiggle-target h-16 w-[74px] md:h-20 md:w-[93px]" />
         </Link>
 
         {hideLogin ? (

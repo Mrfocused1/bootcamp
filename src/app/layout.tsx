@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Baloo_2, DM_Sans, Epilogue, Lora } from "next/font/google";
+import { Baloo_2, DM_Sans, Epilogue, Lora, Yellowtail } from "next/font/google";
 import "./globals.css";
 
 // Chunky, rounded "chewy" display face for the brand wordmark.
@@ -30,6 +30,15 @@ const lora = Lora({
   display: "swap",
 });
 
+// Retro signpainter script for the intro-splash subtitle — flat-brush
+// connected lettering in the same vintage register as the badge logo.
+const yellowtail = Yellowtail({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: "400",
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: "Bridgeway AI Bootcamp — Learn to build websites with AI in 5 days",
   description:
@@ -44,7 +53,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${dmSans.variable} ${epilogue.variable} ${lora.variable} ${baloo.variable} h-full`}
+      className={`${dmSans.variable} ${epilogue.variable} ${lora.variable} ${baloo.variable} ${yellowtail.variable} h-full`}
       style={{ fontFamily: "var(--font-dm-sans), DM Sans, sans-serif" }}
     >
       <body className="ua-body flex flex-col min-h-full">

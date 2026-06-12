@@ -45,6 +45,12 @@ const PHOTOS: Photo[] = [
     className: "left-[6%] top-0 w-[15rem] aspect-[3/4]",
     rotate: -4,
     z: 2,
+    sticker: {
+      name: "thumbs-up",
+      size: 84,
+      rotate: 10,
+      className: "-right-5 -top-6",
+    },
   },
   {
     src: "/marketing/placeholders/p2.png",
@@ -113,7 +119,7 @@ function PhotoCard({
 }) {
   return (
     <div
-      className="h-full w-full overflow-hidden rounded-2xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_rgba(0,0,0,0.45)]"
+      className="ua-wiggle-card h-full w-full overflow-hidden rounded-2xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_rgba(0,0,0,0.45)]"
       style={{ transform: `rotate(${rotate}deg)` }}
     >
       {/* TODO(owner): swap placeholder for a real client photo. */}
@@ -172,6 +178,7 @@ export function Testimonials() {
         p.style.strokeDashoffset = "0";
       });
       gsap.set(photos, { opacity: 1, scale: 1, y: 0 });
+      gsap.set(section.querySelectorAll("[data-sticker]"), { opacity: 1 });
       return;
     }
 
@@ -199,10 +206,32 @@ export function Testimonials() {
         );
       });
 
-      // Each photo pops in with a bounce as it scrolls into view, so scrolling
-      // down reveals the cards one after another.
+      // Each photo pops in with a bounce as it scrolls into view, and — like
+      // the squiggle draws — re-animates on every pass: the entrance resets
+      // once the card is fully out of view and restarts on each re-enter
+      // (from either direction). The card's sticker follows 0.2s after the
+      // card lands: fade in + elastic wiggle settle. The sticker is chained via
+      // onComplete (not a timeline-based ScrollTrigger) — uninitialized
+      // timeline triggers get force-refreshed mid-sweep by ScrollTrigger and
+      // can self-kill during the loop and crash it.
       photos.forEach((ph) => {
-        gsap.fromTo(
+        const sticker = ph.querySelector<HTMLElement>("[data-sticker]");
+        const stickerIn = sticker
+          ? gsap.fromTo(
+              sticker,
+              { opacity: 0, scale: 0.4, rotation: -24 },
+              {
+                opacity: 1,
+                scale: 1,
+                rotation: 0,
+                duration: 0.9,
+                ease: "elastic.out(1.1, 0.35)",
+                delay: 0.2,
+                paused: true,
+              },
+            )
+          : null;
+        const cardIn = gsap.fromTo(
           ph,
           { opacity: 0, scale: 0.85, y: 36 },
           {
@@ -211,9 +240,27 @@ export function Testimonials() {
             y: 0,
             duration: 0.65,
             ease: "back.out(1.5)",
-            scrollTrigger: { trigger: ph, start: "top 82%", once: true },
+            paused: true,
+            onComplete: () => stickerIn?.restart(true),
           },
         );
+        const replay = () => {
+          stickerIn?.pause(0);
+          cardIn.restart();
+        };
+        const reset = () => {
+          stickerIn?.pause(0);
+          cardIn.pause(0);
+        };
+        ScrollTrigger.create({
+          trigger: ph,
+          start: "top 82%",
+          end: "bottom top",
+          onEnter: replay,
+          onEnterBack: replay,
+          onLeave: reset,
+          onLeaveBack: reset,
+        });
       });
     }, section);
 
@@ -296,17 +343,23 @@ export function Testimonials() {
             <div
               key={i}
               data-photo
-              className={`ua-reveal absolute ${photo.className}`}
+              className={`ua-reveal ua-wiggle-pair absolute ${photo.className}`}
               style={{ zIndex: photo.z, opacity: 0 }}
             >
               <PhotoCard src={photo.src} rotate={photo.rotate} />
               {photo.sticker && (
-                <Sticker
-                  name={photo.sticker.name}
-                  size={photo.sticker.size}
-                  rotate={photo.sticker.rotate}
-                  className={`absolute z-20 ${photo.sticker.className}`}
-                />
+                <div
+                  data-sticker
+                  className={`ua-wiggle-icon absolute z-20 ${photo.sticker.className}`}
+                  style={{ opacity: 0 }}
+                >
+                  <Sticker
+                    name={photo.sticker.name}
+                    size={photo.sticker.size}
+                    rotate={photo.sticker.rotate}
+                    animate={false}
+                  />
+                </div>
               )}
             </div>
           ))}
@@ -319,7 +372,7 @@ export function Testimonials() {
               <div
                 key={i}
                 data-photo
-                className="ua-reveal relative w-[72%] max-w-[17rem] aspect-[3/4]"
+                className="ua-reveal ua-wiggle-pair relative w-[72%] max-w-[17rem] aspect-[3/4]"
                 style={{
                   opacity: 0,
                   alignSelf: i % 2 === 0 ? "flex-start" : "flex-end",
@@ -327,12 +380,18 @@ export function Testimonials() {
               >
                 <PhotoCard src={photo.src} rotate={photo.rotate} />
                 {photo.sticker && (
-                  <Sticker
-                    name={photo.sticker.name}
-                    size={photo.sticker.size * 0.8}
-                    rotate={photo.sticker.rotate}
-                    className={`absolute z-20 ${photo.sticker.className}`}
-                  />
+                  <div
+                    data-sticker
+                    className={`ua-wiggle-icon absolute z-20 ${photo.sticker.className}`}
+                    style={{ opacity: 0 }}
+                  >
+                    <Sticker
+                      name={photo.sticker.name}
+                      size={photo.sticker.size * 0.8}
+                      rotate={photo.sticker.rotate}
+                      animate={false}
+                    />
+                  </div>
                 )}
               </div>
             ))}
