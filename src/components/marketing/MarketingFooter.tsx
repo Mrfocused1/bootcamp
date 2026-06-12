@@ -23,7 +23,7 @@ export function MarketingFooter() {
             <ul className="mt-2 space-y-2">
               {FOOTER_LINKS.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-lg hover:text-ua-pink">
+                  <Link href={l.href} className="text-lg font-bold hover:text-ua-pink">
                     {l.label}
                   </Link>
                 </li>
@@ -33,13 +33,13 @@ export function MarketingFooter() {
 
           <div>
             <p className="text-sm uppercase tracking-widest opacity-70">Contact</p>
-            <a href={`mailto:${SITE.email}`} className="mt-2 block text-lg hover:text-ua-pink">
+            <a href={`mailto:${SITE.email}`} className="mt-2 block text-lg font-bold hover:text-ua-pink">
               {SITE.email}
             </a>
             <ul className="mt-3 flex gap-4">
               {SOCIALS.map((s) => (
                 <li key={s.href}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="hover:text-ua-pink">
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="font-bold hover:text-ua-pink">
                     {s.label}
                   </a>
                 </li>
