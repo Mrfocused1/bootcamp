@@ -31,7 +31,7 @@ export function Tools() {
               name="laptop-2"
               size={104}
               rotate={-9}
-              className="pointer-events-none absolute -left-16 -top-12 z-10 hidden sm:block md:-left-28 md:-top-14"
+              className="pointer-events-none absolute -left-28 top-0 z-10 hidden sm:block md:-left-44 md:-top-2"
             />
           </h2>
         </div>
