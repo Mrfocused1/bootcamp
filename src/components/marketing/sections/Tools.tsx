@@ -1,14 +1,16 @@
 import { Reveal } from "@/components/marketing/Reveal";
 
-// Full-colour brand marks (svgl / SimpleIcons brand colours). Logos only — no
-// wordmark text. Wispr is omitted until a logo asset exists for it.
-const TOOLS: { name: string; icon: string }[] = [
-  { name: "Cursor", icon: "/marketing/tools/color/cursor.svg" },
-  { name: "Supabase", icon: "/marketing/tools/color/supabase.svg" },
-  { name: "Stripe", icon: "/marketing/tools/color/stripe.svg" },
-  { name: "Resend", icon: "/marketing/tools/color/resend.svg" },
-  { name: "Google", icon: "/marketing/tools/color/google.svg" },
-  { name: "GitHub", icon: "/marketing/tools/color/github.svg" },
+// Official brand logos in their real colours — wordmark lockups where that IS
+// the brand's logo (Stripe, Google, GitHub, Cursor), icon marks otherwise
+// (Supabase bolt, Resend R). No hand-typed text. Wispr is omitted until a
+// logo asset exists for it.
+const TOOLS: { name: string; icon: string; imgClass: string }[] = [
+  { name: "Cursor", icon: "/marketing/tools/color/cursor.svg", imgClass: "h-7 md:h-8" },
+  { name: "Supabase", icon: "/marketing/tools/color/supabase.svg", imgClass: "h-10 md:h-11" },
+  { name: "Stripe", icon: "/marketing/tools/color/stripe.svg", imgClass: "h-8 md:h-10" },
+  { name: "Resend", icon: "/marketing/tools/color/resend.svg", imgClass: "h-9 md:h-10" },
+  { name: "Google", icon: "/marketing/tools/color/google.svg", imgClass: "h-9 md:h-10" },
+  { name: "GitHub", icon: "/marketing/tools/color/github.svg", imgClass: "h-8 md:h-9" },
 ];
 
 const EDGE_FADE =
@@ -49,7 +51,7 @@ export function Tools() {
                     alt={t.name}
                     width={48}
                     height={48}
-                    className="h-10 w-auto md:h-12"
+                    className={`w-auto ${t.imgClass}`}
                   />
                 </div>
               ))}
