@@ -93,7 +93,8 @@ export function Future() {
   // it's allowed) while they're in view.
   useEffect(() => {
     const section = sectionRef.current;
-    if (!section || window.matchMedia("(hover: hover)").matches) return;
+    if (!section || typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia("(hover: hover)").matches) return;
     const vids = Array.from(section.querySelectorAll("video"));
     if (!vids.length) return;
     const io = new IntersectionObserver(
