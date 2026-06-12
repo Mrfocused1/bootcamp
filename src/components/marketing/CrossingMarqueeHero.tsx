@@ -8,18 +8,18 @@ import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 // crossing marquee bands.
 type Item = { word: string; sticker: string };
 const ITEMS_A: Item[] = [
-  { word: "real", sticker: "hundred" },
-  { word: "shipped", sticker: "rock-on" },
-  { word: "live", sticker: "lightning" },
-  { word: "launched", sticker: "lets-go" },
-  { word: "built", sticker: "sparkles" },
+  { word: "coming soon", sticker: "hundred" },
+  { word: "coming soon", sticker: "rock-on" },
+  { word: "coming soon", sticker: "lightning" },
+  { word: "coming soon", sticker: "lets-go" },
+  { word: "coming soon", sticker: "sparkles" },
 ];
 const ITEMS_B: Item[] = [
-  { word: "live", sticker: "peace" },
-  { word: "launched", sticker: "high-five" },
-  { word: "real", sticker: "cool-smiley" },
-  { word: "shipped", sticker: "megaphone" },
-  { word: "built", sticker: "starburst" },
+  { word: "coming soon", sticker: "peace" },
+  { word: "coming soon", sticker: "high-five" },
+  { word: "coming soon", sticker: "cool-smiley" },
+  { word: "coming soon", sticker: "megaphone" },
+  { word: "coming soon", sticker: "starburst" },
 ];
 
 function Band({ items, reverse }: { items: Item[]; reverse?: boolean }) {
