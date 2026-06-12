@@ -24,7 +24,7 @@ describe("MarketingNav", () => {
   it("includes the expected nav links and NOT an FAQ link", () => {
     const { container } = render(<MarketingNav />);
     expect(container.querySelector('#nav-menu a[href="/pricing"]')).toBeInTheDocument();
-    expect(container.querySelector('#nav-menu a[href="/success-stories"]')).toBeInTheDocument();
+    expect(container.querySelector('#nav-menu a[href="/work"]')).toBeInTheDocument();
     expect(container.querySelector('#nav-menu a[href="/faq"]')).not.toBeInTheDocument();
   });
 

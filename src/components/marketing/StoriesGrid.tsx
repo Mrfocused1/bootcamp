@@ -16,6 +16,10 @@ export type Story = {
   result: string;
   /** Optional looping clip shown in the card's media slot instead of a photo. */
   video?: string;
+  /** Optional image for the media slot (falls back to a cycled placeholder). */
+  image?: string;
+  /** Optional live-site URL for the "View site" link. */
+  href?: string;
 };
 
 // Per-card resting tilt + vertical stagger (scattered, like the reference), and
@@ -65,7 +69,7 @@ export function StoriesGrid({ stories }: { stories: Story[] }) {
   return (
     <div className="grid gap-x-6 gap-y-16 sm:grid-cols-2 md:gap-x-8 lg:grid-cols-3">
       {stories.map((story, i) => {
-        const img = `/marketing/placeholders/p${(i % 8) + 1}.png`;
+        const img = story.image ?? `/marketing/placeholders/p${(i % 8) + 1}.png`;
         return (
           <div
             key={story.title}
@@ -124,7 +128,9 @@ export function StoriesGrid({ stories }: { stories: Story[] }) {
                 </h3>
                 <p className="mt-3 text-lg text-ua-ink/80">{story.result}</p>
                 <Link
-                  href="#"
+                  href={story.href ?? "#"}
+                  target={story.href ? "_blank" : undefined}
+                  rel={story.href ? "noopener noreferrer" : undefined}
                   className="mt-5 inline-block font-bold text-ua-blue underline-offset-4 hover:underline"
                 >
                   View site →

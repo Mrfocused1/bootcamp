@@ -12,7 +12,7 @@ export const NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Syllabus", href: "/syllabus" },
   { label: "Pricing", href: "/pricing" },
-  { label: "Success stories", href: "/success-stories" },
+  { label: "Our work", href: "/work" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
 ];
@@ -21,6 +21,7 @@ export const FOOTER_LINKS: NavLink[] = [
   { label: "FAQ", href: "/faq" },
   { label: "About", href: "/about" },
   { label: "Pricing", href: "/pricing" },
+  { label: "Success stories", href: "/success-stories" },
   { label: "Contact", href: "/contact" },
 ];
 

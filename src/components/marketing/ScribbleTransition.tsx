@@ -69,6 +69,7 @@ const PAGE_STYLE: Record<string, { color: string; angle: number }> = {
   "/pricing": { color: "var(--ua-green)", angle: 63 },
   "/syllabus": { color: "var(--ua-orange)", angle: -57 },
   "/success-stories": { color: "var(--ua-sky)", angle: 47 },
+  "/work": { color: "var(--ua-green)", angle: -48 },
   "/faq": { color: "var(--ua-pink)", angle: -61 },
   "/contact": { color: "var(--ua-blue)", angle: 54 },
   "/privacy": { color: "var(--ua-sky)", angle: -49 },
