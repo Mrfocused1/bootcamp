@@ -1,4 +1,3 @@
-import { IntroSplash } from "@/components/marketing/IntroSplash";
 import { Hero } from "@/components/marketing/Hero";
 import { HorizontalWords } from "@/components/marketing/sections/HorizontalWords";
 import { Future } from "@/components/marketing/sections/Future";
@@ -12,7 +11,6 @@ import { MARQUEE_ITEMS } from "@/lib/marketing/content";
 export default function HomePage() {
   return (
     <>
-      <IntroSplash />
       <Hero />
       <HorizontalWords />
       <Future />

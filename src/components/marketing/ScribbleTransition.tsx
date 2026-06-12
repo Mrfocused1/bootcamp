@@ -59,9 +59,7 @@ function generateScribblePath(): string {
   return path;
 }
 
-// Exported for the homepage IntroSplash, which ends with the same marker
-// scribble so the intro hands off to the page in the site's own language.
-export const SCRIBBLE_PATH = generateScribblePath();
+const SCRIBBLE_PATH = generateScribblePath();
 
 // Per-page colour (as a CSS variable value, so it can be applied imperatively
 // the instant a transition begins) and a diagonal sweep angle.
