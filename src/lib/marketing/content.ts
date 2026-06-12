@@ -4,8 +4,7 @@ export type NavLink = { label: string; href: string };
 
 export const SITE = {
   name: "Bridgeway AI Bootcamp",
-  // TODO(owner): replace with the real contact email before launch
-  email: "hello@bridgewayai.co",
+  email: "hello@bridgewayaibootcamp.com",
 };
 
 // FAQ intentionally lives in the footer, not the nav.
