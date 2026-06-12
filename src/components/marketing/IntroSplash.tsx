@@ -3,6 +3,10 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { SCRIBBLE_PATH } from "@/components/marketing/ScribbleTransition";
+import {
+  INTRO_LOGO_PATHS,
+  INTRO_LOGO_VIEWBOX,
+} from "@/lib/marketing/introLogoTrace";
 import { prefersReducedMotion } from "@/lib/marketing/reducedMotion";
 
 // Run before paint so returning visitors never see the splash flash.
@@ -14,10 +18,10 @@ const SEEN_KEY = "ua-intro-seen";
 /**
  * One-per-session homepage INTRO SPLASH.
  *
- *   1. The logo scribble-draws itself in (same stroke-dashoffset draw as the
- *      squiggle arrows — a thick handwritten mask stroke reveals the artwork).
- *   2. A script-font subtitle writes itself in beneath, left to right.
- *   3. The marker scribble (same path as the page transitions) draws ON to
+ *   1. The logo draws itself in — a genuine stroke trace along the vectorised
+ *      badge artwork (same stroke-dashoffset technique as the squiggle
+ *      arrows), then the crisp cream artwork inks in over the line work.
+ *   2. The marker scribble (same path as the page transitions) draws ON to
  *      cover the splash, the dark backdrop drops away beneath it, and the
  *      scribble un-draws to reveal the homepage.
  *
@@ -26,42 +30,20 @@ const SEEN_KEY = "ua-intro-seen";
  * its listener runs first), then re-dispatched as the final un-draw starts so
  * the hero entrance plays just as the page appears.
  */
-
-// Thick handwritten back-and-forth sweep used as a reveal mask: animating its
-// dashoffset "draws" whatever it masks. Deterministic, so SSR and client match.
-function buildMaskScribble(w: number, h: number, rows: number): string {
-  const step = h / rows;
-  let d = `M ${-w * 0.06} ${step / 2}`;
-  for (let i = 0; i < rows; i++) {
-    const y = step / 2 + i * step;
-    const ltr = i % 2 === 0;
-    const x0 = ltr ? -w * 0.06 : w * 1.06;
-    const x1 = ltr ? w * 1.06 : -w * 0.06;
-    if (i > 0) d += ` C ${x0} ${y - step * 0.6}, ${x0} ${y - step * 0.25}, ${x0} ${y}`;
-    d += ` C ${x0 + (x1 - x0) * 0.3} ${y - step * 0.3}, ${x0 + (x1 - x0) * 0.7} ${y + step * 0.3}, ${x1} ${y}`;
-  }
-  return d;
-}
-
-const LOGO_MASK = buildMaskScribble(200, 200, 8);
-const SUB_MASK = buildMaskScribble(640, 100, 1);
-
 export function IntroSplash() {
   const overlayRef = useRef<HTMLDivElement>(null);
   const backdropRef = useRef<HTMLDivElement>(null);
-  const logoMaskRef = useRef<SVGPathElement>(null);
-  const subMaskRef = useRef<SVGPathElement>(null);
+  const logoGroupRef = useRef<SVGGElement>(null);
   const scribbleSvgRef = useRef<SVGSVGElement>(null);
   const scribbleRef = useRef<SVGPathElement>(null);
 
   useIsoLayoutEffect(() => {
     const overlay = overlayRef.current;
     const backdrop = backdropRef.current;
-    const logoMask = logoMaskRef.current;
-    const subMask = subMaskRef.current;
+    const group = logoGroupRef.current;
     const scribbleSvg = scribbleSvgRef.current;
     const scribble = scribbleRef.current;
-    if (!overlay || !backdrop || !logoMask || !subMask || !scribbleSvg || !scribble) {
+    if (!overlay || !backdrop || !group || !scribbleSvg || !scribble) {
       return;
     }
 
@@ -91,64 +73,54 @@ export function IntroSplash() {
 
     const measure = (p: SVGPathElement) =>
       typeof p.getTotalLength === "function" ? p.getTotalLength() : 0;
-    const logoLen = measure(logoMask);
-    const subLen = measure(subMask);
+    const paths = Array.from(group.querySelectorAll("path"));
+    const lens = paths.map(measure);
+    const totalLen = lens.reduce((a, b) => a + b, 0);
     const scribLen = measure(scribble);
-    if (!logoLen || !subLen || !scribLen) {
+    if (!totalLen || !scribLen) {
       // jsdom / very old browsers: skip straight to the page.
       handoff();
       finish();
       return;
     }
 
-    // Hide both masked elements until the timeline takes over, so nothing
-    // pops in while we wait for assets.
-    gsap.set(logoMask, { strokeDasharray: logoLen, strokeDashoffset: logoLen });
-    gsap.set(subMask, { strokeDasharray: subLen, strokeDashoffset: subLen });
-
-    let ctx: gsap.Context | undefined;
-    let cancelled = false;
-
-    const play = () => {
-      if (cancelled) return;
-      ctx = gsap.context(() => {
-        const tl = gsap.timeline({ onComplete: finish });
-        // 1. logo draws in, unhurried
-        tl.to(logoMask, { strokeDashoffset: 0, duration: 3.2, ease: "none" }, 0.5)
-          // 2. subtitle writes in after a short beat
-          .to(subMask, { strokeDashoffset: 0, duration: 1.8, ease: "none" }, "+=0.25")
-          // long beat to take it in
-          .to({}, { duration: 1.6 })
-          // 3. marker scribble covers the splash…
-          .set(scribbleSvg, { visibility: "visible" })
-          .set(scribble, { strokeDasharray: scribLen, strokeDashoffset: scribLen })
-          .to(scribble, { strokeDashoffset: 0, duration: 1.0, ease: "none" })
-          // …the dark backdrop drops away beneath the full cover…
-          .set(backdrop, { autoAlpha: 0 })
-          .add(handoff)
-          // …and un-draws to reveal the homepage.
-          .to(scribble, { strokeDashoffset: scribLen, duration: 1.0, ease: "none" });
-      }, overlay);
-    };
-
-    // Wait (briefly) for the logo art and the script font so the draw reveals
-    // real pixels — capped so a slow connection never stalls the intro.
-    const img = new Image();
-    img.src = "/marketing/logo-cream.png";
-    const assets = Promise.all([
-      img.decode ? img.decode().catch(() => {}) : Promise.resolve(),
-      document.fonts?.ready?.catch?.(() => {}) ?? Promise.resolve(),
-    ]);
-    const cap = new Promise<void>((resolve) => {
-      window.setTimeout(resolve, 1200);
+    // Hide the line work until the timeline takes over.
+    paths.forEach((p, i) => {
+      gsap.set(p, { strokeDasharray: lens[i], strokeDashoffset: lens[i] });
     });
-    Promise.race([assets, cap]).then(play);
+
+    const ctx = gsap.context(() => {
+      const DRAW_TOTAL = 3.4;
+      const tl = gsap.timeline({ onComplete: finish, delay: 0.5 });
+      // 1. the pen draws each piece of the badge in turn, time shared
+      //    proportionally to its length…
+      paths.forEach((p, i) => {
+        tl.to(p, {
+          strokeDashoffset: 0,
+          duration: DRAW_TOTAL * (lens[i] / totalLen),
+          ease: "none",
+        });
+      });
+      // …then the solid artwork inks in over the line work
+      tl.to(group, { fillOpacity: 1, duration: 0.8, ease: "power2.inOut" }, "-=0.2")
+        .to(group, { strokeOpacity: 0, duration: 0.5, ease: "power2.out" }, "<+0.3")
+        // long beat to take it in
+        .to({}, { duration: 1.6 })
+        // 2. marker scribble covers the splash…
+        .set(scribbleSvg, { visibility: "visible" })
+        .set(scribble, { strokeDasharray: scribLen, strokeDashoffset: scribLen })
+        .to(scribble, { strokeDashoffset: 0, duration: 1.0, ease: "none" })
+        // …the dark backdrop drops away beneath the full cover…
+        .set(backdrop, { autoAlpha: 0 })
+        .add(handoff)
+        // …and un-draws to reveal the homepage.
+        .to(scribble, { strokeDashoffset: scribLen, duration: 1.0, ease: "none" });
+    }, overlay);
 
     return () => {
-      cancelled = true;
       window.removeEventListener("ua:scribble-done", suppress);
       document.body.style.overflow = prevOverflow;
-      ctx?.revert();
+      ctx.revert();
     };
   }, []);
 
@@ -164,75 +136,25 @@ export function IntroSplash() {
 
       <div
         ref={backdropRef}
-        className="absolute inset-0 flex flex-col items-center justify-center gap-8 bg-ua-ink px-6"
+        className="absolute inset-0 flex items-center justify-center bg-ua-ink px-6"
       >
-        {/* Logo, revealed by a thick handwritten mask stroke drawing in. */}
-        <svg viewBox="0 0 200 200" className="w-[200px] md:w-[270px]">
-          <defs>
-            <mask
-              id="ua-intro-logo-mask"
-              maskUnits="userSpaceOnUse"
-              x="-30"
-              y="-30"
-              width="260"
-              height="260"
-            >
-              <path
-                ref={logoMaskRef}
-                d={LOGO_MASK}
-                fill="none"
-                stroke="#fff"
-                strokeWidth={36}
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </mask>
-          </defs>
-          {/* Pre-recolored cream asset — Safari ignores CSS filters on SVG
-              <image>, so the colour is baked into the file itself. */}
-          <image
-            href="/marketing/logo-cream.png"
-            x="8"
-            y="8"
-            width="184"
-            height="184"
-            preserveAspectRatio="xMidYMid meet"
-            mask="url(#ua-intro-logo-mask)"
-          />
-        </svg>
-
-        {/* Script subtitle, written in left-to-right by the same mask trick. */}
-        <svg viewBox="0 0 640 100" className="w-[320px] md:w-[470px]">
-          <defs>
-            <mask
-              id="ua-intro-sub-mask"
-              maskUnits="userSpaceOnUse"
-              x="-50"
-              y="-30"
-              width="740"
-              height="160"
-            >
-              <path
-                ref={subMaskRef}
-                d={SUB_MASK}
-                fill="none"
-                stroke="#fff"
-                strokeWidth={140}
-                strokeLinecap="round"
-              />
-            </mask>
-          </defs>
-          <text
-            x="320"
-            y="66"
-            textAnchor="middle"
+        {/* The badge: the brand SVG's own paths draw in pen-style, one piece
+            after another, then the solid cream fill inks in and the line work
+            fades away. */}
+        <svg viewBox={INTRO_LOGO_VIEWBOX} className="w-[250px] md:w-[330px]">
+          <g
+            ref={logoGroupRef}
             fill="var(--ua-bg)"
-            fontSize="52"
-            mask="url(#ua-intro-sub-mask)"
-            style={{ fontFamily: "var(--font-script), cursive" }}
+            fillOpacity={0}
+            stroke="var(--ua-bg)"
+            strokeWidth={0.9}
+            strokeLinecap="round"
+            strokeLinejoin="round"
           >
-            premium websites, powered by ai
-          </text>
+            {INTRO_LOGO_PATHS.map((d, i) => (
+              <path key={i} d={d} />
+            ))}
+          </g>
         </svg>
       </div>
 
