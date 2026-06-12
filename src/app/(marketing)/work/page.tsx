@@ -1,57 +1,17 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/marketing/PageHero";
-import { StoriesGrid, type Story } from "@/components/marketing/StoriesGrid";
+import { Reveal } from "@/components/marketing/Reveal";
+import { Sticker } from "@/components/marketing/Sticker";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
 
 export const metadata: Metadata = {
   title: "Our Work — Bridgeway AI Bootcamp",
   description:
-    "Websites we've designed, built and shipped with AI — stores, booking sites, portfolios and apps, built with the exact workflow we teach in the bootcamp.",
+    "Websites we've designed, built and shipped with AI — case studies coming soon.",
 };
 
-// TODO(owner): replace the placeholder projects below with real client work —
-// image (4:3 or 3:4), live URL, and a one-line result each.
-const PROJECTS: Story[] = [
-  {
-    name: "More Fire Sauce",
-    category: "Brand & store",
-    title: "hot sauce brand site",
-    result: "Brand, storefront and checkout — shipped in days",
-    image: "/marketing/work-1.jpg",
-  },
-  {
-    name: "Flair Studio",
-    category: "Booking",
-    title: "salon booking site",
-    result: "Online bookings replacing DM back-and-forth",
-    image: "/marketing/people-3.jpg",
-  },
-  {
-    name: "Placeholder",
-    category: "Stores",
-    title: "coffee subscription store",
-    result: "Subscriptions with Stripe billing",
-  },
-  {
-    name: "Placeholder",
-    category: "Sites",
-    title: "author portfolio",
-    result: "A home for the books and the press",
-  },
-  {
-    name: "Placeholder",
-    category: "SaaS",
-    title: "saas dashboard",
-    result: "From idea to working MVP",
-  },
-  {
-    name: "Placeholder",
-    category: "Charity",
-    title: "community charity site",
-    result: "Donations and volunteer sign-ups in-house",
-  },
-];
-
+// NOTE(owner): the project grid is hidden until real case studies are ready —
+// see git history (StoriesGrid + PROJECTS) to restore it.
 export default function WorkPage() {
   return (
     <>
@@ -62,10 +22,29 @@ export default function WorkPage() {
         sticker="shooting-star"
       />
 
-      {/* Project grid — scattered tilt + scroll-parallax budge (GSAP) */}
-      <section className="bg-ua-bg px-6 py-24 md:px-10">
-        <div className="mx-auto max-w-6xl">
-          <StoriesGrid stories={PROJECTS} />
+      <section className="bg-ua-bg px-6 py-28 md:px-10 md:py-36">
+        <div className="mx-auto max-w-3xl text-center">
+          <Reveal>
+            <div className="relative inline-block">
+              <h2
+                className="text-5xl font-black lowercase tracking-tight text-ua-ink md:text-7xl"
+                style={{ fontFamily: "var(--font-epilogue)" }}
+              >
+                coming soon
+              </h2>
+              <Sticker
+                name="magnifier"
+                size={96}
+                rotate={12}
+                className="pointer-events-none absolute -right-16 -top-10 z-10 hidden sm:block md:-right-28 md:-top-12"
+              />
+            </div>
+          </Reveal>
+          <Reveal>
+            <p className="mx-auto mt-6 max-w-xl text-lg text-ua-ink/70">
+              We&apos;re putting the case studies together — check back shortly.
+            </p>
+          </Reveal>
         </div>
       </section>
 
