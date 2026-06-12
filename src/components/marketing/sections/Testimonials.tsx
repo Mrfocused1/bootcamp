@@ -85,6 +85,12 @@ const PHOTOS: Photo[] = [
     imgClassName: "object-[center_30%]",
     rotate: -3,
     z: 3,
+    sticker: {
+      name: "lets-go",
+      size: 92,
+      rotate: 8,
+      className: "-right-6 -top-6",
+    },
   },
   {
     src: "/marketing/people-4.jpg",
