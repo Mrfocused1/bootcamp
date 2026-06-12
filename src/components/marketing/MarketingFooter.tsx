@@ -8,10 +8,10 @@ export function MarketingFooter() {
       <div className="mx-auto max-w-6xl px-6 py-12 md:px-10 md:py-14">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
-            <p className="text-sm uppercase tracking-widest opacity-70">Ready to start?</p>
+            <p className="text-sm font-bold uppercase tracking-widest opacity-70">Ready to start?</p>
             <Link
               href={HERO.ctaHref}
-              className="mt-2 inline-block text-3xl font-bold hover:text-ua-pink"
+              className="mt-2 inline-block text-3xl font-bold ua-wiggle-link"
               style={{ fontFamily: "var(--font-epilogue)" }}
             >
               enrol now →
@@ -19,11 +19,11 @@ export function MarketingFooter() {
           </div>
 
           <div>
-            <p className="text-sm uppercase tracking-widest opacity-70">Explore</p>
+            <p className="text-sm font-bold uppercase tracking-widest opacity-70">Explore</p>
             <ul className="mt-2 space-y-2">
               {FOOTER_LINKS.map((l) => (
                 <li key={l.href}>
-                  <Link href={l.href} className="text-lg font-bold hover:text-ua-pink">
+                  <Link href={l.href} className="text-lg font-bold ua-wiggle-link">
                     {l.label}
                   </Link>
                 </li>
@@ -32,14 +32,14 @@ export function MarketingFooter() {
           </div>
 
           <div>
-            <p className="text-sm uppercase tracking-widest opacity-70">Contact</p>
-            <a href={`mailto:${SITE.email}`} className="mt-2 block text-lg font-bold hover:text-ua-pink">
+            <p className="text-sm font-bold uppercase tracking-widest opacity-70">Contact</p>
+            <a href={`mailto:${SITE.email}`} className="mt-2 block text-lg font-bold ua-wiggle-link">
               {SITE.email}
             </a>
             <ul className="mt-3 flex gap-4">
               {SOCIALS.map((s) => (
                 <li key={s.href}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="font-bold hover:text-ua-pink">
+                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="font-bold ua-wiggle-link">
                     {s.label}
                   </a>
                 </li>
@@ -57,8 +57,8 @@ export function MarketingFooter() {
           </Link>
           <div className="flex flex-col gap-3 text-sm text-ua-bg/80 sm:items-end">
             <nav className="flex gap-5 font-semibold">
-              <Link href="/privacy" className="hover:text-ua-pink">Privacy</Link>
-              <Link href="/terms" className="hover:text-ua-pink">Terms</Link>
+              <Link href="/privacy" className="ua-wiggle-link">Privacy</Link>
+              <Link href="/terms" className="ua-wiggle-link">Terms</Link>
             </nav>
             <p className="opacity-70">© 2026 {SITE.name}. All rights reserved.</p>
           </div>

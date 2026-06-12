@@ -136,9 +136,14 @@
 .ua-wiggle-card, .ua-wiggle-icon { transition: rotate 180ms ease-out; }
 .ua-wiggle-pair:hover .ua-wiggle-card { animation: ua-wiggle 600ms ease-in-out infinite; }
 .ua-wiggle-pair:hover .ua-wiggle-icon { animation: ua-wiggle-rev 600ms ease-in-out infinite; }
+/* Footer links wiggle on hover (no colour change). inline-block so the
+   rotation actually applies to the text box. */
+.ua-wiggle-link { display: inline-block; }
+.ua-wiggle-link:hover { animation: ua-wiggle 600ms ease-in-out infinite; }
 @media (prefers-reduced-motion: reduce) {
   .ua-wiggle-pair:hover .ua-wiggle-card,
-  .ua-wiggle-pair:hover .ua-wiggle-icon { animation: none; }
+  .ua-wiggle-pair:hover .ua-wiggle-icon,
+  .ua-wiggle-link:hover { animation: none; }
 }
 
 /* ── Horizontal-words pinned section (post-hero) ── */
