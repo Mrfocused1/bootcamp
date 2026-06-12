@@ -4,7 +4,7 @@ import { BrandLogo } from "./BrandLogo";
 
 export function MarketingFooter() {
   return (
-    <footer className="bg-ua-blue text-ua-bg">
+    <footer data-nav-theme="dark" className="bg-ua-ink text-ua-bg">
       <div className="mx-auto max-w-6xl px-6 py-12 md:px-10 md:py-14">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
