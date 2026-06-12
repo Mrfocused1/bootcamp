@@ -87,6 +87,29 @@ export function Future() {
     return () => ctx.revert();
   }, []);
 
+  // On touch / no-hover devices there's no mouseenter to start the phone
+  // previews, and iOS won't even paint a first frame for an unplayed video —
+  // the cards render as empty boxes. Autoplay them (muted + playsInline, so
+  // it's allowed) while they're in view.
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section || window.matchMedia("(hover: hover)").matches) return;
+    const vids = Array.from(section.querySelectorAll("video"));
+    if (!vids.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const v = e.target as HTMLVideoElement;
+          if (e.isIntersecting) void v.play().catch(() => {});
+          else v.pause();
+        });
+      },
+      { threshold: 0.15 },
+    );
+    vids.forEach((v) => io.observe(v));
+    return () => io.disconnect();
+  }, []);
+
   return (
     <section
       ref={sectionRef}
