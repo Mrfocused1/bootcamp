@@ -192,7 +192,7 @@ export function Future() {
                     ? "/marketing/future-clip.mp4"
                     : i === 0
                       ? "/marketing/future-clip-2.mp4"
-                      : "/marketing/future-clip-3.mp4";
+                      : "/marketing/story-clip-1.mp4";
                 const isMiddle = i === 1;
                 return (
                   <div
