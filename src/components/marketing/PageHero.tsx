@@ -52,7 +52,10 @@ export function PageHero({
   }, []);
 
   return (
-    <section className="relative overflow-hidden bg-ua-ink px-6 pb-20 pt-36 text-ua-bg md:px-10 md:pb-28 md:pt-44">
+    <section
+      data-nav-theme="dark"
+      className="relative overflow-hidden bg-ua-ink px-6 pb-20 pt-36 text-ua-bg md:px-10 md:pb-28 md:pt-44"
+    >
       <div className="mx-auto max-w-4xl text-center">
         <p className="text-sm font-bold uppercase tracking-[0.2em] text-ua-bg/60">
           {eyebrow}

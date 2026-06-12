@@ -7,7 +7,7 @@ describe("Testimonials", () => {
     render(<Testimonials />);
     expect(
       screen.getByRole("heading").textContent?.replace(/\s+/g, " "),
-    ).toMatch(/meet the people who shipped a real website in 5 days\./i);
+    ).toMatch(/meet the people who shipped a premium website\./i);
   });
 
   it("renders placeholder photos for both layouts", () => {

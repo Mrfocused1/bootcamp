@@ -8,6 +8,8 @@ import type {
   Announcement,
   StudentSummary,
   AiMessage,
+  SessionRecording,
+  PlayableRecording,
 } from "@/lib/types";
 import {
   IS_MOCK,
@@ -17,10 +19,12 @@ import {
   MOCK_LESSONS,
   MOCK_PROGRESS,
   getMockUpcomingSessions,
+  getMockSessionRecordings,
   getMockAnnouncement,
   getMockStudents,
   getMockAiMessages,
   getMockDayFunnel,
+  SAMPLE_VIDEO_URL,
   type DayFunnelEntry,
 } from "@/lib/mock";
 
@@ -147,6 +151,71 @@ export async function getUpcomingSessions(): Promise<LiveSession[]> {
     .order("scheduled_at")
     .limit(3);
   return (data ?? []) as LiveSession[];
+}
+
+// ---------------------------------------------------------------------------
+// Session recordings
+// ---------------------------------------------------------------------------
+
+/** Recordings the current (enrolled) student can watch for a given day, each
+ *  with a ready-to-play URL (signed in prod, a sample clip in mock). */
+export async function getRecordingsForDay(dayIndex: number): Promise<PlayableRecording[]> {
+  if (IS_MOCK) {
+    return getMockSessionRecordings()
+      .filter((r) => r.day_index === dayIndex)
+      .map((r) => ({
+        id: r.id,
+        day_index: r.day_index,
+        title: r.title,
+        url: SAMPLE_VIDEO_URL,
+        duration_seconds: r.duration_seconds,
+        recorded_at: r.recorded_at,
+      }));
+  }
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  // RLS limits rows to the student's enrolled cohort (or all, for admins).
+  const { data } = await supabase
+    .from("session_recordings")
+    .select("id, day_index, title, object_key, duration_seconds, recorded_at")
+    .eq("day_index", dayIndex)
+    .order("recorded_at", { ascending: false });
+  const rows = (data ?? []) as SessionRecording[];
+  const { presignPlayback } = await import("@/lib/r2");
+  return Promise.all(
+    rows.map(async (r) => ({
+      id: r.id,
+      day_index: r.day_index,
+      title: r.title,
+      url: await presignPlayback(r.object_key),
+      duration_seconds: r.duration_seconds,
+      recorded_at: r.recorded_at,
+    })),
+  );
+}
+
+/** All recordings (admin view). */
+export async function getAllRecordings(): Promise<SessionRecording[]> {
+  if (IS_MOCK) return getMockSessionRecordings();
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("session_recordings")
+    .select("id, cohort_id, day_index, title, object_key, duration_seconds, recorded_at")
+    .order("recorded_at", { ascending: false });
+  return (data ?? []) as SessionRecording[];
+}
+
+/** All cohorts (admin view — for the recording upload form). */
+export async function getAllCohorts(): Promise<Cohort[]> {
+  if (IS_MOCK) return [getMockCohort()];
+  const { createClient } = await import("@/lib/supabase/server");
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("cohorts")
+    .select("id, name, start_date")
+    .order("start_date", { ascending: false });
+  return (data ?? []) as Cohort[];
 }
 
 // ---------------------------------------------------------------------------

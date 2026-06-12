@@ -204,3 +204,95 @@ export async function markResolved(messageId: string): Promise<{ ok: boolean }> 
 export async function markResolvedAction(messageId: string): Promise<void> {
   await markResolved(messageId);
 }
+
+// ---------------------------------------------------------------------------
+// Session recordings (Cloudflare R2)
+// ---------------------------------------------------------------------------
+
+/** Step 1: get a short-lived URL the browser uploads the file straight to R2. */
+export async function createRecordingUploadUrl(input: {
+  cohortId: string;
+  dayIndex: number;
+  fileName: string;
+  contentType: string;
+}): Promise<{ ok: boolean; uploadUrl?: string; key?: string; mock?: boolean; error?: string }> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    // No R2 in mock mode — skip the upload; confirmRecording will no-op too.
+    return { ok: true, mock: true, key: "mock" };
+  }
+
+  try {
+    const { presignUpload, recordingKey, isR2Configured } = await import("@/lib/r2");
+    if (!isR2Configured()) {
+      return { ok: false, error: "Cloudflare R2 is not configured yet (set the R2_* env vars)." };
+    }
+    const key = recordingKey(input.cohortId, input.dayIndex, input.fileName);
+    const uploadUrl = await presignUpload(key, input.contentType);
+    return { ok: true, uploadUrl, key };
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+}
+
+/** Step 2: once the file is in R2, save the recording row. */
+export async function confirmRecording(input: {
+  cohortId: string;
+  dayIndex: number;
+  title: string;
+  key: string;
+  durationSeconds: number;
+}): Promise<{ ok: boolean; error?: string }> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    revalidatePath("/admin/recordings");
+    return { ok: true };
+  }
+
+  try {
+    const { createAdminClient } = await import("@/lib/supabase/admin");
+    const supabase = createAdminClient();
+    const { error } = await supabase.from("session_recordings").insert({
+      cohort_id: input.cohortId,
+      day_index: input.dayIndex,
+      title: input.title,
+      object_key: input.key,
+      duration_seconds: Math.round(input.durationSeconds || 0),
+    });
+    if (error) return { ok: false, error: error.message };
+    revalidatePath("/admin/recordings");
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: (err as Error).message };
+  }
+}
+
+/** Delete a recording (DB row + the R2 object). */
+export async function deleteRecordingAction(id: string): Promise<void> {
+  await guardAdmin();
+
+  if (IS_MOCK) {
+    revalidatePath("/admin/recordings");
+    return;
+  }
+
+  const { createAdminClient } = await import("@/lib/supabase/admin");
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("session_recordings")
+    .select("object_key")
+    .eq("id", id)
+    .single();
+  if (data?.object_key) {
+    try {
+      const { deleteObject } = await import("@/lib/r2");
+      await deleteObject(data.object_key as string);
+    } catch {
+      // best-effort object delete; still remove the row
+    }
+  }
+  await supabase.from("session_recordings").delete().eq("id", id);
+  revalidatePath("/admin/recordings");
+}

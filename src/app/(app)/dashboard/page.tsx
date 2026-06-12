@@ -10,6 +10,8 @@ import { isDayUnlocked, unlockDate } from "@/lib/access";
 import { nextLessonDayIndex } from "@/lib/resume";
 import { DayCard } from "@/components/DayCard";
 import { ProgressBar } from "@/components/ProgressBar";
+import { Reveal } from "@/components/marketing/Reveal";
+import { Sticker } from "@/components/marketing/Sticker";
 
 function formatDate(isoString: string): string {
   const d = new Date(isoString);
@@ -71,196 +73,177 @@ export default async function DashboardPage() {
   const nextSession = sessions[0] ?? null;
 
   return (
-    <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-10">
-      {/* ── Continue / All caught up card ── */}
-      {resumeDay ? (
-        <section
-          className="rounded-2xl p-6 flex flex-col sm:flex-row sm:items-center gap-4"
-          style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
-        >
-          <div className="flex-1 space-y-2">
-            <p
-              className="text-xs font-semibold uppercase tracking-widest opacity-75"
-            >
-              continue where you left off
-            </p>
-            <h2
-              className="text-xl font-bold leading-snug"
-              style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif" }}
-            >
-              Day {resumeDay.day_index} &middot; {resumeDay.title}
-            </h2>
-            {resumeProgress && resumeProgress.watched_percent > 0 && (
-              <div className="space-y-1 max-w-xs">
-                <div
-                  className="h-1.5 w-full rounded-full overflow-hidden"
-                  style={{ backgroundColor: "rgba(255,255,255,0.25)" }}
-                >
-                  <div
-                    className="h-full rounded-full"
-                    style={{
-                      width: `${resumeProgress.watched_percent}%`,
-                      backgroundColor: "#fff",
-                    }}
-                  />
+    <div className="mx-auto max-w-6xl space-y-10 px-4 py-10 sm:px-6 md:py-14">
+      {/* ── Continue / All caught up ── */}
+      <Reveal>
+        {resumeDay ? (
+          <section className="relative flex flex-col gap-4 overflow-hidden rounded-3xl border-2 border-ua-ink bg-ua-blue p-7 text-ua-bg shadow-[6px_6px_0_var(--ua-ink)] sm:flex-row sm:items-center md:p-9">
+            <Sticker
+              name="lets-go"
+              size={96}
+              rotate={-10}
+              className="pointer-events-none absolute -right-2 -top-4 hidden sm:block md:right-6"
+            />
+            <div className="flex-1 space-y-3">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] opacity-80">
+                continue where you left off
+              </p>
+              <h2
+                className="text-2xl font-black leading-tight md:text-3xl"
+                style={{ fontFamily: "var(--font-epilogue)" }}
+              >
+                Day {resumeDay.day_index} &middot; {resumeDay.title}
+              </h2>
+              {resumeProgress && resumeProgress.watched_percent > 0 && (
+                <div className="max-w-xs space-y-1">
+                  <div className="h-2 w-full overflow-hidden rounded-full bg-ua-bg/25">
+                    <div
+                      className="h-full rounded-full bg-ua-bg"
+                      style={{ width: `${resumeProgress.watched_percent}%` }}
+                    />
+                  </div>
+                  <p className="text-xs opacity-75">
+                    {resumeProgress.watched_percent}% watched
+                  </p>
                 </div>
-                <p className="text-xs opacity-70">
-                  {resumeProgress.watched_percent}% watched
-                </p>
-              </div>
-            )}
-          </div>
-          <Link
-            href={`/day/${resumeDay.day_index}`}
-            className="shrink-0 inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-85"
-            style={{ backgroundColor: "#fff", color: "var(--ua-blue)" }}
-          >
-            Resume Day {resumeDay.day_index} &rarr;
-          </Link>
-        </section>
-      ) : (
-        <section
-          className="rounded-2xl p-6 flex items-center gap-4"
-          style={{ backgroundColor: "var(--ua-green)" }}
-        >
-          <span className="text-2xl" aria-hidden="true">🎉</span>
-          <div>
-            <h2
-              className="font-bold text-lg"
-              style={{
-                fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-                color: "var(--ua-ink)",
-              }}
+              )}
+            </div>
+            <Link
+              href={`/day/${resumeDay.day_index}`}
+              className="relative z-10 inline-flex shrink-0 items-center justify-center rounded-full bg-ua-bg px-6 py-3 text-sm font-bold text-ua-blue transition-transform hover:-translate-y-0.5"
+              style={{ fontFamily: "var(--font-epilogue)" }}
             >
-              You&rsquo;re all caught up
-            </h2>
-            <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.65 }}>
-              Great work — all unlocked lessons are complete.
-            </p>
-          </div>
-        </section>
-      )}
+              Resume Day {resumeDay.day_index} &rarr;
+            </Link>
+          </section>
+        ) : (
+          <section className="relative flex items-center gap-4 overflow-hidden rounded-3xl border-2 border-ua-ink bg-ua-green p-7 text-ua-ink shadow-[6px_6px_0_var(--ua-ink)]">
+            <Sticker name="hundred" size={72} rotate={-8} className="shrink-0" />
+            <div>
+              <h2
+                className="text-xl font-black lowercase"
+                style={{ fontFamily: "var(--font-epilogue)" }}
+              >
+                you&rsquo;re all caught up
+              </h2>
+              <p className="text-sm text-ua-ink/65">
+                Great work — all unlocked lessons are complete.
+              </p>
+            </div>
+          </section>
+        )}
+      </Reveal>
 
-      {/* ── Welcome + Overall progress ── */}
-      <section className="flex flex-col gap-4">
-        <h1
-          className="text-3xl font-bold tracking-tight lowercase"
-          style={{
-            fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-            color: "var(--ua-ink)",
-          }}
-        >
-          your dashboard
-        </h1>
-        <div
-          className="rounded-2xl p-6"
-          style={{ backgroundColor: "#fff" }}
-        >
-          <p className="text-sm font-medium mb-3" style={{ color: "var(--ua-ink)", opacity: 0.6 }}>
-            Overall course progress
-          </p>
-          <ProgressBar percent={overallPercent} label={`${overallPercent}% complete`} />
-        </div>
+      {/* ── Heading + overall progress ── */}
+      <section className="space-y-5">
+        <Reveal>
+          <h1
+            className="relative inline-block text-4xl font-black tracking-tight text-ua-ink md:text-5xl"
+            style={{ fontFamily: "var(--font-epilogue)" }}
+          >
+            your dashboard
+            <Sticker
+              name="sparkles"
+              size={64}
+              rotate={12}
+              className="pointer-events-none absolute -right-12 -top-7 hidden sm:block"
+            />
+          </h1>
+        </Reveal>
+        <Reveal>
+          <div className="rounded-3xl border-2 border-ua-ink bg-white p-6 shadow-[6px_6px_0_var(--ua-ink)] md:p-7">
+            <p className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-ua-ink/55">
+              Overall course progress
+            </p>
+            <ProgressBar percent={overallPercent} label={`${overallPercent}% complete`} />
+          </div>
+        </Reveal>
       </section>
 
       {/* ── Choose your schedule CTA ── */}
-      <Link
-        href="/book"
-        className="flex items-center gap-3 rounded-2xl p-5 transition-colors hover:opacity-90"
-        style={{ backgroundColor: "var(--ua-blue)", color: "#fff", textDecoration: "none" }}
-      >
-        <span className="text-2xl" aria-hidden="true">📅</span>
-        <div>
-          <p
-            className="font-bold text-base lowercase"
-            style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif" }}
-          >
-            choose your study schedule →
-          </p>
-          <p className="text-sm opacity-75">
-            Pick your start date and daily time — we'll schedule your 5 sessions.
-          </p>
-        </div>
-      </Link>
-
-      {/* ── Announcements + Next session ── */}
-      {(announcement || nextSession) && (
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {announcement && (
-            <div
-              className="rounded-2xl p-5 flex flex-col gap-2"
-              style={{ backgroundColor: "var(--ua-pink)" }}
+      <Reveal>
+        <Link
+          href="/book"
+          className="group flex items-center gap-4 rounded-3xl border-2 border-ua-ink bg-ua-sky p-6 text-ua-ink shadow-[6px_6px_0_var(--ua-ink)] transition-transform hover:-translate-y-0.5"
+        >
+          <Sticker name="phone-hand" size={56} rotate={-6} className="shrink-0" />
+          <div>
+            <p
+              className="text-lg font-black lowercase"
+              style={{ fontFamily: "var(--font-epilogue)" }}
             >
-              <p
-                className="text-xs font-semibold uppercase tracking-widest"
-                style={{ color: "var(--ua-ink)", opacity: 0.5 }}
-              >
-                Announcement
-              </p>
-              <h2
-                className="font-bold text-lg"
-                style={{
-                  fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-                  color: "var(--ua-ink)",
-                }}
-              >
-                {announcement.title}
-              </h2>
-              <p className="text-sm leading-relaxed" style={{ color: "var(--ua-ink)", opacity: 0.75 }}>
-                {announcement.body}
-              </p>
-            </div>
+              choose your study schedule →
+            </p>
+            <p className="text-sm text-ua-ink/70">
+              Pick your start date and daily time — we&rsquo;ll schedule your 5 sessions.
+            </p>
+          </div>
+        </Link>
+      </Reveal>
+
+      {/* ── Announcement + next session ── */}
+      {(announcement || nextSession) && (
+        <section className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          {announcement && (
+            <Reveal className="h-full">
+              <div className="flex h-full flex-col gap-2 rounded-3xl border-2 border-ua-ink bg-ua-pink p-6 shadow-[6px_6px_0_var(--ua-ink)]">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-ua-ink/55">
+                  Announcement
+                </p>
+                <h2
+                  className="text-xl font-black text-ua-ink"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
+                >
+                  {announcement.title}
+                </h2>
+                <p className="text-sm leading-relaxed text-ua-ink/75">
+                  {announcement.body}
+                </p>
+              </div>
+            </Reveal>
           )}
           {nextSession && (
-            <div
-              className="rounded-2xl p-5 flex flex-col gap-2"
-              style={{ backgroundColor: "var(--ua-sky)" }}
-            >
-              <p
-                className="text-xs font-semibold uppercase tracking-widest"
-                style={{ color: "var(--ua-ink)", opacity: 0.5 }}
-              >
-                Next live session
-              </p>
-              <h2
-                className="font-bold text-lg"
-                style={{
-                  fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-                  color: "var(--ua-ink)",
-                }}
-              >
-                Day {nextSession.day_index} Q&amp;A
-              </h2>
-              <p className="text-sm font-medium" style={{ color: "var(--ua-ink)", opacity: 0.75 }}>
-                {formatDate(nextSession.scheduled_at)}
-              </p>
-              <a
-                href={nextSession.zoom_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-auto inline-flex items-center justify-center rounded-full px-5 py-2 text-sm font-semibold transition-colors hover:opacity-80"
-                style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
-              >
-                Join Zoom →
-              </a>
-            </div>
+            <Reveal className="h-full">
+              <div className="flex h-full flex-col gap-2 rounded-3xl border-2 border-ua-ink bg-white p-6 shadow-[6px_6px_0_var(--ua-ink)]">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-ua-ink/55">
+                  Next live session
+                </p>
+                <h2
+                  className="text-xl font-black text-ua-ink"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
+                >
+                  Day {nextSession.day_index} Q&amp;A
+                </h2>
+                <p className="text-sm font-medium text-ua-ink/75">
+                  {formatDate(nextSession.scheduled_at)}
+                </p>
+                <a
+                  href={nextSession.zoom_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-auto inline-flex items-center justify-center rounded-full bg-ua-blue px-5 py-2.5 text-sm font-bold text-ua-bg transition-transform hover:-translate-y-0.5"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
+                >
+                  Join Zoom →
+                </a>
+              </div>
+            </Reveal>
           )}
         </section>
       )}
 
       {/* ── Day cards ── */}
-      <section className="space-y-4">
-        <h2
-          className="text-xl font-bold lowercase"
-          style={{
-            fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-            color: "var(--ua-ink)",
-          }}
-        >
-          your 5 days
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {days.map((day) => {
+      <section className="space-y-5">
+        <Reveal>
+          <h2
+            className="text-2xl font-black lowercase text-ua-ink md:text-3xl"
+            style={{ fontFamily: "var(--font-epilogue)" }}
+          >
+            your 5 days
+          </h2>
+        </Reveal>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {days.map((day, i) => {
             const unlocked = isDayUnlocked(
               day.day_index,
               cohort.start_date,
@@ -272,13 +255,14 @@ export default async function DashboardPage() {
               unlockDate(day.day_index, cohort.start_date)
             );
             return (
-              <DayCard
-                key={day.id}
-                day={day}
-                progress={progress}
-                unlocked={unlocked}
-                unlockDateStr={unlockStr}
-              />
+              <Reveal key={day.id} className="h-full" y={28 + i * 4}>
+                <DayCard
+                  day={day}
+                  progress={progress}
+                  unlocked={unlocked}
+                  unlockDateStr={unlockStr}
+                />
+              </Reveal>
             );
           })}
         </div>

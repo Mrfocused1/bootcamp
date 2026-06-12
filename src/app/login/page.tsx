@@ -1,9 +1,7 @@
 import Link from "next/link";
 import { IS_MOCK } from "@/lib/mock";
+import { MarketingNav } from "@/components/marketing/MarketingNav";
 import { signIn } from "./actions";
-
-// TODO(owner): swap for a real brand photo. IP-clean placeholder for now.
-const HERO_IMG = "/marketing/placeholders/p2.png";
 
 export default async function LoginPage({
   searchParams,
@@ -15,120 +13,63 @@ export default async function LoginPage({
   const error = sp.error === "1";
 
   return (
-    <div className="grid min-h-screen md:grid-cols-2">
-      {/* ── Animated brand visual panel ── */}
-      <div className="ua-anim-gradient relative hidden overflow-hidden p-12 text-white md:flex md:flex-col md:justify-between">
-        {/* photo backdrop, brand-tinted */}
-        <div
-          aria-hidden
-          className="absolute inset-0"
-          style={{
-            backgroundImage: `url("${HERO_IMG}")`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            mixBlendMode: "overlay",
-            opacity: 0.35,
-          }}
-        />
-        {/* floating colour blobs */}
-        <span
-          aria-hidden
-          className="ua-blob"
-          style={{ width: 240, height: 240, top: "-40px", left: "-50px", background: "var(--ua-pink)", animationDelay: "0s" }}
-        />
-        <span
-          aria-hidden
-          className="ua-blob"
-          style={{ width: 200, height: 200, bottom: "60px", right: "-30px", background: "var(--ua-green)", animationDelay: "3s" }}
-        />
-        <span
-          aria-hidden
-          className="ua-blob"
-          style={{ width: 160, height: 160, top: "45%", left: "20%", background: "var(--ua-orange)", animationDelay: "6s", opacity: 0.4 }}
-        />
-        {/* drifting stickers */}
-        <span aria-hidden className="ua-sticker" style={{ top: "18%", right: "16%", animationDelay: "0s" }}>✨</span>
-        <span aria-hidden className="ua-sticker" style={{ top: "60%", right: "26%", animationDelay: "1.5s" }}>🚀</span>
-        <span aria-hidden className="ua-sticker" style={{ bottom: "16%", left: "14%", animationDelay: "2.5s" }}>💯</span>
-        <span aria-hidden className="ua-sticker" style={{ top: "38%", left: "8%", animationDelay: "3.5s" }}>⚡</span>
+    <main data-nav-theme="dark" className="relative min-h-svh w-full overflow-hidden bg-ua-ink text-ua-bg">
+      <MarketingNav hideLogin />
+      {/* Homepage hero slide 2 as the backdrop (no dim) */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/marketing/bridgeway-hero-2.png"
+        alt=""
+        aria-hidden="true"
+        className="absolute inset-0 h-full w-full object-cover"
+      />
 
-        {/* content */}
-        <div className="relative z-10 font-genty text-4xl leading-none">Bridgeway AI</div>
-        <div className="relative z-10 ua-pop">
-          <h2
-            className="text-4xl font-extrabold leading-[0.95] lowercase"
-            style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif" }}
-          >
-            build real websites
-            <br />
-            with ai — in 5 days
-          </h2>
-          <p className="mt-4 max-w-sm text-base text-white/85">
-            Log in to pick up where you left off, rewatch your lessons, and keep
-            building.
-          </p>
-        </div>
-      </div>
-
-      {/* ── Form panel ── */}
-      <div
-        className="relative flex items-center justify-center overflow-hidden px-4 py-12"
-        style={{ backgroundColor: "var(--ua-bg)" }}
-      >
-        {/* subtle moving blobs behind the card (also gives mobile some life) */}
-        <span aria-hidden className="ua-blob" style={{ width: 220, height: 220, top: "-60px", right: "-40px", background: "var(--ua-sky)", opacity: 0.25 }} />
-        <span aria-hidden className="ua-blob" style={{ width: 180, height: 180, bottom: "-50px", left: "-30px", background: "var(--ua-pink)", opacity: 0.3, animationDelay: "4s" }} />
-
-        <div className="ua-pop relative z-10 flex w-full max-w-sm flex-col gap-6 rounded-2xl bg-white p-8 shadow-xl shadow-black/5">
-          {/* Wordmark (mobile shows it here since the panel is hidden) */}
-          <div className="text-center md:hidden">
-            <span className="font-genty text-4xl leading-none" style={{ color: "var(--ua-blue)" }}>
-              Bridgeway AI
-            </span>
-          </div>
-
+      {/* Login card pinned to one side so it never covers the photo's subject */}
+      <div className="relative z-10 flex min-h-svh items-center justify-center px-6 py-28 md:justify-start md:px-16 lg:px-24">
+        <div className="w-full max-w-sm rounded-3xl border-2 border-ua-ink bg-ua-bg p-8 text-ua-ink shadow-[8px_8px_0_var(--ua-ink)]">
           {sent ? (
             <div className="flex flex-col gap-3 text-center">
-              <p
-                className="text-lg font-semibold"
-                style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif", color: "var(--ua-ink)" }}
+              <h1
+                className="text-3xl font-black lowercase tracking-tight"
+                style={{ fontFamily: "var(--font-epilogue)" }}
               >
                 check your email
-              </p>
-              <p className="text-sm leading-relaxed" style={{ color: "var(--ua-ink)", opacity: 0.65 }}>
+              </h1>
+              <p className="text-ua-ink/70">
                 We sent a login link to your inbox. Click it to access your course.
               </p>
-              <Link href="/login" className="mt-2 text-sm underline underline-offset-2" style={{ color: "var(--ua-blue)" }}>
+              <Link
+                href="/login"
+                className="mt-2 text-sm font-bold text-ua-blue underline-offset-4 hover:underline"
+              >
                 Back to login
               </Link>
             </div>
           ) : (
-            <div className="flex flex-col gap-5">
-              <div className="flex flex-col gap-1 text-center">
-                <h1
-                  className="text-2xl font-bold lowercase"
-                  style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif", color: "var(--ua-ink)" }}
-                >
-                  welcome back
-                </h1>
-                <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.6 }}>
-                  Log in to access your course.
-                </p>
-              </div>
+            <>
+              <h1
+                className="text-3xl font-black lowercase tracking-tight md:text-4xl"
+                style={{ fontFamily: "var(--font-epilogue)" }}
+              >
+                welcome back
+              </h1>
+              <p className="mt-3 text-ua-ink/70">
+                Log in to pick up where you left off, rewatch your lessons, and
+                keep building.
+              </p>
 
               {error && (
                 <p
-                  className="rounded-xl px-4 py-2.5 text-center text-sm font-medium"
-                  style={{ backgroundColor: "var(--ua-pink)", color: "var(--ua-ink)" }}
+                  className="mt-6 rounded-xl bg-ua-pink px-4 py-2.5 text-sm font-medium text-ua-ink"
                   role="alert"
                 >
                   Please enter a valid email address.
                 </p>
               )}
 
-              <form action={signIn} className="flex flex-col gap-3">
+              <form action={signIn} className="mt-7 flex flex-col gap-4">
                 <label className="flex flex-col gap-1.5">
-                  <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: "var(--ua-ink)", opacity: 0.5 }}>
+                  <span className="text-xs font-bold uppercase tracking-widest text-ua-ink/50">
                     Email
                   </span>
                   <input
@@ -137,34 +78,33 @@ export default async function LoginPage({
                     required
                     autoComplete="email"
                     placeholder="you@example.com"
-                    className="w-full rounded-xl border border-[var(--ua-ink)]/15 bg-[var(--ua-bg)] px-4 py-2.5 text-sm outline-none transition focus:border-[var(--ua-blue)] focus:ring-2 focus:ring-[var(--ua-blue)]/20"
-                    style={{ color: "var(--ua-ink)" }}
+                    className="w-full rounded-xl border-2 border-ua-ink/15 bg-white px-4 py-3 text-sm text-ua-ink outline-none transition placeholder:text-ua-ink/40 focus:border-ua-blue"
                   />
                 </label>
 
                 <button
                   type="submit"
-                  className="mt-1 inline-flex w-full items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
-                  style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
+                  className="inline-flex w-full items-center justify-center rounded-full bg-ua-blue px-6 py-3 text-base font-bold text-ua-bg transition hover:opacity-90"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
                 >
-                  Send me a login link
+                  Send me a login link →
                 </button>
               </form>
-            </div>
+            </>
           )}
 
           {IS_MOCK && (
-            <div className="flex flex-col gap-3">
-              <div className="border-t" style={{ borderColor: "var(--ua-ink)", opacity: 0.1 }} />
+            <div className="mt-6 flex flex-col gap-3">
+              <div className="border-t border-ua-ink/10" />
               <Link
                 href="/onboarding"
-                className="inline-flex w-full items-center justify-center rounded-full border-2 px-6 py-2.5 text-sm font-semibold transition-colors hover:opacity-80"
-                style={{ borderColor: "var(--ua-blue)", color: "var(--ua-blue)" }}
+                className="inline-flex w-full items-center justify-center rounded-full border-2 border-ua-ink px-6 py-3 text-base font-bold text-ua-ink transition-colors hover:bg-ua-ink hover:text-ua-bg"
+                style={{ fontFamily: "var(--font-epilogue)" }}
               >
                 Start the demo →
               </Link>
-              <p className="text-center text-xs" style={{ color: "var(--ua-ink)", opacity: 0.45 }}>
-                <Link href="/admin" className="underline underline-offset-2 hover:opacity-70">
+              <p className="text-center text-xs text-ua-ink/45">
+                <Link href="/admin" className="underline underline-offset-2 hover:text-ua-ink/70">
                   View admin demo
                 </Link>{" "}
                 <span className="font-mono">(set NEXT_PUBLIC_MOCK_ADMIN=1)</span>
@@ -173,6 +113,6 @@ export default async function LoginPage({
           )}
         </div>
       </div>
-    </div>
+    </main>
   );
 }

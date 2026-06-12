@@ -1,10 +1,11 @@
 import Link from "next/link";
 import { FOOTER_LINKS, SOCIALS, SITE, HERO } from "@/lib/marketing/content";
+import { BrandLogo } from "./BrandLogo";
 
 export function MarketingFooter() {
   return (
     <footer className="bg-ua-blue text-ua-bg">
-      <div className="mx-auto max-w-6xl px-6 py-20 md:px-10">
+      <div className="mx-auto max-w-6xl px-6 py-12 md:px-10 md:py-14">
         <div className="grid gap-10 md:grid-cols-3">
           <div>
             <p className="text-sm uppercase tracking-widest opacity-70">Ready to start?</p>
@@ -47,13 +48,21 @@ export function MarketingFooter() {
           </div>
         </div>
 
-        <p
-          aria-hidden="true"
-          className="mt-16 text-center text-5xl font-extrabold md:text-7xl"
-          style={{ fontFamily: "var(--font-chewy)" }}
-        >
-          {SITE.name}
-        </p>
+        <div className="mt-10 flex flex-col gap-6 border-t border-ua-bg/20 pt-8 sm:flex-row sm:items-end sm:justify-between">
+          <Link href="/" aria-label="Bridgeway AI Bootcamp">
+            <BrandLogo
+              color="var(--ua-bg)"
+              className="h-20 w-[93px] md:h-28 md:w-[130px]"
+            />
+          </Link>
+          <div className="flex flex-col gap-3 text-sm text-ua-bg/80 sm:items-end">
+            <nav className="flex gap-5 font-semibold">
+              <Link href="/privacy" className="hover:text-ua-pink">Privacy</Link>
+              <Link href="/terms" className="hover:text-ua-pink">Terms</Link>
+            </nav>
+            <p className="opacity-70">© 2026 {SITE.name}. All rights reserved.</p>
+          </div>
+        </div>
       </div>
     </footer>
   );

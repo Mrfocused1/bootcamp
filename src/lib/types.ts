@@ -53,6 +53,26 @@ export interface LiveSession {
   zoom_url: string;
 }
 
+export interface SessionRecording {
+  id: string;
+  cohort_id: string;
+  day_index: number;
+  title: string;
+  object_key: string;
+  duration_seconds: number;
+  recorded_at: string;
+}
+
+/** A recording with a ready-to-play URL (signed in prod, sample in mock). */
+export interface PlayableRecording {
+  id: string;
+  day_index: number;
+  title: string;
+  url: string;
+  duration_seconds: number;
+  recorded_at: string;
+}
+
 export interface Announcement {
   id: string;
   title: string;

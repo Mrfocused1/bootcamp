@@ -9,6 +9,7 @@ import type {
   AiMessage,
   StudentSummary,
   Chapter,
+  SessionRecording,
 } from "@/lib/types";
 
 export const IS_MOCK = !process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -71,7 +72,7 @@ export const MOCK_DAYS: Day[] = [
   },
 ];
 
-const SAMPLE_VIDEO_URL =
+export const SAMPLE_VIDEO_URL =
   "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 const DAY1_CHAPTERS: Chapter[] = [
@@ -228,6 +229,30 @@ export function getMockUpcomingSessions(): LiveSession[] {
       day_index: 5,
       scheduled_at: offsetDate(2) + "T18:00:00Z",
       zoom_url: "https://zoom.us/j/123",
+    },
+  ];
+}
+
+export function getMockSessionRecordings(): SessionRecording[] {
+  // In mock mode the "object_key" is unused; queries return SAMPLE_VIDEO_URL.
+  return [
+    {
+      id: "rec-1",
+      cohort_id: "cohort-1",
+      day_index: 1,
+      title: "Day 1 — live session replay",
+      object_key: "mock",
+      duration_seconds: 3600,
+      recorded_at: offsetDate(-3) + "T19:00:00Z",
+    },
+    {
+      id: "rec-2",
+      cohort_id: "cohort-1",
+      day_index: 2,
+      title: "Day 2 — live session replay",
+      object_key: "mock",
+      duration_seconds: 3600,
+      recorded_at: offsetDate(-2) + "T19:00:00Z",
     },
   ];
 }

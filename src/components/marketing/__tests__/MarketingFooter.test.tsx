@@ -8,9 +8,9 @@ describe("MarketingFooter", () => {
     expect(screen.getByRole("link", { name: "FAQ" })).toHaveAttribute("href", "/faq");
   });
 
-  it("shows the enrol CTA and the wordmark", () => {
-    render(<MarketingFooter />);
+  it("shows the enrol CTA and the brand logo", () => {
+    const { container } = render(<MarketingFooter />);
     expect(screen.getByRole("link", { name: /enrol now/i })).toHaveAttribute("href", "/pricing");
-    expect(screen.getByText("Bridgeway AI Bootcamp")).toBeInTheDocument();
+    expect(container.querySelector('span[style*="logo.png"]')).toBeInTheDocument();
   });
 });

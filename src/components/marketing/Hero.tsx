@@ -14,7 +14,7 @@ export function Hero() {
   const wordsRef = useRef<HTMLHeadingElement>(null);
   const circleRef = useRef<SVGPathElement>(null);
   const scribbleRef = useRef<SVGPathElement>(null);
-  const slidesRef = useRef<Array<HTMLImageElement | null>>([]);
+  const slidesRef = useRef<Array<HTMLImageElement | HTMLVideoElement | null>>([]);
 
   // Background slideshow: hold each image, then fade it out to dark and the next
   // one in from dark (a "dark fade" between slides). Looping.
@@ -108,23 +108,43 @@ export function Hero() {
   }, []);
 
   return (
-    <section className="relative min-h-svh w-full overflow-hidden bg-ua-ink">
-      {/* Cross-fading background slideshow (fades through the dark bg). */}
-      {HERO.images.map((src, i) => (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          key={src}
-          ref={(el) => {
-            slidesRef.current[i] = el;
-          }}
-          src={src}
-          alt={i === 0 ? HERO.imageAlt : ""}
-          aria-hidden={i === 0 ? undefined : true}
-          className="absolute inset-0 h-full w-full object-cover"
-          style={{ opacity: i === 0 ? 1 : 0 }}
-          fetchPriority={i === 0 ? "high" : undefined}
-        />
-      ))}
+    <section
+      data-nav-theme="dark"
+      className="relative min-h-svh w-full overflow-hidden bg-ua-ink"
+    >
+      {/* Cross-fading background slideshow (images or videos, fades through dark). */}
+      {HERO.images.map((src, i) =>
+        src.endsWith(".mp4") ? (
+          <video
+            key={src}
+            ref={(el) => {
+              slidesRef.current[i] = el;
+            }}
+            src={src}
+            autoPlay
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ opacity: i === 0 ? 1 : 0 }}
+          />
+        ) : (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={src}
+            ref={(el) => {
+              slidesRef.current[i] = el;
+            }}
+            src={src}
+            alt={i === 0 ? HERO.imageAlt : ""}
+            aria-hidden={i === 0 ? undefined : true}
+            className="absolute inset-0 h-full w-full object-cover"
+            style={{ opacity: i === 0 ? 1 : 0 }}
+            fetchPriority={i === 0 ? "high" : undefined}
+          />
+        ),
+      )}
       <div className="absolute inset-0 bg-gradient-to-t from-ua-ink/70 via-ua-ink/10 to-transparent" />
 
       <div className="relative z-10 flex min-h-svh flex-col items-center justify-end px-6 pb-8 text-center md:px-10">
@@ -242,10 +262,11 @@ export function Hero() {
         <div className="mt-8">
           <Link
             href={HERO.ctaHref}
-            className="inline-block rounded-full bg-ua-orange px-7 py-3 text-lg font-bold text-ua-bg hover:opacity-90"
+            className="group inline-flex items-center gap-2 rounded-full border-2 border-ua-ink bg-white px-7 py-3 text-lg font-bold text-ua-ink shadow-[4px_4px_0_var(--ua-ink)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-ua-ink hover:text-white hover:shadow-[6px_6px_0_var(--ua-ink)] active:translate-y-0 active:shadow-[2px_2px_0_var(--ua-ink)]"
             style={{ fontFamily: "var(--font-epilogue)" }}
           >
-            {HERO.ctaLabel} →
+            {HERO.ctaLabel}
+            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
           </Link>
         </div>
       </div>

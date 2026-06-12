@@ -223,6 +223,7 @@ export function Testimonials() {
   return (
     <section
       ref={sectionRef}
+      data-nav-theme="dark"
       className="relative overflow-hidden bg-ua-ink px-6 py-24 text-ua-bg md:px-10 md:py-32"
     >
       <div className="mx-auto max-w-6xl">
@@ -254,7 +255,7 @@ export function Testimonials() {
           who shipped a{" "}
           <span className="relative inline-block">
             <span style={{ fontFamily: "var(--font-lora)" }} className="italic">
-              real website
+              premium website
             </span>
             <svg
               viewBox="0 0 424 30"
@@ -271,8 +272,8 @@ export function Testimonials() {
                 strokeLinecap="round"
               />
             </svg>
-          </span>{" "}
-          in 5 days.
+          </span>
+          .
         </h2>
 
         {/* ───────── Desktop: tall vertical scatter (scroll to reveal) ───────── */}

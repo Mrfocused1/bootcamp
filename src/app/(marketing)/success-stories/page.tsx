@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 const STORIES = [
-  { name: "Maya R.", category: "Apps", title: "ai meal-planning app", result: "Launched in 7 days, now 300+ users" },
+  { name: "Maya R.", category: "Apps", title: "ai meal-planning app", result: "Launched in 7 days, now 300+ users", video: "/marketing/story-clip-1.mp4" },
   { name: "Daniel K.", category: "Stores", title: "coffee subscription store", result: "First paying customer in week one" },
   { name: "Priya S.", category: "Apps", title: "online tutoring platform", result: "Replaced a £6k agency quote" },
   { name: "Leah M.", category: "Stores", title: "handmade jewellery shop", result: "£2k in sales the first month" },

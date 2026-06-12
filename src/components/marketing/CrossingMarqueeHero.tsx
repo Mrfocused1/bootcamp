@@ -22,9 +22,6 @@ const ITEMS_B: Item[] = [
   { word: "built", sticker: "starburst" },
 ];
 
-const ARROW = "M10 10C46 60 96 60 130 14";
-const ARROWHEAD = "M116 2L131 14L114 26";
-
 function Band({ items, reverse }: { items: Item[]; reverse?: boolean }) {
   // Duplicate the row so the translateX(-50%) loop is seamless.
   const row = [...items, ...items, ...items, ...items];
@@ -64,7 +61,6 @@ export function CrossingMarqueeHero() {
   const band1 = useRef<HTMLDivElement>(null);
   const band2 = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const arrowRef = useRef<SVGGElement>(null);
 
   useEffect(() => {
     const b1 = band1.current;
@@ -72,15 +68,10 @@ export function CrossingMarqueeHero() {
     const text = textRef.current;
     if (!b1 || !b2) return;
 
-    const arrowPaths = arrowRef.current
-      ? Array.from(arrowRef.current.querySelectorAll("path"))
-      : [];
-
     if (prefersReducedMotion()) {
       gsap.set(b1, { rotate: -11, autoAlpha: 1, scale: 1 });
       gsap.set(b2, { rotate: 11, autoAlpha: 1, scale: 1 });
       if (text) gsap.set(text, { autoAlpha: 1, y: 0 });
-      arrowPaths.forEach((p) => (p.style.strokeDashoffset = "0"));
       return;
     }
 
@@ -100,12 +91,6 @@ export function CrossingMarqueeHero() {
         if (text) {
           gsap.to(text, { autoAlpha: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.55 });
         }
-        arrowPaths.forEach((p) => {
-          if (typeof p.getTotalLength !== "function") return;
-          const len = p.getTotalLength();
-          gsap.set(p, { strokeDasharray: len, strokeDashoffset: len });
-          gsap.to(p, { strokeDashoffset: 0, duration: 0.5, ease: "power2.inOut", delay: 0.9 });
-        });
       });
     };
 
@@ -121,7 +106,10 @@ export function CrossingMarqueeHero() {
   }, []);
 
   return (
-    <section className="relative flex min-h-[90svh] flex-col overflow-hidden bg-ua-ink text-ua-bg">
+    <section
+      data-nav-theme="dark"
+      className="relative flex min-h-[90svh] flex-col overflow-hidden bg-ua-ink text-ua-bg"
+    >
       {/* Two crossing marquee bands */}
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
         <div className="absolute left-1/2 top-[44%] w-[210%] -translate-x-1/2 -translate-y-1/2">
@@ -151,19 +139,8 @@ export function CrossingMarqueeHero() {
           className="mt-2 text-4xl font-black lowercase tracking-tight md:text-6xl"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
-          see what they built
+          see what&apos;s been built
         </h1>
-        <svg
-          viewBox="0 0 140 36"
-          fill="none"
-          aria-hidden="true"
-          className="mx-auto mt-4 h-9 w-36 text-ua-bg"
-        >
-          <g ref={arrowRef}>
-            <path d={ARROW} stroke="currentColor" strokeWidth={3} strokeLinecap="round" />
-            <path d={ARROWHEAD} stroke="currentColor" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
-          </g>
-        </svg>
       </div>
     </section>
   );

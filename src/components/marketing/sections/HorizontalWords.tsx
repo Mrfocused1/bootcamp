@@ -126,10 +126,10 @@ export function HorizontalWords() {
           </h2>
 
           <span className="hw-sticker pointer-events-none absolute motion-reduce:hidden left-[17%] top-1/2 -translate-x-1/2 -translate-y-[110%]">
-            <Sticker name="thumbs-up" size={92} />
+            <Sticker name="sparkles" size={60} />
           </span>
           <span className="hw-sticker pointer-events-none absolute motion-reduce:hidden left-1/2 top-1/2 -translate-x-1/2 translate-y-[10%]">
-            <Sticker name="cursor-star" size={110} />
+            <Sticker name="starburst" size={64} />
           </span>
           <span className="hw-sticker pointer-events-none absolute motion-reduce:hidden left-[80%] top-1/2 -translate-x-1/2 -translate-y-[100%]">
             <Sticker name="phone-hand" size={104} />

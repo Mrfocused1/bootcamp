@@ -4,6 +4,8 @@ import {
   getLessons,
   getUpcomingSessions,
 } from "@/lib/queries";
+import { Reveal } from "@/components/marketing/Reveal";
+import { Sticker } from "@/components/marketing/Sticker";
 
 function formatDate(isoString: string): string {
   const d = new Date(isoString);
@@ -18,11 +20,13 @@ function formatDate(isoString: string): string {
 }
 
 const SECTION_LINKS = [
-  { href: "/admin/content", label: "Content", bg: "var(--ua-sky)", desc: "Edit lessons & videos" },
-  { href: "/admin/students", label: "Students", bg: "var(--ua-green)", desc: "Manage access & progress" },
-  { href: "/admin/cohorts", label: "Cohorts", bg: "var(--ua-pink)", desc: "Cohorts & live sessions" },
-  { href: "/admin/qa", label: "Q&A", bg: "#fff", desc: "Review AI conversations" },
-  { href: "/admin/announcements", label: "Announcements", bg: "var(--ua-orange)", desc: "Post to all students" },
+  { href: "/admin/content", label: "Content", bg: "bg-ua-sky", sticker: "cursor-star", desc: "Edit lessons & videos" },
+  { href: "/admin/students", label: "Students", bg: "bg-ua-green", sticker: "high-five", desc: "Manage access & progress" },
+  { href: "/admin/cohorts", label: "Cohorts", bg: "bg-ua-pink", sticker: "hundred", desc: "Cohorts & live sessions" },
+  { href: "/admin/qa", label: "Q&A", bg: "bg-white", sticker: "peace", desc: "Review AI conversations" },
+  { href: "/admin/announcements", label: "Announcements", bg: "bg-ua-orange", sticker: "megaphone", desc: "Post to all students" },
+  { href: "/admin/analytics", label: "Analytics", bg: "bg-white", sticker: "shooting-star", desc: "Engagement & progress" },
+  { href: "/admin/broadcast", label: "Broadcast", bg: "bg-ua-sky", sticker: "phone-hand", desc: "Email the cohort" },
 ];
 
 export default async function AdminOverviewPage() {
@@ -35,82 +39,97 @@ export default async function AdminOverviewPage() {
   const nextSession = sessions[0] ?? null;
 
   const statCards = [
-    { label: "Total students", value: students.length, bg: "var(--ua-green)" },
-    { label: "Total lessons", value: lessons.length, bg: "var(--ua-sky)" },
+    { label: "Total students", value: students.length, bg: "bg-ua-green", sticker: "high-five" },
+    { label: "Total lessons", value: lessons.length, bg: "bg-ua-sky", sticker: "cursor-star" },
     {
       label: "Next session",
       value: nextSession ? formatDate(nextSession.scheduled_at) : "None scheduled",
-      bg: "var(--ua-pink)",
+      bg: "bg-ua-pink",
+      sticker: "lets-go",
     },
   ];
 
   return (
-    <div className="space-y-8">
-      <section className="space-y-1">
+    <div className="space-y-10">
+      <Reveal>
         <h1
-          className="text-3xl font-bold tracking-tight lowercase"
-          style={{
-            fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-            color: "var(--ua-ink)",
-          }}
+          className="relative inline-block text-4xl font-black tracking-tight text-ua-ink md:text-5xl"
+          style={{ fontFamily: "var(--font-epilogue)" }}
         >
           admin overview
+          <Sticker
+            name="rock-on"
+            size={64}
+            rotate={12}
+            className="pointer-events-none absolute -right-12 -top-7 hidden sm:block"
+          />
         </h1>
-        <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.55 }}>
+        <p className="mt-3 text-ua-ink/55">
           Bridgeway AI Bootcamp — cohort management dashboard.
         </p>
-      </section>
+      </Reveal>
 
       {/* Stat cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        {statCards.map(({ label, value, bg }) => (
-          <div
-            key={label}
-            className="rounded-2xl p-5 flex flex-col gap-1"
-            style={{ backgroundColor: bg }}
-          >
-            <p
-              className="text-xs font-semibold uppercase tracking-widest"
-              style={{ color: "var(--ua-ink)", opacity: 0.5 }}
+      <section className="grid grid-cols-1 gap-5 sm:grid-cols-3">
+        {statCards.map(({ label, value, bg, sticker }) => (
+          <Reveal key={label} className="h-full">
+            <div
+              className={`relative flex h-full flex-col gap-1 overflow-hidden rounded-3xl border-2 border-ua-ink ${bg} p-6 shadow-[6px_6px_0_var(--ua-ink)]`}
             >
-              {label}
-            </p>
-            <p
-              className="text-2xl font-bold"
-              style={{
-                fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-                color: "var(--ua-ink)",
-              }}
-            >
-              {value}
-            </p>
-          </div>
+              <Sticker
+                name={sticker}
+                size={56}
+                rotate={-8}
+                className="pointer-events-none absolute -right-1 -top-3"
+              />
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-ua-ink/55">
+                {label}
+              </p>
+              <p
+                className="text-2xl font-black text-ua-ink"
+                style={{ fontFamily: "var(--font-epilogue)" }}
+              >
+                {value}
+              </p>
+            </div>
+          </Reveal>
         ))}
       </section>
 
-      {/* Section link tiles */}
-      <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-        {SECTION_LINKS.map(({ href, label, bg, desc }) => (
-          <Link
-            key={href}
-            href={href}
-            className="rounded-2xl p-4 flex flex-col gap-1 transition-opacity hover:opacity-80"
-            style={{ backgroundColor: bg }}
+      {/* Section tiles */}
+      <section className="space-y-5">
+        <Reveal>
+          <h2
+            className="text-2xl font-black lowercase text-ua-ink md:text-3xl"
+            style={{ fontFamily: "var(--font-epilogue)" }}
           >
-            <span
-              className="font-bold text-base"
-              style={{
-                fontFamily: "var(--font-epilogue), Epilogue, sans-serif",
-                color: "var(--ua-ink)",
-              }}
-            >
-              {label}
-            </span>
-            <span className="text-xs" style={{ color: "var(--ua-ink)", opacity: 0.6 }}>
-              {desc}
-            </span>
-          </Link>
-        ))}
+            manage
+          </h2>
+        </Reveal>
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {SECTION_LINKS.map(({ href, label, bg, sticker, desc }, i) => (
+            <Reveal key={href} className="h-full" y={24 + i * 4}>
+              <Link
+                href={href}
+                className={`group relative flex h-full flex-col gap-1 overflow-hidden rounded-3xl border-2 border-ua-ink ${bg} p-6 shadow-[6px_6px_0_var(--ua-ink)] transition-transform hover:-translate-y-0.5`}
+              >
+                <Sticker
+                  name={sticker}
+                  size={52}
+                  rotate={8}
+                  className="pointer-events-none absolute -right-1 -top-3"
+                />
+                <span
+                  className="text-xl font-black text-ua-ink"
+                  style={{ fontFamily: "var(--font-epilogue)" }}
+                >
+                  {label}
+                </span>
+                <span className="text-sm text-ua-ink/65">{desc}</span>
+              </Link>
+            </Reveal>
+          ))}
+        </div>
       </section>
     </div>
   );

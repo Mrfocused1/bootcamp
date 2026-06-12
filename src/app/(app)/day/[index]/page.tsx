@@ -1,7 +1,8 @@
 import { notFound, redirect } from "next/navigation";
-import { getLessonByDayIndex, getCohort, getProgressMap } from "@/lib/queries";
+import { getLessonByDayIndex, getCohort, getProgressMap, getRecordingsForDay } from "@/lib/queries";
 import { isDayUnlocked } from "@/lib/access";
 import { LessonClient } from "@/components/LessonClient";
+import { RecordingPlayer } from "@/components/RecordingPlayer";
 
 interface PageProps {
   params: Promise<{ index: string }>;
@@ -35,6 +36,9 @@ export default async function LessonPage({ params }: PageProps) {
   // Next lesson navigation
   const nextIndex = dayIndex + 1;
   const nextUnlocked = nextIndex <= 5 && isDayUnlocked(nextIndex, cohort.start_date, todayISO);
+
+  // Live-session recordings for this day (gated to the student's cohort by RLS)
+  const recordings = await getRecordingsForDay(dayIndex);
 
   return (
     <div className="mx-auto max-w-6xl px-4 sm:px-6 py-10 space-y-8">
@@ -88,6 +92,26 @@ export default async function LessonPage({ params }: PageProps) {
         nextIndex={nextIndex <= 5 ? nextIndex : null}
         nextUnlocked={nextUnlocked}
       />
+
+      {/* ── Session recordings ── */}
+      {recordings.length > 0 && (
+        <section className="space-y-4">
+          <h2
+            className="text-lg font-semibold"
+            style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif", color: "var(--ua-ink)" }}
+          >
+            Session recordings
+          </h2>
+          {recordings.map((rec) => (
+            <div key={rec.id} className="space-y-2">
+              <p className="text-sm font-medium" style={{ color: "var(--ua-ink)", opacity: 0.7 }}>
+                {rec.title}
+              </p>
+              <RecordingPlayer url={rec.url} />
+            </div>
+          ))}
+        </section>
+      )}
 
       {/* ── Resources ── */}
       {lesson.resources.length > 0 && (

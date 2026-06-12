@@ -14,6 +14,8 @@ export type Story = {
   category: string;
   title: string;
   result: string;
+  /** Optional looping clip shown in the card's media slot instead of a photo. */
+  video?: string;
 };
 
 // Per-card resting tilt + vertical stagger (scattered, like the reference), and
@@ -89,13 +91,26 @@ export function StoriesGrid({ stories }: { stories: Story[] }) {
               />
             )}
             <div className="h-full overflow-hidden rounded-3xl border-2 border-ua-ink bg-white shadow-[6px_6px_0_var(--ua-ink)]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={img}
-                alt=""
-                aria-hidden="true"
-                className="aspect-[4/3] w-full object-cover"
-              />
+              {story.video ? (
+                <video
+                  src={story.video}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  aria-hidden="true"
+                  className="aspect-[4/3] w-full object-cover"
+                />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={img}
+                  alt=""
+                  aria-hidden="true"
+                  className="aspect-[4/3] w-full object-cover"
+                />
+              )}
               <div className="p-6">
                 <span className="inline-block rounded-full bg-ua-sky px-3 py-1 text-xs font-bold text-ua-ink">
                   {story.category}

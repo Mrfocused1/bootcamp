@@ -42,63 +42,67 @@ export default function AboutPage() {
         sticker="sparkles"
       />
 
-      {/* Instructor */}
+      {/* The team */}
       <section className="bg-ua-bg px-6 py-24 md:px-10">
-        <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
+        <div className="mx-auto max-w-3xl text-center">
           <Reveal>
-            <div className="relative mx-auto w-full max-w-md">
-              {/* TODO(owner): swap for a real instructor photo */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/marketing/placeholders/p2.png"
-                alt=""
-                aria-hidden="true"
-                className="aspect-[4/5] w-full rounded-3xl border-2 border-ua-ink object-cover shadow-[8px_8px_0_var(--ua-ink)]"
-              />
+            <p className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
+              the team
+            </p>
+            <h2
+              className="relative mt-3 inline-block text-4xl font-black lowercase tracking-tight text-ua-ink md:text-5xl"
+              style={{ fontFamily: "var(--font-epilogue)" }}
+            >
+              you&apos;re learning from a team that ships
               <Sticker
                 name="rock-on"
-                size={104}
+                size={92}
                 rotate={-12}
-                className="absolute -right-1 -top-6 z-10 md:-right-5 md:-top-7"
+                className="absolute -right-8 -top-9 z-10 hidden sm:block md:-right-16 md:-top-10"
               />
-            </div>
+            </h2>
           </Reveal>
-
-          <div>
-            <Reveal>
-              <p className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
-                your instructor
-              </p>
-              <h2
-                className="mt-3 text-4xl font-black lowercase tracking-tight text-ua-ink md:text-5xl"
-                style={{ fontFamily: "var(--font-epilogue)" }}
-              >
-                hi, i&apos;m your guide
-              </h2>
-            </Reveal>
-            <Reveal>
-              <p className="mt-6 text-lg text-ua-ink/80">
-                I&apos;ve built and shipped dozens of websites and products using AI —
-                for myself and for clients. I&apos;ll show you the exact, repeatable
-                workflow I use, with no jargon and no gatekeeping.
-              </p>
-            </Reveal>
-            <Reveal>
-              <p className="mt-4 text-lg text-ua-ink/80">
-                Over five days you&apos;ll learn the same stack real startups use: Cursor,
-                Supabase, Stripe, Resend, GitHub, hosting, domains and SEO — all driven
-                by AI.
-              </p>
-            </Reveal>
-            <Reveal>
-              <Link
-                href="/syllabus"
-                className="mt-8 inline-block font-bold text-ua-blue underline-offset-4 hover:underline"
-              >
-                See the syllabus →
-              </Link>
-            </Reveal>
-          </div>
+          <Reveal>
+            <p className="mt-6 text-lg text-ua-ink/80">
+              Bridgeway is a team of professional developers and designers with
+              extensive, hands-on experience building with AI. We work in the
+              modern AI stack every day — Cursor, Supabase, Stripe, Resend,
+              GitHub, hosting, domains and SEO — to design, build and ship real
+              products.
+            </p>
+          </Reveal>
+          <Reveal>
+            <p className="mt-4 text-lg text-ua-ink/80">
+              Between us we&apos;ve shipped a wide portfolio of premium websites
+              and apps for founders, businesses, charities and organisations. In
+              the bootcamp we teach the exact, repeatable workflow we use in that
+              work — no jargon, no gatekeeping.
+            </p>
+          </Reveal>
+          <Reveal>
+            <ul className="mt-10 flex flex-wrap justify-center gap-3">
+              {[
+                { label: "AI-first development", color: "bg-ua-green" },
+                { label: "Premium websites shipped", color: "bg-ua-pink" },
+                { label: "Founders & teams trained", color: "bg-ua-sky" },
+              ].map((tag) => (
+                <li
+                  key={tag.label}
+                  className={`rounded-full border-2 border-ua-ink ${tag.color} px-5 py-2 text-sm font-bold text-ua-ink shadow-[3px_3px_0_var(--ua-ink)]`}
+                >
+                  {tag.label}
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+          <Reveal>
+            <Link
+              href="/syllabus"
+              className="mt-10 inline-block font-bold text-ua-blue underline-offset-4 hover:underline"
+            >
+              See the syllabus →
+            </Link>
+          </Reveal>
         </div>
       </section>
 

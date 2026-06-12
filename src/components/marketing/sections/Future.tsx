@@ -184,28 +184,61 @@ export function Future() {
                 stay within the mobile frame. Same hover-fan as the curriculum
                 cards from sm up (see .ua-fan-card). */}
             <div className="relative flex items-center justify-center -space-x-10 sm:-space-x-4 md:-space-x-5 lg:-space-x-6">
-              {PHOTOS.map((photo, i) => (
-                <div
-                  key={i}
-                  className="ua-fan-card relative shrink-0 overflow-hidden rounded-2xl border-2 border-ua-ink shadow-[6px_6px_0_var(--ua-ink)] sm:rounded-3xl"
-                  style={
-                    {
-                      "--rot": `${photo.rotate}deg`,
-                      zIndex: i + 1,
-                    } as React.CSSProperties
-                  }
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={photo.src}
-                    alt=""
-                    aria-hidden="true"
-                    draggable={false}
-                    className="h-44 w-32 object-cover md:h-52 md:w-40 lg:h-60 lg:w-44"
-                    style={{ objectPosition: photo.objectPosition }}
-                  />
-                </div>
-              ))}
+              {PHOTOS.map((photo, i) => {
+                // Cards holding a video are sized to the video's aspect ratio
+                // (400:736) so they play uncropped; the middle one is enlarged.
+                const video =
+                  i === 1
+                    ? "/marketing/future-clip.mp4"
+                    : i === 0
+                      ? "/marketing/future-clip-2.mp4"
+                      : "/marketing/future-clip-3.mp4";
+                const isMiddle = i === 1;
+                return (
+                  <div
+                    key={i}
+                    className="ua-fan-card relative shrink-0 overflow-hidden rounded-2xl border-2 border-ua-ink shadow-[6px_6px_0_var(--ua-ink)] sm:rounded-3xl"
+                    style={
+                      {
+                        "--rot": `${photo.rotate}deg`,
+                        zIndex: isMiddle ? 20 : i + 1,
+                      } as React.CSSProperties
+                    }
+                  >
+                    {video ? (
+                      <video
+                        src={video}
+                        muted
+                        loop
+                        playsInline
+                        preload="auto"
+                        aria-hidden="true"
+                        onMouseEnter={(e) => {
+                          void e.currentTarget.play();
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.pause();
+                        }}
+                        className={
+                          isMiddle
+                            ? "block aspect-[400/736] w-36 cursor-pointer object-cover md:w-44 lg:w-52"
+                            : "block aspect-[400/736] w-32 cursor-pointer object-cover md:w-40 lg:w-44"
+                        }
+                      />
+                    ) : (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={photo.src}
+                        alt=""
+                        aria-hidden="true"
+                        draggable={false}
+                        className="h-44 w-32 object-cover md:h-52 md:w-40 lg:h-60 lg:w-44"
+                        style={{ objectPosition: photo.objectPosition }}
+                      />
+                    )}
+                  </div>
+                );
+              })}
             </div>
           </div>
         </Reveal>

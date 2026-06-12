@@ -53,17 +53,11 @@ export function DayCard({ day, progress, unlocked, unlockDateStr }: DayCardProps
 
   const cardContent = (
     <div
-      className="rounded-2xl border p-5 flex flex-col gap-3 h-full transition-shadow duration-200"
-      style={{
-        backgroundColor: status === "locked" ? "var(--ua-ink)/5" : "#fff",
-        borderColor:
-          status === "completed"
-            ? "var(--ua-green)"
-            : status === "in-progress"
-            ? "var(--ua-sky)"
-            : "var(--ua-ink)/15",
-        opacity: status === "locked" ? 0.7 : 1,
-      }}
+      className={`flex h-full flex-col gap-3 rounded-3xl border-2 border-ua-ink p-5 transition-all duration-200 ${
+        status === "locked"
+          ? "bg-ua-bg opacity-70 shadow-[4px_4px_0_var(--ua-ink)]"
+          : "bg-white shadow-[5px_5px_0_var(--ua-ink)] hover:-translate-y-0.5 hover:shadow-[7px_7px_0_var(--ua-ink)]"
+      }`}
     >
       {/* Header */}
       <div className="flex items-start justify-between gap-2">
