@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FOOTER_LINKS, SOCIALS, SITE, HERO } from "@/lib/marketing/content";
+import { FOOTER_LINKS, SHOW_SOCIALS, SOCIALS, SITE, HERO } from "@/lib/marketing/content";
 import { BrandLogo } from "./BrandLogo";
 
 export function MarketingFooter() {
@@ -36,15 +36,17 @@ export function MarketingFooter() {
             <a href={`mailto:${SITE.email}`} className="mt-2 block text-lg font-bold ua-wiggle-link">
               {SITE.email}
             </a>
-            <ul className="mt-3 flex gap-4">
-              {SOCIALS.map((s) => (
-                <li key={s.href}>
-                  <a href={s.href} target="_blank" rel="noopener noreferrer" className="font-bold ua-wiggle-link">
-                    {s.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {SHOW_SOCIALS && (
+              <ul className="mt-3 flex gap-4">
+                {SOCIALS.map((s) => (
+                  <li key={s.href}>
+                    <a href={s.href} target="_blank" rel="noopener noreferrer" className="font-bold ua-wiggle-link">
+                      {s.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 

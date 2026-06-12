@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
-import { NAV_LINKS, SOCIALS, SITE } from "@/lib/marketing/content";
+import { NAV_LINKS, SHOW_SOCIALS, SOCIALS, SITE } from "@/lib/marketing/content";
 import { BrandLogo } from "./BrandLogo";
 
 // y-offset (px from top) sampled to decide what sits behind the nav. Just below
@@ -227,17 +227,18 @@ export function MarketingNav({ hideLogin = false }: { hideLogin?: boolean }) {
             log in →
           </Link>
           <div data-menu-foot className="flex flex-wrap gap-5 text-sm font-semibold text-ua-bg/70">
-            {SOCIALS.map((s) => (
-              <a
-                key={s.href}
-                href={s.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="transition-colors hover:text-ua-bg"
-              >
-                {s.label}
-              </a>
-            ))}
+            {SHOW_SOCIALS &&
+              SOCIALS.map((s) => (
+                <a
+                  key={s.href}
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="transition-colors hover:text-ua-bg"
+                >
+                  {s.label}
+                </a>
+              ))}
             <a href={`mailto:${SITE.email}`} className="transition-colors hover:text-ua-bg">
               {SITE.email}
             </a>

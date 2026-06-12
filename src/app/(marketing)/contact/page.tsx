@@ -3,7 +3,7 @@ import { PageHero } from "@/components/marketing/PageHero";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
-import { SITE, SOCIALS } from "@/lib/marketing/content";
+import { SHOW_SOCIALS, SITE, SOCIALS } from "@/lib/marketing/content";
 
 export const metadata: Metadata = {
   title: "Contact — Bridgeway AI Bootcamp",
@@ -36,23 +36,27 @@ export default function ContactPage() {
                 {SITE.email}
               </a>
 
-              <p className="mt-10 text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
-                social
-              </p>
-              <ul className="mt-2 space-y-2">
-                {SOCIALS.map((s) => (
-                  <li key={s.label}>
-                    <a
-                      href={s.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-xl font-bold text-ua-ink hover:text-ua-blue"
-                    >
-                      {s.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              {SHOW_SOCIALS && (
+                <>
+                  <p className="mt-10 text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
+                    social
+                  </p>
+                  <ul className="mt-2 space-y-2">
+                    {SOCIALS.map((s) => (
+                      <li key={s.label}>
+                        <a
+                          href={s.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xl font-bold text-ua-ink hover:text-ua-blue"
+                        >
+                          {s.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </>
+              )}
 
               <p className="mt-10 max-w-sm text-lg text-ua-ink/80">
                 We&apos;re online — reply times are usually within a day.

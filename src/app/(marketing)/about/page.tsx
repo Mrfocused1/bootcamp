@@ -50,10 +50,10 @@ export default function AboutPage() {
               the team
             </p>
             <h2
-              className="relative mt-3 inline-block text-4xl font-black lowercase tracking-tight text-ua-ink md:text-5xl"
+              className="relative mt-3 inline-block text-4xl font-black tracking-tight text-ua-ink md:text-5xl"
               style={{ fontFamily: "var(--font-epilogue)" }}
             >
-              you&apos;re learning from a team that ships
+              You&apos;re learning from a team that ships
               <Sticker
                 name="rock-on"
                 size={92}

@@ -24,6 +24,9 @@ export const FOOTER_LINKS: NavLink[] = [
   { label: "Contact", href: "/contact" },
 ];
 
+// Flip to true when the social accounts are ready to be public.
+export const SHOW_SOCIALS = false;
+
 export const SOCIALS: NavLink[] = [
   { label: "Instagram", href: "https://www.instagram.com/" },
   { label: "TikTok", href: "https://www.tiktok.com/" },
