@@ -39,8 +39,7 @@ const TESTIMONIALS = [
   },
   {
     color: "bg-ua-pink",
-    quote:
-      "I now build websites for local businesses as a side hustle. £1,200 per client, built with AI.",
+    quote: "I now build websites for local businesses as a side hustle.",
     name: "Priya S.",
     role: "Freelancer",
   },
