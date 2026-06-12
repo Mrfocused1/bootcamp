@@ -51,7 +51,7 @@ export function MarketingFooter() {
         </div>
 
         <div className="mt-10 flex flex-col gap-6 border-t border-ua-bg/20 pt-8 sm:flex-row sm:items-end sm:justify-between">
-          <Link href="/" aria-label="Bridgeway AI Bootcamp">
+          <Link href="/" aria-label="Bridgeway AI Bootcamp" className="ua-wiggle-link">
             <BrandLogo
               color="var(--ua-bg)"
               className="h-20 w-[93px] md:h-28 md:w-[130px]"
