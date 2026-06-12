@@ -134,8 +134,8 @@ export default function PricingPage() {
               <Sticker
                 name="join-the-club"
                 size={96}
-                rotate={-8}
-                className="absolute -left-4 -top-8 z-10"
+                rotate={8}
+                className="absolute -right-4 -top-8 z-10"
               />
 
               <h2
