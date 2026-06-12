@@ -279,7 +279,7 @@ export function Testimonials() {
           className="mx-auto max-w-5xl text-center text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-6xl"
           style={{ fontFamily: "var(--font-epilogue)" }}
         >
-          meet the{" "}
+          we help{" "}
           <span className="relative inline-block">
             people
             <svg
@@ -299,10 +299,10 @@ export function Testimonials() {
               />
             </svg>
           </span>{" "}
-          who shipped a{" "}
+          ship{" "}
           <span className="relative inline-block">
             <span style={{ fontFamily: "var(--font-lora)" }} className="italic">
-              premium website
+              premium websites
             </span>
             <svg
               viewBox="0 0 424 30"
