@@ -16,7 +16,7 @@ const CHARITIES: CaseStudy[] = [
     name: "Youth n Rise",
     logo: "/marketing/work/youthnrise-logo.png",
     blurb:
-      "A warm, motion-rich site for a youth & community charity giving every young person a fair start through mentoring, learning and community. Full-bleed video hero, scroll-driven storytelling and a friction-light path to donate or become a mentor — built with AI using GSAP and Lenis.",
+      "A warm, motion-rich site for a youth & community charity giving every young person a fair start through mentoring, learning and community. Full-bleed video hero, scroll-driven storytelling and a friction-light path to donate or become a mentor.",
     video: "/marketing/work/youthnrise-demo.mp4",
     poster: "/marketing/work/youthnrise-poster.jpg",
     href: "https://www.youthnrise.site",
