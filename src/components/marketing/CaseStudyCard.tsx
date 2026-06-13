@@ -60,13 +60,12 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
     <div
       ref={ref}
       style={{ opacity: 0, willChange: "transform" }}
-      className="grid overflow-hidden rounded-3xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_var(--ua-ink)] md:grid-cols-2"
+      className="overflow-hidden rounded-3xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_var(--ua-ink)]"
     >
-      {/* Demo video — playable, fills its half (16:9 banner on mobile, full
-          column height on desktop) so there are no letterbox gaps. */}
+      {/* Demo video — playable, full width across the top of the card. */}
       <div
         data-cs
-        className="relative aspect-video border-b-2 border-ua-ink bg-ua-ink md:aspect-auto md:border-b-0 md:border-r-2"
+        className="relative aspect-video border-b-2 border-ua-ink bg-ua-ink"
       >
         <video
           src={study.video}
