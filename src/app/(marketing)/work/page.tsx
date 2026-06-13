@@ -36,7 +36,7 @@ export default function WorkPage() {
 
       {/* Charities */}
       <section className="bg-ua-bg px-6 py-20 md:px-10 md:py-28">
-        <div className="mx-auto max-w-5xl">
+        <div className="mx-auto max-w-3xl">
           <Reveal>
             <div className="relative inline-block">
               <h2
