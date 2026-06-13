@@ -20,7 +20,6 @@ const CHARITIES: CaseStudy[] = [
     video: "/marketing/work/youthnrise-demo.mp4",
     poster: "/marketing/work/youthnrise-poster.jpg",
     href: "https://www.youthnrise.site",
-    accent: "var(--ua-bg)",
   },
 ];
 
