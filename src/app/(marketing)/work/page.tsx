@@ -51,6 +51,58 @@ const CHARITIES: CaseStudy[] = [
   },
 ];
 
+function CategoryHeading({
+  title,
+  blurb,
+  sticker,
+  stickerRotate = -10,
+}: {
+  title: string;
+  blurb: string;
+  sticker: string;
+  stickerRotate?: number;
+}) {
+  return (
+    <>
+      <Reveal>
+        <div className="relative inline-block">
+          <h2
+            className="text-4xl font-black lowercase tracking-tight text-ua-ink md:text-6xl"
+            style={{ fontFamily: "var(--font-epilogue)" }}
+          >
+            {title}
+          </h2>
+          <Sticker
+            name={sticker}
+            size={84}
+            rotate={stickerRotate}
+            className="pointer-events-none absolute -right-14 -top-9 z-10 hidden sm:block md:-right-24 md:-top-11"
+          />
+        </div>
+      </Reveal>
+      <Reveal>
+        <p className="mt-3 max-w-xl text-lg text-ua-ink/70">{blurb}</p>
+      </Reveal>
+    </>
+  );
+}
+
+function ComingSoon({ label }: { label: string }) {
+  return (
+    <Reveal>
+      <div className="mt-10 rounded-3xl border-2 border-dashed border-ua-ink/25 bg-white/50 px-6 py-16 text-center md:py-20">
+        <p
+          className="text-2xl font-black lowercase tracking-tight text-ua-ink md:text-3xl"
+          style={{ fontFamily: "var(--font-epilogue)" }}
+        >
+          coming soon
+        </p>
+        <p className="mx-auto mt-2 max-w-md text-ua-ink/60">{label}</p>
+      </div>
+    </Reveal>
+  );
+}
+
 export default function WorkPage() {
   return (
     <>
@@ -64,27 +116,11 @@ export default function WorkPage() {
       {/* Charities */}
       <section className="bg-ua-bg px-6 py-20 md:px-10 md:py-28">
         <div className="mx-auto max-w-3xl">
-          <Reveal>
-            <div className="relative inline-block">
-              <h2
-                className="text-4xl font-black lowercase tracking-tight text-ua-ink md:text-6xl"
-                style={{ fontFamily: "var(--font-epilogue)" }}
-              >
-                charities
-              </h2>
-              <Sticker
-                name="heart-hands"
-                size={84}
-                rotate={-10}
-                className="pointer-events-none absolute -right-14 -top-9 z-10 hidden sm:block md:-right-24 md:-top-11"
-              />
-            </div>
-          </Reveal>
-          <Reveal>
-            <p className="mt-3 max-w-xl text-lg text-ua-ink/70">
-              Mission-driven sites that turn visitors into supporters.
-            </p>
-          </Reveal>
+          <CategoryHeading
+            title="charities"
+            blurb="Mission-driven sites that turn visitors into supporters."
+            sticker="heart-hands"
+          />
 
           {/* Scroll-stack: each card pins below the nav and the next stacks on
               top as you scroll. Reduced motion → plain spaced list. */}
@@ -99,6 +135,32 @@ export default function WorkPage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Creatives */}
+      <section className="bg-ua-bg px-6 pb-20 md:px-10 md:pb-28">
+        <div className="mx-auto max-w-3xl">
+          <CategoryHeading
+            title="creatives"
+            blurb="Portfolio sites for artists, designers and makers — built to get them booked."
+            sticker="cursor-star"
+            stickerRotate={8}
+          />
+          <ComingSoon label="Creative portfolios are landing here shortly." />
+        </div>
+      </section>
+
+      {/* Sports */}
+      <section className="bg-ua-bg px-6 pb-24 md:px-10 md:pb-32">
+        <div className="mx-auto max-w-3xl">
+          <CategoryHeading
+            title="sports"
+            blurb="Sites for teams, clubs and athletes — fixtures, fans and signups in one place."
+            sticker="high-five"
+            stickerRotate={-8}
+          />
+          <ComingSoon label="Team and club sites are landing here shortly." />
         </div>
       </section>
 
