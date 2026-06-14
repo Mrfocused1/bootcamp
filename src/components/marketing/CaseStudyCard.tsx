@@ -57,22 +57,23 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
     <div
       ref={ref}
       style={{ opacity: 0, willChange: "transform" }}
-      className="overflow-hidden rounded-3xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_var(--ua-ink)]"
+      className="flex h-full flex-col overflow-hidden rounded-3xl border-2 border-ua-ink bg-white shadow-[8px_8px_0_var(--ua-ink)]"
     >
-      {/* Playable demo — full width, 16:9, never cropped. */}
-      <div data-cs className="border-b-2 border-ua-ink bg-ua-ink">
+      {/* Playable demo — fills the space above the copy; flexes (and crops via
+          object-cover) on short viewports so the copy below never gets cut. */}
+      <div data-cs className="relative min-h-0 flex-1 border-b-2 border-ua-ink bg-ua-ink">
         <video
           src={study.video}
           poster={study.poster}
           controls
           playsInline
           preload="metadata"
-          className="block aspect-video w-full object-cover"
+          className="absolute inset-0 h-full w-full object-cover"
         />
       </div>
 
       {/* Copy — always visible, below the video. */}
-      <div className="flex flex-col items-start gap-3 p-5 md:p-7">
+      <div className="flex flex-none flex-col items-start gap-3 p-5 md:p-7">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           data-cs

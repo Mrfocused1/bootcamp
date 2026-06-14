@@ -92,7 +92,7 @@ export default function WorkPage() {
             {CHARITIES.map((study, i) => (
               <div
                 key={study.href}
-                className="sticky h-[37rem] motion-reduce:static motion-reduce:mb-10 motion-reduce:h-auto md:h-[46rem]"
+                className="sticky h-[calc(100svh-9rem)] max-h-[40rem] motion-reduce:static motion-reduce:mb-10 md:max-h-[46rem]"
                 style={{ top: `calc(6rem + ${i * 0.8}rem)`, zIndex: i + 1 }}
               >
                 <CaseStudyCard study={study} />
