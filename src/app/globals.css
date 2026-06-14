@@ -146,6 +146,11 @@
   .ua-wiggle-link:hover { animation: none; }
 }
 
+/* ── Work page tab-panel fade (opacity only — safe for sticky cards) ── */
+@keyframes ua-tab-fade { from { opacity: 0; } to { opacity: 1; } }
+.ua-tab-panel { animation: ua-tab-fade 0.35s ease both; }
+@media (prefers-reduced-motion: reduce) { .ua-tab-panel { animation: none; } }
+
 /* ── Horizontal-words pinned section (post-hero) ── */
 .hw-section { height: 300svh; overflow: clip; }
 .hw-content { position: sticky; top: 0; display: flex; align-items: center; height: 100svh; overflow: hidden; }
