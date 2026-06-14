@@ -38,6 +38,7 @@ const CHARITIES: CaseStudy[] = [
     video: "/marketing/work/stepping-demo.mp4",
     poster: "/marketing/work/stepping-poster.jpg",
     href: "https://www.steppingstonescharity.site",
+    logoClass: "h-7 md:h-8",
   },
   {
     name: "Springboard",

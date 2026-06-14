@@ -19,6 +19,8 @@ export type CaseStudy = {
   poster?: string;
   /** Live site URL for the "view website" button. */
   href: string;
+  /** Optional override for the logo's height classes (default h-10 md:h-12). */
+  logoClass?: string;
 };
 
 export function CaseStudyCard({ study }: { study: CaseStudy }) {
@@ -76,7 +78,7 @@ export function CaseStudyCard({ study }: { study: CaseStudy }) {
           data-cs
           src={study.logo}
           alt={`${study.name} logo`}
-          className="h-10 w-auto md:h-12"
+          className={`w-auto ${study.logoClass ?? "h-10 md:h-12"}`}
         />
         <h3
           data-cs
