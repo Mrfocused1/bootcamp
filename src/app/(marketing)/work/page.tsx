@@ -8,7 +8,7 @@ import { FinalCta } from "@/components/marketing/sections/FinalCta";
 export const metadata: Metadata = {
   title: "Our Work — Bridgeway AI Bootcamp",
   description:
-    "Websites we've designed, built and shipped with AI — including the Youth n Rise and Commonwell charity sites. The same workflow we teach in the bootcamp.",
+    "Websites we've designed, built and shipped with AI — including charity sites for Youth n Rise, Commonwell, Stepping Stones and Springboard. The same workflow we teach in the bootcamp.",
 };
 
 const CHARITIES: CaseStudy[] = [
@@ -29,6 +29,24 @@ const CHARITIES: CaseStudy[] = [
     video: "/marketing/work/commonwell-demo.mp4",
     poster: "/marketing/work/commonwell-poster.jpg",
     href: "https://www.commonwell.site",
+  },
+  {
+    name: "Stepping Stones",
+    logo: "/marketing/work/stepping-logo.svg",
+    blurb:
+      "A bold, high-energy site for a London youth charity turning disused buildings into youth centres — and running the mentoring, training and clubs inside them. Stat-driven hero, scroll-driven storytelling and a clear path to back the mission.",
+    video: "/marketing/work/stepping-demo.mp4",
+    poster: "/marketing/work/stepping-poster.jpg",
+    href: "https://stepping-stone-zeta.vercel.app",
+  },
+  {
+    name: "Springboard",
+    logo: "/marketing/work/springboard-logo.svg",
+    blurb:
+      "A warm community-charity site backing young people with mentoring, learning, wellbeing and opportunity — so every young person can rise. Full-bleed video hero, scroll-driven impact storytelling and easy ways to donate, fundraise or become a mentor.",
+    video: "/marketing/work/springboard-demo.mp4",
+    poster: "/marketing/work/springboard-poster.jpg",
+    href: "https://springboard-charity.vercel.app",
   },
 ];
 
