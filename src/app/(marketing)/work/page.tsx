@@ -8,7 +8,7 @@ import { FinalCta } from "@/components/marketing/sections/FinalCta";
 export const metadata: Metadata = {
   title: "Our Work — Bridgeway AI Bootcamp",
   description:
-    "Websites we've designed, built and shipped with AI — including Youth n Rise, a youth & community charity site. The same workflow we teach in the bootcamp.",
+    "Websites we've designed, built and shipped with AI — including the Youth n Rise and Commonwell charity sites. The same workflow we teach in the bootcamp.",
 };
 
 const CHARITIES: CaseStudy[] = [
@@ -20,6 +20,15 @@ const CHARITIES: CaseStudy[] = [
     video: "/marketing/work/youthnrise-demo.mp4",
     poster: "/marketing/work/youthnrise-poster.jpg",
     href: "https://www.youthnrise.site",
+  },
+  {
+    name: "Commonwell",
+    logo: "/marketing/work/commonwell-logo.svg",
+    blurb:
+      "A site for a community wellbeing charity that grows green spaces, supports young people and elders, and brings neighbours together. Full-bleed video hero, scroll-driven programme breakdowns and easy ways to volunteer, donate or host an event.",
+    video: "/marketing/work/commonwell-demo.mp4",
+    poster: "/marketing/work/commonwell-poster.jpg",
+    href: "https://www.commonwell.site",
   },
 ];
 
