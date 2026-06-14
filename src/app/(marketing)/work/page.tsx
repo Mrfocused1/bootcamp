@@ -86,9 +86,17 @@ export default function WorkPage() {
             </p>
           </Reveal>
 
-          <div className="mt-12 space-y-10">
-            {CHARITIES.map((study) => (
-              <CaseStudyCard key={study.href} study={study} />
+          {/* Scroll-stack: each card pins below the nav and the next stacks on
+              top as you scroll. Reduced motion → plain spaced list. */}
+          <div className="mt-12 flex flex-col">
+            {CHARITIES.map((study, i) => (
+              <div
+                key={study.href}
+                className="sticky h-[37rem] motion-reduce:static motion-reduce:mb-10 motion-reduce:h-auto md:h-[46rem]"
+                style={{ top: `calc(6rem + ${i * 0.8}rem)`, zIndex: i + 1 }}
+              >
+                <CaseStudyCard study={study} />
+              </div>
             ))}
           </div>
         </div>
