@@ -37,7 +37,7 @@ const CHARITIES: CaseStudy[] = [
       "A bold, high-energy site for a London youth charity turning disused buildings into youth centres — and running the mentoring, training and clubs inside them. Stat-driven hero, scroll-driven storytelling and a clear path to back the mission.",
     video: "/marketing/work/stepping-demo.mp4",
     poster: "/marketing/work/stepping-poster.jpg",
-    href: "https://stepping-stone-zeta.vercel.app",
+    href: "https://www.steppingstonescharity.site",
   },
   {
     name: "Springboard",
@@ -46,7 +46,7 @@ const CHARITIES: CaseStudy[] = [
       "A warm community-charity site backing young people with mentoring, learning, wellbeing and opportunity — so every young person can rise. Full-bleed video hero, scroll-driven impact storytelling and easy ways to donate, fundraise or become a mentor.",
     video: "/marketing/work/springboard-demo.mp4",
     poster: "/marketing/work/springboard-poster.jpg",
-    href: "https://springboard-charity.vercel.app",
+    href: "https://www.springboardcharity.site",
   },
 ];
 
