@@ -11,13 +11,13 @@ const DECKS: Record<TabId, CaseStudy[]> = {
   charities: [
     {
       name: "Forever Family",
-      logo: "/marketing/work/forever-family-logo.png",
+      logo: "/marketing/work/forever-family-logo.svg",
       blurb:
         "A bold, cinematic site for a community-safety charity building safer, stronger and more united communities through trained intervention, youth mentorship and emergency response. Full-bleed video hero, scroll-driven chapter storytelling and clear ways to join the movement or become a stepper.",
       video: "/marketing/work/forever-family-demo.mp4",
       poster: "/marketing/work/forever-family-poster.jpg",
       href: "https://www.foreverfamilyuk.co.uk",
-      logoClass: "h-8 md:h-10",
+      logoClass: "h-14 md:h-16",
     },
     {
       name: "Youth n Rise",
