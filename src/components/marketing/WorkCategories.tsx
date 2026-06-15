@@ -10,6 +10,16 @@ type TabId = "charities" | "creatives" | "sports" | "other";
 const DECKS: Record<TabId, CaseStudy[]> = {
   charities: [
     {
+      name: "Forever Family",
+      logo: "/marketing/work/forever-family-logo.png",
+      blurb:
+        "A bold, cinematic site for a community-safety charity building safer, stronger and more united communities through trained intervention, youth mentorship and emergency response. Full-bleed video hero, scroll-driven chapter storytelling and clear ways to join the movement or become a stepper.",
+      video: "/marketing/work/forever-family-demo.mp4",
+      poster: "/marketing/work/forever-family-poster.jpg",
+      href: "https://www.foreverfamilyuk.co.uk",
+      logoClass: "h-8 md:h-10",
+    },
+    {
       name: "Youth n Rise",
       logo: "/marketing/work/youthnrise-logo.png",
       blurb:
