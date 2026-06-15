@@ -142,6 +142,7 @@ export function BookingClient({ todayISO }: BookingClientProps) {
               selected={selectedDate}
               onSelect={setSelectedDate}
               todayISO={todayISO}
+              rangeLength={SESSION_COUNT}
             />
           </div>
 

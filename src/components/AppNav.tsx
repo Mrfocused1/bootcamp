@@ -21,7 +21,7 @@ export async function AppNav() {
         <NavLinks role={profile.role} />
 
         {/* Right side */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-3">
           <span className="hidden max-w-[140px] truncate text-sm font-medium text-ua-ink/60 sm:block">
             {profile.name}
           </span>

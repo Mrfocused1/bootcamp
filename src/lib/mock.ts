@@ -201,12 +201,24 @@ export const MOCK_PROGRESS: Record<string, Progress> = {
 
 export function getMockProfile(): Profile {
   if (process.env.NEXT_PUBLIC_MOCK_ADMIN === "1") {
-    return {
-      id: "admin-1",
-      name: "Admin User",
-      email: "admin@urbanai.co",
-      role: "admin",
-    };
+    // CRM role defaults to owner; set NEXT_PUBLIC_MOCK_CRM_ROLE=staff to preview
+    // the employee experience locally.
+    const crmStaff = process.env.NEXT_PUBLIC_MOCK_CRM_ROLE === "staff";
+    return crmStaff
+      ? {
+          id: "crm-staff",
+          name: "Jamie Okafor",
+          email: "jamie@bridgewayaibootcamp.com",
+          role: "admin",
+          crm_role: "staff",
+        }
+      : {
+          id: "crm-owner-1",
+          name: "Paul Bridges",
+          email: "paul@bridgewayaibootcamp.com",
+          role: "admin",
+          crm_role: "owner",
+        };
   }
   return {
     id: "student-1",

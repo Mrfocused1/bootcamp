@@ -21,14 +21,14 @@ export function NavLinks({ role }: NavLinksProps) {
 
   return (
     <nav
-      className="flex items-center gap-1"
+      className="flex min-w-0 items-center gap-1 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       style={{ fontFamily: "var(--font-epilogue)" }}
     >
       {LINKS.map(({ href, label }) => (
         <Link
           key={href}
           href={href}
-          className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors sm:px-4 ${
+          className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-bold transition-colors sm:px-4 ${
             isActive(href)
               ? "bg-ua-ink text-ua-bg"
               : "text-ua-ink hover:bg-ua-ink/10"
@@ -40,7 +40,7 @@ export function NavLinks({ role }: NavLinksProps) {
       {role === "admin" && (
         <Link
           href="/admin"
-          className={`rounded-full px-3 py-1.5 text-sm font-bold transition-colors sm:px-4 ${
+          className={`shrink-0 rounded-full px-3 py-1.5 text-sm font-bold transition-colors sm:px-4 ${
             pathname.startsWith("/admin")
               ? "bg-ua-orange text-ua-bg"
               : "bg-ua-pink text-ua-ink hover:bg-ua-orange hover:text-ua-bg"

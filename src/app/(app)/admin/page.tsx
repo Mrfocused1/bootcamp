@@ -20,6 +20,7 @@ function formatDate(isoString: string): string {
 }
 
 const SECTION_LINKS = [
+  { href: "/admin/crm", label: "CRM", bg: "bg-ua-pink", sticker: "lets-go", desc: "Leads, outreach & follow-ups" },
   { href: "/admin/content", label: "Content", bg: "bg-ua-sky", sticker: "cursor-star", desc: "Edit lessons & videos" },
   { href: "/admin/students", label: "Students", bg: "bg-ua-green", sticker: "high-five", desc: "Manage access & progress" },
   { href: "/admin/cohorts", label: "Cohorts", bg: "bg-ua-pink", sticker: "hundred", desc: "Cohorts & live sessions" },
@@ -74,13 +75,13 @@ export default async function AdminOverviewPage() {
         {statCards.map(({ label, value, bg, sticker }) => (
           <Reveal key={label} className="h-full">
             <div
-              className={`relative flex h-full flex-col gap-1 overflow-hidden rounded-3xl border-2 border-ua-ink ${bg} p-6 shadow-[6px_6px_0_var(--ua-ink)]`}
+              className={`relative flex h-full flex-col gap-1 rounded-3xl border-2 border-ua-ink ${bg} p-6 shadow-[6px_6px_0_var(--ua-ink)]`}
             >
               <Sticker
                 name={sticker}
                 size={56}
                 rotate={-8}
-                className="pointer-events-none absolute -right-1 -top-3"
+                className="pointer-events-none absolute -right-3 -top-5 z-10"
               />
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-ua-ink/55">
                 {label}
@@ -111,13 +112,13 @@ export default async function AdminOverviewPage() {
             <Reveal key={href} className="h-full" y={24 + i * 4}>
               <Link
                 href={href}
-                className={`group relative flex h-full flex-col gap-1 overflow-hidden rounded-3xl border-2 border-ua-ink ${bg} p-6 shadow-[6px_6px_0_var(--ua-ink)] transition-transform hover:-translate-y-0.5`}
+                className={`group relative flex h-full flex-col gap-1 rounded-3xl border-2 border-ua-ink ${bg} p-6 shadow-[6px_6px_0_var(--ua-ink)] transition-transform hover:-translate-y-0.5`}
               >
                 <Sticker
                   name={sticker}
                   size={52}
                   rotate={8}
-                  className="pointer-events-none absolute -right-1 -top-3"
+                  className="pointer-events-none absolute -right-3 -top-5 z-10"
                 />
                 <span
                   className="text-xl font-black text-ua-ink"

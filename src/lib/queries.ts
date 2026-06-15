@@ -41,7 +41,7 @@ export async function getCurrentProfile(): Promise<Profile> {
   if (!user) throw new Error("Not authenticated");
   const { data } = await supabase
     .from("profiles")
-    .select("id, name, email, role")
+    .select("id, name, email, role, crm_role")
     .eq("id", user.id)
     .single();
   return data as Profile;
