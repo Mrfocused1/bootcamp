@@ -66,6 +66,8 @@ export async function setAccess(
 
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const supabase = createAdminClient();
+  // Single-cohort product: a student has one active enrollment, so filtering by
+  // user_id flips their access. Revisit if multi-cohort enrollment is added.
   await supabase.from("enrollments").update({ status }).eq("user_id", userId);
   revalidatePath("/admin/students");
 }
@@ -78,11 +80,16 @@ export async function saveCohort(formData: FormData): Promise<void> {
     return;
   }
 
+  const startDate = str(formData, "start_date");
+  if (!startDate) {
+    revalidatePath("/admin/cohorts");
+    return;
+  }
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const supabase = createAdminClient();
   await supabase.from("cohorts").insert({
     name: str(formData, "name") ?? "Untitled cohort",
-    start_date: str(formData, "start_date"),
+    start_date: startDate,
   });
   revalidatePath("/admin/cohorts");
 }
@@ -104,14 +111,15 @@ export async function saveLiveSession(formData: FormData): Promise<void> {
     .order("start_date", { ascending: false })
     .limit(1)
     .maybeSingle();
-  if (!cohort) {
+  const scheduledAt = toIso(formData, "scheduled_at");
+  if (!cohort || !scheduledAt) {
     revalidatePath("/admin/cohorts");
     return;
   }
   await supabase.from("live_sessions").insert({
     cohort_id: (cohort as { id: string }).id,
     day_index: Number(str(formData, "day_index") ?? "1") || 1,
-    scheduled_at: toIso(formData, "scheduled_at"),
+    scheduled_at: scheduledAt,
     zoom_url: str(formData, "zoom_url"),
   });
   revalidatePath("/admin/cohorts");
@@ -158,7 +166,7 @@ export async function nudgeStudent(userId: string): Promise<{ ok: boolean }> {
   const { sendEmail } = await import("@/lib/email");
   const res = await sendEmail({
     to: profile.email,
-    subject: "Your Bridgeway AI Bootcamp is waiting 👋",
+    subject: "Your Bridgeway AI Bootcamp is waiting",
     text:
       `Hi ${profile.name ?? "there"},\n\n` +
       `Just a quick nudge — you've still got lessons to finish in your AI bootcamp. ` +
@@ -198,7 +206,9 @@ export async function sendBroadcast(
     .from("enrollments")
     .select("profiles(email)")
     .eq("status", "active");
-  if (recipientType === "cohort" && cohortId) {
+  if (recipientType === "cohort") {
+    // "Specific cohort" chosen but none selected → refuse rather than fan out to everyone.
+    if (!cohortId) return { ok: false, recipients: 0 };
     query = query.eq("cohort_id", cohortId);
   }
   const { data } = await query;
@@ -209,8 +219,9 @@ export async function sendBroadcast(
     .filter((e): e is string => !!e);
 
   const { sendEmail } = await import("@/lib/email");
-  await Promise.all(emails.map((to) => sendEmail({ to, subject, text: body })));
-  return { ok: true, recipients: emails.length };
+  const results = await Promise.all(emails.map((to) => sendEmail({ to, subject, text: body })));
+  // Report delivered count (sendEmail never throws; failures return { ok:false }).
+  return { ok: true, recipients: results.filter((r) => r.ok).length };
 }
 
 // ---------------------------------------------------------------------------

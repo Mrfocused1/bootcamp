@@ -226,4 +226,17 @@ describe("sendBroadcast (real mode)", () => {
       "cohort-7",
     ]);
   });
+
+  it("refuses (sends nothing) when 'cohort' is chosen but none selected", async () => {
+    const { client } = makeClient({ enrollments: [{ profiles: { email: "a@x.com" } }] });
+    createAdminClientMock.mockReturnValue(client);
+    const fd = new FormData();
+    fd.set("recipient_type", "cohort"); // no "cohort" value chosen
+    fd.set("subject", "Hi");
+    fd.set("body", "Body");
+    const { sendBroadcast } = await actions();
+    const res = await sendBroadcast(fd);
+    expect(res).toEqual({ ok: false, recipients: 0 });
+    expect(sendEmailMock).not.toHaveBeenCalled();
+  });
 });
