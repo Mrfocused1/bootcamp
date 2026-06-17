@@ -84,15 +84,42 @@ export async function getLessons(): Promise<Lesson[]> {
   if (IS_MOCK) return MOCK_LESSONS;
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
+  // `day_index` lives on `days` (joined via day_id); `topics` has no column yet
+  // (mock-only display field), so default it to [] until there's a way to author it.
   const { data } = await supabase
     .from("lessons")
     .select(
-      "id, day_id, day_index, title, video_provider, video_id, duration_seconds, resources, topics, chapters, order"
+      "id, day_id, title, video_provider, video_id, duration_seconds, resources, chapters, order, days(day_index)"
     )
     .order("order");
-  return ((data ?? []) as (Omit<Lesson, "chapters"> & { chapters?: Lesson["chapters"] })[]).map(
-    (row) => ({ ...row, chapters: row.chapters ?? [] })
-  ) as Lesson[];
+  type LessonRow = {
+    id: string;
+    day_id: string;
+    title: string;
+    video_provider: string | null;
+    video_id: string | null;
+    duration_seconds: number | null;
+    resources: Lesson["resources"] | null;
+    chapters: Lesson["chapters"] | null;
+    order: number;
+    days: { day_index: number } | { day_index: number }[] | null;
+  };
+  return ((data ?? []) as unknown as LessonRow[]).map((row) => {
+    const day = Array.isArray(row.days) ? row.days[0] : row.days;
+    return {
+      id: row.id,
+      day_id: row.day_id,
+      day_index: day?.day_index ?? 0,
+      title: row.title,
+      video_provider: row.video_provider,
+      video_id: row.video_id,
+      duration_seconds: row.duration_seconds ?? 0,
+      resources: row.resources ?? [],
+      topics: [],
+      chapters: row.chapters ?? [],
+      order: row.order,
+    };
+  });
 }
 
 // ---------------------------------------------------------------------------
@@ -107,7 +134,7 @@ export async function getProgressMap(): Promise<Record<string, Progress>> {
   } = await supabase.auth.getUser();
   if (!user) return {};
   const { data } = await supabase
-    .from("progress")
+    .from("lesson_progress")
     .select("lesson_id, last_position_seconds, watched_percent, completed")
     .eq("user_id", user.id);
   const map: Record<string, Progress> = {};
