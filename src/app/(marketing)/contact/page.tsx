@@ -4,6 +4,7 @@ import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
 import { SHOW_SOCIALS, SITE, SOCIALS } from "@/lib/marketing/content";
+import { submitContactForm } from "./actions";
 
 export const metadata: Metadata = {
   title: "Contact — Bridgeway AI Bootcamp",
@@ -11,7 +12,14 @@ export const metadata: Metadata = {
     "Got questions before you enrol on the Bridgeway AI Bootcamp? Email us or reach out on social — we usually reply within a day.",
 };
 
-export default function ContactPage() {
+export default async function ContactPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [k: string]: string | string[] | undefined }>;
+}) {
+  const sp = await searchParams;
+  const sent = sp.sent === "1";
+  const error = typeof sp.error === "string" ? sp.error : null;
   return (
     <>
       <PageHero
@@ -84,60 +92,56 @@ export default function ContactPage() {
                 send a message
               </h2>
 
-              <div className="mt-8 space-y-5">
+              <form action={submitContactForm} className="mt-8 space-y-5">
+                {/* honeypot — hidden from real users; bots fill it */}
+                <input
+                  type="text"
+                  name="company"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="hidden"
+                />
+                {sent && (
+                  <p className="rounded-xl border-2 border-ua-ink bg-ua-green px-4 py-3 text-sm font-semibold text-ua-ink">
+                    Thanks — your message is on its way. We&apos;ll reply within a day.
+                  </p>
+                )}
+                {error && (
+                  <p className="rounded-xl border-2 border-ua-ink bg-ua-orange px-4 py-3 text-sm font-semibold text-white">
+                    {error}
+                  </p>
+                )}
+
                 <div>
-                  <label
-                    htmlFor="contact-name"
-                    className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60"
-                  >
+                  <label htmlFor="contact-name" className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
                     name
                   </label>
-                  <input
-                    id="contact-name"
-                    name="name"
-                    type="text"
-                    className="mt-2 w-full rounded-xl border-2 border-ua-ink bg-ua-bg px-4 py-3 text-ua-ink"
-                  />
+                  <input id="contact-name" name="name" type="text" className="mt-2 w-full rounded-xl border-2 border-ua-ink bg-ua-bg px-4 py-3 text-ua-ink" />
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="contact-email"
-                    className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60"
-                  >
+                  <label htmlFor="contact-email" className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
                     email
                   </label>
-                  <input
-                    id="contact-email"
-                    name="email"
-                    type="email"
-                    className="mt-2 w-full rounded-xl border-2 border-ua-ink bg-ua-bg px-4 py-3 text-ua-ink"
-                  />
+                  <input id="contact-email" name="email" type="email" required className="mt-2 w-full rounded-xl border-2 border-ua-ink bg-ua-bg px-4 py-3 text-ua-ink" />
                 </div>
 
                 <div>
-                  <label
-                    htmlFor="contact-message"
-                    className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60"
-                  >
+                  <label htmlFor="contact-message" className="text-sm font-bold uppercase tracking-[0.2em] text-ua-ink/60">
                     message
                   </label>
-                  <textarea
-                    id="contact-message"
-                    name="message"
-                    rows={5}
-                    className="mt-2 w-full rounded-xl border-2 border-ua-ink bg-ua-bg px-4 py-3 text-ua-ink"
-                  />
+                  <textarea id="contact-message" name="message" rows={5} required className="mt-2 w-full rounded-xl border-2 border-ua-ink bg-ua-bg px-4 py-3 text-ua-ink" />
                 </div>
 
                 <button
-                  type="button"
+                  type="submit"
                   className="rounded-full bg-ua-orange px-7 py-3 font-bold text-ua-bg hover:opacity-90"
                   style={{ fontFamily: "var(--font-epilogue)" }}
                 >
                   Send →
                 </button>
-              </div>
+              </form>
             </div>
           </Reveal>
         </div>
