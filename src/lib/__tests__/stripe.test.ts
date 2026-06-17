@@ -7,15 +7,12 @@ vi.mock("stripe", () => ({
     return { checkout: { sessions: { create: createMock } } };
   }),
 }));
-vi.mock("@/lib/env.server", () => ({
-  getServerEnv: () => ({ STRIPE_SECRET_KEY: "sk_test_x" }),
-}));
-
 describe("createCheckoutSession", () => {
   beforeEach(() => {
     vi.resetModules();
     createMock.mockReset();
     delete process.env.STRIPE_PRICE_ID;
+    delete process.env.STRIPE_SECRET_KEY;
   });
 
   it("no-ops in mock mode and returns the success url", async () => {
@@ -29,6 +26,7 @@ describe("createCheckoutSession", () => {
   it("creates a Checkout Session and returns its url in real mode", async () => {
     vi.doMock("@/lib/mock", () => ({ IS_MOCK: false }));
     process.env.STRIPE_PRICE_ID = "price_123";
+    process.env.STRIPE_SECRET_KEY = "sk_test_x";
     createMock.mockResolvedValue({ url: "https://checkout.stripe.com/c/sess_1" });
     const { createCheckoutSession } = await import("@/lib/stripe");
     const res = await createCheckoutSession({ successUrl: "https://x/success", cancelUrl: "https://x/cancel" });

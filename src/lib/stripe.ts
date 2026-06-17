@@ -1,6 +1,5 @@
 import Stripe from "stripe";
 import { IS_MOCK } from "@/lib/mock";
-import { getServerEnv } from "@/lib/env.server";
 
 export interface CheckoutResult {
   ok: boolean;
@@ -18,8 +17,11 @@ export async function createCheckoutSession(input: {
   const priceId = process.env.STRIPE_PRICE_ID;
   if (!priceId) return { ok: false, error: "STRIPE_PRICE_ID is not set" };
 
+  const secretKey = process.env.STRIPE_SECRET_KEY;
+  if (!secretKey) return { ok: false, error: "STRIPE_SECRET_KEY is not set" };
+
   try {
-    const stripe = new Stripe(getServerEnv().STRIPE_SECRET_KEY);
+    const stripe = new Stripe(secretKey);
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
       line_items: [{ price: priceId, quantity: 1 }],
