@@ -4,7 +4,7 @@ import { PageHero } from "@/components/marketing/PageHero";
 import { Reveal } from "@/components/marketing/Reveal";
 import { Sticker } from "@/components/marketing/Sticker";
 import { FinalCta } from "@/components/marketing/sections/FinalCta";
-import { HERO } from "@/lib/marketing/content";
+import { startEnrolmentCheckout } from "./actions";
 
 export const metadata: Metadata = {
   title: "Pricing — Bridgeway AI Bootcamp",
@@ -59,7 +59,14 @@ const QUESTIONS = [
   "How long do I keep access?",
 ];
 
-export default function PricingPage() {
+export default async function PricingPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [k: string]: string | string[] | undefined }>;
+}) {
+  const sp = await searchParams;
+  const error = typeof sp.error === "string" ? sp.error : null;
+  const cancelled = sp.checkout === "cancelled";
   return (
     <>
       <PageHero
@@ -68,6 +75,17 @@ export default function PricingPage() {
         intro="Everything you need to learn to build and launch real websites with AI."
         sticker="hundred"
       />
+
+      {(error || cancelled) && (
+        <div className="bg-ua-bg px-6 pt-8 md:px-10">
+          <div
+            role="alert"
+            className="mx-auto max-w-4xl rounded-2xl border-2 border-ua-ink bg-ua-orange/20 p-4 text-center text-sm font-semibold text-ua-ink"
+          >
+            {error ?? "Checkout cancelled — no charge was made."}
+          </div>
+        </div>
+      )}
 
       {/* Pricing cards */}
       <section className="bg-ua-bg px-6 py-24 md:px-10">
@@ -113,13 +131,15 @@ export default function PricingPage() {
               </ul>
 
               <div className="mt-auto">
-                <Link
-                  href={HERO.ctaHref}
-                  className="mt-9 block rounded-full bg-ua-orange px-7 py-3 text-center text-lg font-bold text-ua-bg hover:opacity-90"
-                  style={{ fontFamily: "var(--font-epilogue)" }}
-                >
-                  {HERO.ctaLabel} →
-                </Link>
+                <form action={startEnrolmentCheckout} className="mt-9">
+                  <button
+                    type="submit"
+                    className="block w-full rounded-full bg-ua-orange px-7 py-3 text-center text-lg font-bold text-ua-bg hover:opacity-90"
+                    style={{ fontFamily: "var(--font-epilogue)" }}
+                  >
+                    Enrol — £1,000 →
+                  </button>
+                </form>
 
                 <p className="mt-5 text-center text-sm text-ua-ink/60">
                   Secure checkout via Stripe.
