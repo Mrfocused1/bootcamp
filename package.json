@@ -13,8 +13,10 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1064.0",
     "@aws-sdk/s3-request-presigner": "^3.1064.0",
+    "@mux/mux-player-react": "^3.13.0",
     "@supabase/ssr": "^0.10.3",
     "@supabase/supabase-js": "^2.107.0",
+    "@vimeo/player": "^2.30.4",
     "gsap": "^3.15.0",
     "next": "16.2.7",
     "react": "19.2.4",

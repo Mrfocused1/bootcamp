@@ -27,30 +27,30 @@ export function VideoPlayer({ provider, videoId, startSeconds, onProgress, seek 
         />
       );
     case "youtube":
-      // TODO: wire up seek prop to YouTube IFrame Player API seekTo()
       return (
         <YoutubePlayer
           videoId={videoId}
           startSeconds={startSeconds}
           onProgress={onProgress}
+          seek={seek}
         />
       );
     case "vimeo":
-      // TODO: wire up seek prop to Vimeo Player SDK setCurrentTime()
       return (
         <VimeoPlayer
           videoId={videoId}
           startSeconds={startSeconds}
           onProgress={onProgress}
+          seek={seek}
         />
       );
     case "mux":
-      // TODO: wire up seek prop to Mux player seekTo()
       return (
         <MuxPlayer
           videoId={videoId}
           startSeconds={startSeconds}
           onProgress={onProgress}
+          seek={seek}
         />
       );
     default:

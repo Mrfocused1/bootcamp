@@ -1,29 +1,73 @@
 "use client";
 
+import { useEffect, useRef } from "react";
+import Player from "@vimeo/player";
+
 interface VimeoPlayerProps {
   videoId: string;
   startSeconds: number;
   onProgress: (positionSeconds: number, durationSeconds: number) => void;
+  /** When seek.nonce changes, immediately seek to seek.seconds and play. */
+  seek?: { seconds: number; nonce: number } | null;
 }
 
-export function VimeoPlayer({ videoId, startSeconds }: VimeoPlayerProps) {
-  // TODO: Wire up the Vimeo Player SDK (@vimeo/player) to emit progress events:
-  //   1. npm install @vimeo/player
-  //   2. Import Player from "@vimeo/player" (client-only).
-  //   3. new Player(iframeRef.current) then player.on("timeupdate", ...) to call onProgress.
-  //   4. On ready, player.setCurrentTime(startSeconds).
+export function VimeoPlayer({ videoId, startSeconds, onProgress, seek }: VimeoPlayerProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const playerRef = useRef<Player | null>(null);
 
-  const src = `https://player.vimeo.com/video/${videoId}#t=${Math.floor(startSeconds)}s`;
+  // Keep onProgress current without re-running the init effect. Synced in an
+  // effect (not during render) to satisfy react-hooks/refs.
+  const progressRef = useRef(onProgress);
+  useEffect(() => {
+    progressRef.current = onProgress;
+  });
 
-  return (
-    <div className="w-full aspect-video rounded-xl overflow-hidden bg-black">
-      <iframe
-        src={src}
-        title="Vimeo video player"
-        allow="autoplay; fullscreen; picture-in-picture"
-        allowFullScreen
-        className="w-full h-full"
-      />
-    </div>
-  );
+  // Create the player when the videoId changes (and on mount).
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const player = new Player(containerRef.current, {
+      id: Number(videoId),
+      responsive: true,
+    });
+    playerRef.current = player;
+
+    player.ready().then(() => {
+      if (startSeconds > 0) {
+        player.setCurrentTime(startSeconds).catch(() => {
+          // Seeking before metadata is ready can reject — ignore silently.
+        });
+      }
+    });
+
+    const handleTimeUpdate = (data: { seconds: number; duration: number }) => {
+      if (data.duration > 0) {
+        progressRef.current(data.seconds, data.duration);
+      }
+    };
+    player.on("timeupdate", handleTimeUpdate);
+
+    return () => {
+      player.off("timeupdate");
+      playerRef.current = null;
+      player.destroy();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoId]);
+
+  // Chapter seek: jump and play when seek.nonce changes.
+  useEffect(() => {
+    if (!seek) return;
+    const player = playerRef.current;
+    if (!player) return;
+    player
+      .setCurrentTime(seek.seconds)
+      .then(() => player.play())
+      .catch(() => {
+        // Autoplay may be blocked by the browser — ignore silently.
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seek?.nonce]);
+
+  return <div ref={containerRef} className="w-full aspect-video rounded-xl overflow-hidden bg-black" />;
 }
