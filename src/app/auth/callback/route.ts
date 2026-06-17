@@ -4,7 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 export async function GET(request: Request): Promise<Response> {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
-  const next = url.searchParams.get("next") ?? "/dashboard";
+  // Only allow same-origin relative paths to prevent open redirects.
+  // Must start with a single "/" not followed by "/" or "\" (rejects
+  // //evil.com, /\evil.com, and absolute URLs like https://evil.com).
+  const raw = url.searchParams.get("next") ?? "/dashboard";
+  const next = /^\/(?![/\\])/.test(raw) ? raw : "/dashboard";
 
   if (!code) {
     return NextResponse.redirect(new URL("/login?error=auth", request.url));

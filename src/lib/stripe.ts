@@ -12,7 +12,9 @@ export async function createCheckoutSession(input: {
   successUrl: string;
   cancelUrl: string;
 }): Promise<CheckoutResult> {
-  if (IS_MOCK) return { ok: true, url: input.successUrl, mocked: true };
+  if (IS_MOCK && !process.env.STRIPE_SECRET_KEY) {
+    return { ok: true, url: input.successUrl, mocked: true };
+  }
 
   const priceId = process.env.STRIPE_PRICE_ID;
   if (!priceId) return { ok: false, error: "STRIPE_PRICE_ID is not set" };

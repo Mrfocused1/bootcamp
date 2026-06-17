@@ -81,7 +81,7 @@ export default async function LessonPage({ params }: PageProps) {
         )}
       </section>
 
-      {/* ── Video + AI assistant ── */}
+      {/* ── Video ── */}
       <LessonClient
         lessonId={lesson.id}
         videoProvider={lesson.video_provider ?? "mp4"}

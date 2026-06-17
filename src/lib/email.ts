@@ -1,6 +1,5 @@
 import { Resend } from "resend";
 import { IS_MOCK } from "@/lib/mock";
-import { getServerEnv } from "@/lib/env.server";
 
 export interface SendEmailInput {
   to: string;
@@ -19,15 +18,19 @@ export interface SendEmailResult {
 export async function sendEmail(input: SendEmailInput): Promise<SendEmailResult> {
   if (IS_MOCK) return { ok: true, mocked: true };
 
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) return { ok: false, error: "RESEND_API_KEY missing" };
+  const from = process.env.RESEND_FROM;
+  if (!from) return { ok: false, error: "RESEND_FROM missing" };
+
   try {
-    const env = getServerEnv();
-    const resend = new Resend(env.RESEND_API_KEY);
+    const resend = new Resend(apiKey);
     const { data, error } = await resend.emails.send({
-      from: env.RESEND_FROM,
+      from,
       to: input.to,
       subject: input.subject,
       text: input.text,
-      replyTo: input.replyTo ?? env.RESEND_FROM,
+      replyTo: input.replyTo ?? from,
     });
     if (error) return { ok: false, error: error.message };
     return { ok: true, id: data?.id };

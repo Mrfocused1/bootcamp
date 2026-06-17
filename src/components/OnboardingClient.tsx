@@ -383,7 +383,6 @@ function StepSchedule({ onSkip }: { onSkip: () => void }) {
 const FEATURES = [
   { icon: "high-five", bg: "var(--ua-pink)", title: "5 daily 1-hour live sessions with your coach", desc: "Interactive, hands-on sessions to help you build and launch your AI-powered product." },
   { icon: "camera", bg: "var(--ua-green)", title: "Full session recordings to rewatch at any time", desc: "Missed a session? Rewatch at your own pace and never fall behind." },
-  { icon: "cursor-star", bg: "var(--ua-sky)", title: "AI assistant ready to answer questions mid-lesson", desc: "Get instant help and clarity so you can keep building with confidence." },
   { icon: "hundred", bg: "#fbe49a", title: "Mark lessons complete to track your progress", desc: "Stay motivated and see your progress as you build each day." },
   { icon: "earth", bg: "var(--ua-pink)", title: "A real, live website by the end of Day 5", desc: "Launch something real that you can share with the world." },
 ];
@@ -448,13 +447,6 @@ function StepExpect() {
               <span className="h-1.5 w-1.5 rounded-full bg-ua-blue" /> LIVE SESSION
             </span>
           </div>
-        </div>
-
-        {/* AI assistant chat card */}
-        <div className="absolute right-0 top-8 w-52 rotate-[3deg] rounded-2xl border-2 border-ua-ink bg-ua-green/40 p-3 shadow-[6px_6px_0_var(--ua-ink)]">
-          <div className="mb-2 inline-flex items-center gap-1 rounded-full bg-white px-2 py-0.5 text-[10px] font-bold text-ua-ink">AI ASSISTANT</div>
-          <p className="rounded-xl rounded-tl-sm bg-white px-3 py-1.5 text-xs text-ua-ink">How can I help you today?</p>
-          <p className="mt-2 ml-6 rounded-xl rounded-tr-sm bg-ua-ink px-3 py-1.5 text-xs text-ua-bg">How do I connect payments?</p>
         </div>
 
         {/* Progress card */}

@@ -74,6 +74,13 @@ describe("getServerEnv (from env.server)", () => {
     expect(() => getServerEnv()).not.toThrow();
   });
 
+  it("does not require CRON_SECRET (it is optional)", async () => {
+    for (const [k, v] of Object.entries(FULL_ENV)) process.env[k] = v;
+    delete process.env.CRON_SECRET;
+    const { getServerEnv } = await import("@/lib/env.server");
+    expect(() => getServerEnv()).not.toThrow();
+  });
+
   it("returns typed object when all vars are present", async () => {
     for (const [k, v] of Object.entries(FULL_ENV)) {
       process.env[k] = v;

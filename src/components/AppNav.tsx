@@ -2,6 +2,7 @@ import Link from "next/link";
 import { getCurrentProfile } from "@/lib/queries";
 import { NavLinks } from "@/components/NavLinks";
 import { BrandLogo } from "@/components/marketing/BrandLogo";
+import { signOut } from "@/app/(app)/actions";
 
 export async function AppNav() {
   const profile = await getCurrentProfile();
@@ -25,13 +26,15 @@ export async function AppNav() {
           <span className="hidden max-w-[140px] truncate text-sm font-medium text-ua-ink/60 sm:block">
             {profile.name}
           </span>
-          <Link
-            href="/login"
-            className="inline-flex items-center rounded-full border-2 border-ua-ink px-4 py-1.5 text-sm font-bold text-ua-ink transition-colors hover:bg-ua-ink hover:text-ua-bg"
-            style={{ fontFamily: "var(--font-epilogue)" }}
-          >
-            Sign out
-          </Link>
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="inline-flex items-center rounded-full border-2 border-ua-ink px-4 py-1.5 text-sm font-bold text-ua-ink transition-colors hover:bg-ua-ink hover:text-ua-bg"
+              style={{ fontFamily: "var(--font-epilogue)" }}
+            >
+              Sign out
+            </button>
+          </form>
         </div>
       </div>
     </header>

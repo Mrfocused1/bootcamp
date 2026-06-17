@@ -9,14 +9,14 @@ vi.mock("resend", () => ({
     return { emails: { send: sendMock } };
   }),
 }));
-vi.mock("@/lib/env.server", () => ({
-  getServerEnv: () => ({ RESEND_API_KEY: "re_test", RESEND_FROM: "Test <t@test.dev>" }),
-}));
 
 describe("sendEmail", () => {
   beforeEach(() => {
     vi.resetModules();
     sendMock.mockReset();
+    // sendEmail reads these directly from process.env (no longer via getServerEnv).
+    process.env.RESEND_API_KEY = "re_test";
+    process.env.RESEND_FROM = "Test <t@test.dev>";
   });
 
   it("no-ops in mock mode and never calls Resend", async () => {
@@ -48,5 +48,16 @@ describe("sendEmail", () => {
       ok: false,
       error: "domain not verified",
     });
+  });
+
+  it("returns an error (without throwing) when RESEND_API_KEY is missing", async () => {
+    vi.doMock("@/lib/mock", () => ({ IS_MOCK: false }));
+    delete process.env.RESEND_API_KEY;
+    const { sendEmail } = await import("@/lib/email");
+    await expect(sendEmail({ to: "a@b.com", subject: "S", text: "T" })).resolves.toEqual({
+      ok: false,
+      error: "RESEND_API_KEY missing",
+    });
+    expect(sendMock).not.toHaveBeenCalled();
   });
 });
