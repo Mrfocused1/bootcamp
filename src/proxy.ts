@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { IS_MOCK } from "@/lib/mock";
 import { updateSession } from "@/lib/supabase/middleware";
 
-export async function middleware(request: NextRequest): Promise<NextResponse> {
+export async function proxy(request: NextRequest): Promise<NextResponse> {
   // Mock/local review: no Supabase, no gate.
   if (IS_MOCK) return NextResponse.next();
 
