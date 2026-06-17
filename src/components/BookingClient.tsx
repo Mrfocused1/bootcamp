@@ -28,6 +28,8 @@ export function BookingClient({ todayISO }: BookingClientProps) {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [confirmed, setConfirmed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const canConfirm = selectedDate !== null && selectedTime !== null;
 
@@ -38,10 +40,27 @@ export function BookingClient({ todayISO }: BookingClientProps) {
       }))
     : [];
 
-  function handleConfirm() {
-    if (!canConfirm) return;
-    // TODO: persist via /api/book + Supabase in real mode
-    setConfirmed(true);
+  async function handleConfirm() {
+    if (!canConfirm || submitting) return;
+    setSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch("/api/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ start_date: selectedDate, daily_time: selectedTime }),
+      });
+      const data = await res.json().catch(() => null);
+      if (res.ok && data?.ok) {
+        setConfirmed(true);
+      } else {
+        setError("Something went wrong saving your schedule. Please try again.");
+      }
+    } catch {
+      setError("Something went wrong saving your schedule. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (confirmed && selectedDate && selectedTime) {
@@ -219,16 +238,23 @@ export function BookingClient({ todayISO }: BookingClientProps) {
 
           <button
             onClick={handleConfirm}
-            disabled={!canConfirm}
+            disabled={!canConfirm || submitting}
             className="w-full rounded-full py-3 text-sm font-semibold transition-colors"
             style={{
               backgroundColor: canConfirm ? "var(--ua-blue)" : "rgba(20,20,20,0.1)",
               color: canConfirm ? "#fff" : "rgba(20,20,20,0.3)",
-              cursor: canConfirm ? "pointer" : "not-allowed",
+              cursor: canConfirm && !submitting ? "pointer" : "not-allowed",
+              opacity: submitting ? 0.7 : 1,
             }}
           >
-            Confirm my schedule
+            {submitting ? "Confirming…" : "Confirm my schedule"}
           </button>
+
+          {error && (
+            <p className="text-sm" style={{ color: "#b91c1c" }}>
+              {error}
+            </p>
+          )}
         </div>
       </div>
     </div>

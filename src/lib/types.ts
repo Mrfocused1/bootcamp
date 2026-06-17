@@ -104,6 +104,17 @@ export interface Cohort {
   start_date: string; // 'YYYY-MM-DD'
 }
 
+/** A student's chosen 5-day schedule (start date + daily time). One per student. */
+export interface Booking {
+  id: string;
+  user_id: string;
+  cohort_id: string | null;
+  start_date: string;
+  daily_time: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface Day {
   id: string;
   day_index: number;
