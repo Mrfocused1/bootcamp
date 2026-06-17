@@ -37,11 +37,12 @@ export async function getCurrentProfile(): Promise<Profile> {
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("profiles")
     .select("id, name, email, role, crm_role")
     .eq("id", user.id)
     .single();
+  if (error || !data) throw new Error("Profile not found");
   return data as Profile;
 }
 

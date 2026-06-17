@@ -91,7 +91,10 @@ export function MarketingNav({ hideLogin = false }: { hideLogin?: boolean }) {
   // Play / reverse on open change + lock scroll + ESC to close.
   useEffect(() => {
     const tl = tlRef.current;
-    if (tl) (open ? tl.play() : tl.reverse());
+    if (tl) {
+      if (open) tl.play();
+      else tl.reverse();
+    }
     document.body.style.overflow = open ? "hidden" : "";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);

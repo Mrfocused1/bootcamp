@@ -43,15 +43,24 @@ export function SessionRow({ session }: SessionRowProps) {
         </p>
       </div>
 
-      <a
-        href={session.zoom_url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80 whitespace-nowrap"
-        style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
-      >
-        Join Zoom →
-      </a>
+      {session.zoom_url ? (
+        <a
+          href={session.zoom_url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80 whitespace-nowrap"
+          style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
+        >
+          Join Zoom →
+        </a>
+      ) : (
+        <span
+          className="inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold whitespace-nowrap"
+          style={{ backgroundColor: "var(--ua-bg)", color: "var(--ua-ink)", opacity: 0.6 }}
+        >
+          Link coming
+        </span>
+      )}
     </div>
   );
 }

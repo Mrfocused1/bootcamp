@@ -237,7 +237,6 @@ export function ScribbleTransition() {
     navigatingRef.current = false;
     applyStyle(pathname);
     reveal();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   return (

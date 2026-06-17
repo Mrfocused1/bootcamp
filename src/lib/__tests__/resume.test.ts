@@ -2,13 +2,6 @@ import { describe, it, expect } from "vitest";
 import { nextLessonDayIndex } from "@/lib/resume";
 import type { Day, Progress } from "@/lib/types";
 
-// Cohort started 5 days ago → days 1-5 are all unlocked
-const COHORT_START = (() => {
-  const d = new Date();
-  d.setUTCDate(d.getUTCDate() - 5);
-  return d.toISOString().slice(0, 10);
-})();
-
 const TODAY = new Date().toISOString().slice(0, 10);
 
 const DAYS: Day[] = [

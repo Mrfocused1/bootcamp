@@ -18,8 +18,7 @@ function makeClient(tableData: Record<string, unknown> = {}) {
   let table = "";
   const result = () => ({ data: tableData[table] ?? null, error: null });
   const builder: Record<string, unknown> = {};
-  const chain = () =>
-    (..._args: unknown[]) => builder;
+  const chain = () => () => builder;
   for (const m of ["select", "eq", "order", "limit"]) builder[m] = chain();
   (builder as { then: unknown }).then = (resolve: (v: unknown) => void) => resolve(result());
   const from = vi.fn((t: string) => {

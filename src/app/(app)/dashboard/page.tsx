@@ -217,15 +217,24 @@ export default async function DashboardPage() {
                 <p className="text-sm font-medium text-ua-ink/75">
                   {formatDate(nextSession.scheduled_at)}
                 </p>
-                <a
-                  href={nextSession.zoom_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-auto inline-flex items-center justify-center rounded-full bg-ua-blue px-5 py-2.5 text-sm font-bold text-ua-bg transition-transform hover:-translate-y-0.5"
-                  style={{ fontFamily: "var(--font-epilogue)" }}
-                >
-                  Join Zoom →
-                </a>
+                {nextSession.zoom_url ? (
+                  <a
+                    href={nextSession.zoom_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto inline-flex items-center justify-center rounded-full bg-ua-blue px-5 py-2.5 text-sm font-bold text-ua-bg transition-transform hover:-translate-y-0.5"
+                    style={{ fontFamily: "var(--font-epilogue)" }}
+                  >
+                    Join Zoom →
+                  </a>
+                ) : (
+                  <span
+                    className="mt-auto inline-flex items-center justify-center rounded-full bg-ua-bg px-5 py-2.5 text-sm font-bold text-ua-ink/60"
+                    style={{ fontFamily: "var(--font-epilogue)" }}
+                  >
+                    Link coming
+                  </span>
+                )}
               </div>
             </Reveal>
           )}

@@ -142,15 +142,21 @@ export default async function AdminCohortsPage() {
                     {formatDate(s.scheduled_at)}
                   </span>
                 </div>
-                <a
-                  href={s.zoom_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs font-semibold underline underline-offset-2"
-                  style={{ color: "var(--ua-blue)" }}
-                >
-                  Zoom link
-                </a>
+                {s.zoom_url ? (
+                  <a
+                    href={s.zoom_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-semibold underline underline-offset-2"
+                    style={{ color: "var(--ua-blue)" }}
+                  >
+                    Zoom link
+                  </a>
+                ) : (
+                  <span className="text-xs font-semibold" style={{ color: "var(--ua-ink)", opacity: 0.5 }}>
+                    TBA
+                  </span>
+                )}
               </li>
             ))}
           </ul>
