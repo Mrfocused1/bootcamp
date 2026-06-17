@@ -239,8 +239,8 @@ export async function getLatestAnnouncement(): Promise<Announcement | null> {
 // ---------------------------------------------------------------------------
 export async function getStudents(): Promise<StudentSummary[]> {
   if (IS_MOCK) return getMockStudents();
-  const { createClient } = await import("@/lib/supabase/server");
-  const supabase = await createClient();
+  const { createAdminClient } = await import("@/lib/supabase/admin");
+  const supabase = createAdminClient();
   const { data } = await supabase
     .from("student_summaries")
     .select("profile, cohort, overall_percent");
@@ -256,12 +256,12 @@ export async function getStudents(): Promise<StudentSummary[]> {
 // ---------------------------------------------------------------------------
 export async function getDayFunnel(): Promise<DayFunnelEntry[]> {
   if (IS_MOCK) return getMockDayFunnel();
-  // Real-mode stub — query a view or aggregate from a progress table:
-  // const { createClient } = await import("@/lib/supabase/server");
-  // const supabase = await createClient();
-  // const { data } = await supabase.from("day_funnel").select("day, started, completed");
-  // return (data ?? []) as DayFunnelEntry[];
-  return getMockDayFunnel();
+  const { createAdminClient } = await import("@/lib/supabase/admin");
+  const supabase = createAdminClient();
+  const { data } = await supabase
+    .from("day_funnel")
+    .select("day, started, completed");
+  return (data ?? []) as DayFunnelEntry[];
 }
 
 export type { DayFunnelEntry };
