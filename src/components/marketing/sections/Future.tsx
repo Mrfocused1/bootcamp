@@ -238,6 +238,7 @@ export function Future() {
                     {video ? (
                       <video
                         src={video}
+                        poster={video.replace(/\.mp4$/, "-poster.jpg")}
                         muted
                         loop
                         playsInline
