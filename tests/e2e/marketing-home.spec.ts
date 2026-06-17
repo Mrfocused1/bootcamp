@@ -6,7 +6,7 @@ test("homepage renders original marketing shell", async ({ page }) => {
 
   await page.goto("/");
 
-  await expect(page.getByRole("heading")).toContainText(/build real websites/i);
+  await expect(page.getByRole("heading", { level: 1 }).first()).toContainText(/build premium websites/i);
   await expect(page.getByRole("link", { name: /enrol now/i }).first()).toBeVisible();
   await expect(page.getByRole("link", { name: "FAQ" })).toHaveAttribute("href", "/faq");
 

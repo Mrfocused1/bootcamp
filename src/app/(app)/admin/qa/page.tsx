@@ -122,6 +122,7 @@ export default async function AdminQaPage() {
                   Admin reply
                 </p>
                 <form
+                  id={`reply-${question.id}`}
                   action={replyToQuestionAction.bind(null, question.id)}
                   className="flex flex-col gap-2"
                 >
@@ -133,29 +134,30 @@ export default async function AdminQaPage() {
                     className="rounded-xl border border-[var(--ua-ink)]/20 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ua-blue)] resize-none w-full"
                     style={{ color: "var(--ua-ink)" }}
                   />
-                  <div className="flex items-center gap-2 justify-between">
-                    <form action={markResolvedAction.bind(null, question.id)}>
-                      <button
-                        type="submit"
-                        className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80"
-                        style={{
-                          backgroundColor: "var(--ua-green)",
-                          color: "var(--ua-ink)",
-                          border: "1px solid rgba(20,20,20,0.1)",
-                        }}
-                      >
-                        Mark resolved
-                      </button>
-                    </form>
+                </form>
+                <div className="flex items-center gap-2 justify-between">
+                  <form action={markResolvedAction.bind(null, question.id)}>
                     <button
                       type="submit"
-                      className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold transition-opacity hover:opacity-80"
-                      style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
+                      className="inline-flex items-center justify-center rounded-full px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80"
+                      style={{
+                        backgroundColor: "var(--ua-green)",
+                        color: "var(--ua-ink)",
+                        border: "1px solid rgba(20,20,20,0.1)",
+                      }}
                     >
-                      Send reply
+                      Mark resolved
                     </button>
-                  </div>
-                </form>
+                  </form>
+                  <button
+                    type="submit"
+                    form={`reply-${question.id}`}
+                    className="inline-flex items-center justify-center rounded-full px-4 py-1.5 text-xs font-semibold transition-opacity hover:opacity-80"
+                    style={{ backgroundColor: "var(--ua-blue)", color: "#fff" }}
+                  >
+                    Send reply
+                  </button>
+                </div>
               </div>
             </div>
           ))}
