@@ -69,6 +69,13 @@ describe("getServerEnv (from env.server)", () => {
     expect(msg).toMatch(/SUPABASE_SERVICE_ROLE_KEY/);
   });
 
+  it("does not require STRIPE_WEBHOOK_SECRET (it is optional)", async () => {
+    for (const [k, v] of Object.entries(FULL_ENV)) process.env[k] = v;
+    delete process.env.STRIPE_WEBHOOK_SECRET;
+    const { getServerEnv } = await import("@/lib/env.server");
+    expect(() => getServerEnv()).not.toThrow();
+  });
+
   it("returns typed object when all vars are present", async () => {
     for (const [k, v] of Object.entries(FULL_ENV)) {
       process.env[k] = v;
