@@ -10,7 +10,6 @@ const NAV_LINKS = [
   { href: "/admin/students", label: "Students" },
   { href: "/admin/cohorts", label: "Cohorts" },
   { href: "/admin/recordings", label: "Recordings" },
-  { href: "/admin/qa", label: "Q&A" },
   { href: "/admin/announcements", label: "Announcements" },
   { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/broadcast", label: "Broadcast" },

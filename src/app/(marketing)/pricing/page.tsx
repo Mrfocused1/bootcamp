@@ -17,7 +17,7 @@ const INCLUDED = [
   "Lifetime access to all recordings",
   "The full 12-topic curriculum",
   "Student dashboard to rewatch lessons",
-  "Ask-anything Q&A support",
+  "Ask-anything Q&A in your live sessions",
   "Templates, prompts & resources",
   "A real, live website by the end",
 ];

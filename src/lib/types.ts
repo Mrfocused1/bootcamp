@@ -166,14 +166,6 @@ export interface Announcement {
   created_at: string;
 }
 
-export interface AiMessage {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-  created_at: string;
-  lesson_id: string | null;
-}
-
 export interface StudentSummary {
   profile: Profile;
   cohort: Cohort;

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useCallback, useRef, useState } from "react";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ChapterMenu } from "@/components/ChapterMenu";
-import { AiAssistant } from "@/components/AiAssistant";
 import type { Chapter } from "@/lib/types";
 
 interface LessonClientProps {
@@ -155,11 +154,6 @@ export function LessonClient({
             )
           ) : null}
         </div>
-      </div>
-
-      {/* AI assistant column */}
-      <div className="w-full lg:w-96 flex-shrink-0">
-        <AiAssistant lessonId={lessonId} />
       </div>
     </div>
   );

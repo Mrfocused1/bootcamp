@@ -21,7 +21,7 @@ const SECTIONS: LegalSection[] = [
     heading: "information we collect",
     paras: [
       "Account details you give us: your name and email address when you enrol or create an account, and any information you choose to share when you contact us.",
-      "Course activity: which lessons you watch, your progress and completion, your chosen schedule, and questions you ask the in-course AI assistant — so we can run the course and show you your progress.",
+      "Course activity: which lessons you watch, your progress and completion, and your chosen schedule — so we can run the course and show you your progress.",
       "Payment information: payments are processed by our third-party payment provider. We do not see or store your full card details — only a confirmation that a payment was made.",
       "Technical data: basic information your browser sends automatically, such as device type, and limited analytics about how the site is used.",
     ],
@@ -37,7 +37,7 @@ const SECTIONS: LegalSection[] = [
   {
     heading: "who we share it with",
     paras: [
-      "We do not sell your personal data. We share it only with the service providers we need to run the course — for example our payment processor, email provider, video-call platform (for live sessions), AI provider (to power the in-course assistant), and hosting infrastructure.",
+      "We do not sell your personal data. We share it only with the service providers we need to run the course — for example our payment processor, email provider, video-call platform (for live sessions), and hosting infrastructure.",
       "These providers may only use your data to perform services for us, and we share the minimum needed. We may also disclose data where required by law.",
     ],
   },

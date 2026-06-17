@@ -6,7 +6,6 @@ import type {
   Progress,
   LiveSession,
   Announcement,
-  AiMessage,
   StudentSummary,
   Chapter,
   SessionRecording,
@@ -298,41 +297,6 @@ export function getMockStudents(): StudentSummary[] {
     cohort,
     overallPercent: Math.round(Math.random() * 100),
   }));
-}
-
-export function getMockAiMessages(): AiMessage[] {
-  return [
-    {
-      id: "msg-1",
-      role: "user",
-      content: "How do I connect Supabase to my Next.js project?",
-      created_at: offsetDate(-2) + "T10:00:00Z",
-      lesson_id: "lesson-2",
-    },
-    {
-      id: "msg-2",
-      role: "assistant",
-      content:
-        "Great question! Start by installing @supabase/ssr and @supabase/supabase-js, then create a server client using `createServerClient` from @supabase/ssr with your project URL and anon key from the Supabase dashboard.",
-      created_at: offsetDate(-2) + "T10:00:30Z",
-      lesson_id: "lesson-2",
-    },
-    {
-      id: "msg-3",
-      role: "user",
-      content: "What's the difference between the anon key and service role key?",
-      created_at: offsetDate(-1) + "T14:00:00Z",
-      lesson_id: null,
-    },
-    {
-      id: "msg-4",
-      role: "assistant",
-      content:
-        "The anon key is safe to expose in the browser — it respects your Row Level Security (RLS) policies. The service role key bypasses RLS entirely and should only ever be used server-side in a trusted environment.",
-      created_at: offsetDate(-1) + "T14:00:45Z",
-      lesson_id: null,
-    },
-  ];
 }
 
 export interface DayFunnelEntry {

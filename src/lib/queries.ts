@@ -7,7 +7,6 @@ import type {
   LiveSession,
   Announcement,
   StudentSummary,
-  AiMessage,
   SessionRecording,
   PlayableRecording,
 } from "@/lib/types";
@@ -22,7 +21,6 @@ import {
   getMockSessionRecordings,
   getMockAnnouncement,
   getMockStudents,
-  getMockAiMessages,
   getMockDayFunnel,
   SAMPLE_VIDEO_URL,
   type DayFunnelEntry,
@@ -292,22 +290,3 @@ export async function getDayFunnel(): Promise<DayFunnelEntry[]> {
 }
 
 export type { DayFunnelEntry };
-
-// ---------------------------------------------------------------------------
-// AI messages
-// ---------------------------------------------------------------------------
-export async function getAiMessages(): Promise<AiMessage[]> {
-  if (IS_MOCK) return getMockAiMessages();
-  const { createClient } = await import("@/lib/supabase/server");
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return [];
-  const { data } = await supabase
-    .from("ai_messages")
-    .select("id, role, content, created_at, lesson_id")
-    .eq("user_id", user.id)
-    .order("created_at");
-  return (data ?? []) as AiMessage[];
-}

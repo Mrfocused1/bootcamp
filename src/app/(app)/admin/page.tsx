@@ -24,7 +24,6 @@ const SECTION_LINKS = [
   { href: "/admin/content", label: "Content", bg: "bg-ua-sky", sticker: "cursor-star", desc: "Edit lessons & videos" },
   { href: "/admin/students", label: "Students", bg: "bg-ua-green", sticker: "high-five", desc: "Manage access & progress" },
   { href: "/admin/cohorts", label: "Cohorts", bg: "bg-ua-pink", sticker: "hundred", desc: "Cohorts & live sessions" },
-  { href: "/admin/qa", label: "Q&A", bg: "bg-white", sticker: "peace", desc: "Review AI conversations" },
   { href: "/admin/announcements", label: "Announcements", bg: "bg-ua-orange", sticker: "megaphone", desc: "Post to all students" },
   { href: "/admin/analytics", label: "Analytics", bg: "bg-white", sticker: "shooting-star", desc: "Engagement & progress" },
   { href: "/admin/broadcast", label: "Broadcast", bg: "bg-ua-sky", sticker: "phone-hand", desc: "Email the cohort" },

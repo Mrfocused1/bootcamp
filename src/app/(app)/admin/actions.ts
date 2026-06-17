@@ -225,66 +225,6 @@ export async function sendBroadcast(
 }
 
 // ---------------------------------------------------------------------------
-// Feature 5 — Admin reply to AI Q&A question
-// ---------------------------------------------------------------------------
-export async function replyToQuestion(
-  messageId: string,
-  formData: FormData
-): Promise<{ ok: boolean }> {
-  await guardAdmin();
-
-  if (IS_MOCK) {
-    // No-op in mock mode
-    return { ok: true };
-  }
-
-  // Real-mode stub — insert admin reply and optionally email the student:
-  // const reply = formData.get("reply") as string;
-  // const { createClient } = await import("@/lib/supabase/admin");
-  // const supabase = createClient();
-  // await supabase.from("ai_messages").insert({
-  //   parent_id: messageId,
-  //   role: "admin",
-  //   content: reply,
-  // });
-  // Optionally email student via Resend
-  void messageId;
-  void formData;
-  return { ok: true };
-}
-
-/** Void wrapper for use as a form action. */
-export async function replyToQuestionAction(
-  messageId: string,
-  formData: FormData
-): Promise<void> {
-  await replyToQuestion(messageId, formData);
-}
-
-// ---------------------------------------------------------------------------
-// Feature 5 — Mark Q&A question as resolved
-// ---------------------------------------------------------------------------
-export async function markResolved(messageId: string): Promise<{ ok: boolean }> {
-  await guardAdmin();
-
-  if (IS_MOCK) {
-    return { ok: true };
-  }
-
-  // Real-mode stub:
-  // const { createClient } = await import("@/lib/supabase/admin");
-  // const supabase = createClient();
-  // await supabase.from("ai_messages").update({ resolved: true }).eq("id", messageId);
-  void messageId;
-  return { ok: true };
-}
-
-/** Void wrapper for use as a form action. */
-export async function markResolvedAction(messageId: string): Promise<void> {
-  await markResolved(messageId);
-}
-
-// ---------------------------------------------------------------------------
 // Session recordings (Cloudflare R2)
 // ---------------------------------------------------------------------------
 

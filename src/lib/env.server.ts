@@ -13,7 +13,6 @@ const serverSchema = z.object({
   STRIPE_PRICE_ID: z.string().min(1).optional(),
   RESEND_API_KEY: z.string().min(1),
   RESEND_FROM: z.string().min(1),
-  ANTHROPIC_API_KEY: z.string().min(1),
   CRON_SECRET: z.string().min(1),
 });
 

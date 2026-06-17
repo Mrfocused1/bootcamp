@@ -9,7 +9,6 @@ const REQUIRED_SERVER_KEYS = [
   "STRIPE_WEBHOOK_SECRET",
   "RESEND_API_KEY",
   "RESEND_FROM",
-  "ANTHROPIC_API_KEY",
   "CRON_SECRET",
 ];
 
@@ -22,7 +21,6 @@ const FULL_ENV: Record<string, string> = {
   STRIPE_WEBHOOK_SECRET: "whsec_123",
   RESEND_API_KEY: "re_123",
   RESEND_FROM: "Urban AI <hello@urbanai.co>",
-  ANTHROPIC_API_KEY: "sk-ant-123",
   CRON_SECRET: "cron-secret",
 };
 
@@ -84,6 +82,5 @@ describe("getServerEnv (from env.server)", () => {
     const env = getServerEnv();
     expect(env.NEXT_PUBLIC_APP_URL).toBe("http://localhost:3000");
     expect(env.SUPABASE_SERVICE_ROLE_KEY).toBe("service-role-key");
-    expect(env.ANTHROPIC_API_KEY).toBe("sk-ant-123");
   });
 });
