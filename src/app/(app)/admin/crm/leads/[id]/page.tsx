@@ -12,6 +12,8 @@ import { formatMoney, formatDate, formatDateTime, relativeDay, followUpBucket } 
 import { Reveal } from "@/components/marketing/Reveal";
 import { StatusBadge, PriorityBadge, Avatar, ActivityGlyph, toneForId } from "@/components/crm/Badges";
 import { LogActivityForm } from "@/components/crm/LogActivityForm";
+import { SendEmailForm } from "@/components/crm/SendEmailForm";
+import { OUTREACH_TEMPLATES, renderTemplate } from "@/lib/outreach-templates";
 import { DeleteLeadButton } from "@/components/crm/DeleteLeadButton";
 
 const FIELD =
@@ -40,6 +42,13 @@ export default async function LeadDetailPage({
   const creator = lead.created_by ? mMap.get(lead.created_by) : null;
   const logged = sp.logged === "1";
   const saved = sp.saved === "1";
+  const sent = sp.sent === "1";
+  const error = typeof sp.error === "string" ? sp.error : null;
+  const emailTemplates = OUTREACH_TEMPLATES.map((t) => ({
+    id: t.id,
+    label: t.label,
+    ...renderTemplate(t, lead),
+  }));
 
   const websiteHost = lead.website ? lead.website.replace(/^https?:\/\//, "").replace(/\/$/, "") : null;
 
@@ -49,9 +58,18 @@ export default async function LeadDetailPage({
         <Link href="/admin/crm/leads" className="text-sm font-bold text-ua-blue hover:underline">← Back to leads</Link>
       </Reveal>
 
-      {(logged || saved) && (
+      {(logged || saved || sent) && (
         <div className="rounded-2xl border-2 border-ua-ink bg-ua-green p-4 text-sm font-semibold text-ua-ink">
-          {logged ? "Outreach logged — the team can see it now." : "Lead updated."}
+          {logged
+            ? "Outreach logged — the team can see it now."
+            : sent
+              ? "Email sent — logged to this lead's timeline."
+              : "Lead updated."}
+        </div>
+      )}
+      {error && (
+        <div className="rounded-2xl border-2 border-ua-ink bg-ua-orange p-4 text-sm font-semibold text-white">
+          {error}
         </div>
       )}
 
@@ -81,6 +99,16 @@ export default async function LeadDetailPage({
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
         {/* Main column */}
         <div className="space-y-6 lg:col-span-2">
+          {/* Send email */}
+          <Reveal>
+            <section className="rounded-3xl border-2 border-ua-ink bg-white p-6 shadow-[6px_6px_0_var(--ua-ink)]">
+              <h2 className="mb-4 text-xl font-black lowercase text-ua-ink" style={{ fontFamily: "var(--font-epilogue)" }}>
+                send email
+              </h2>
+              <SendEmailForm leadId={lead.id} hasEmail={Boolean(lead.email)} templates={emailTemplates} />
+            </section>
+          </Reveal>
+
           {/* Log outreach */}
           <Reveal>
             <section className="rounded-3xl border-2 border-ua-ink bg-white p-6 shadow-[6px_6px_0_var(--ua-ink)]">
