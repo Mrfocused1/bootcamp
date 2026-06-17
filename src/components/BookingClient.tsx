@@ -70,7 +70,7 @@ export function BookingClient({ todayISO }: BookingClientProps) {
                 color: "var(--ua-ink)",
               }}
             >
-              you're all set!
+              you&apos;re all set!
             </h1>
             <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.75 }}>
               Your sessions are booked. Join links will be added closer to the time.
@@ -123,7 +123,7 @@ export function BookingClient({ todayISO }: BookingClientProps) {
           choose your schedule
         </h1>
         <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.55 }}>
-          Pick the day you'll start and the time that suits you. Your 5 daily sessions are
+          Pick the day you&apos;ll start and the time that suits you. Your 5 daily sessions are
           scheduled automatically.
         </p>
       </section>

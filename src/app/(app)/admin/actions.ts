@@ -42,7 +42,7 @@ export async function saveLesson(formData: FormData): Promise<void> {
   }
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const supabase = createAdminClient();
-  await supabase
+  const { error } = await supabase
     .from("lessons")
     .update({
       title: str(formData, "title") ?? "Untitled lesson",
@@ -50,6 +50,7 @@ export async function saveLesson(formData: FormData): Promise<void> {
       video_id: str(formData, "video_id"),
     })
     .eq("id", id);
+  if (error) console.error("[admin] saveLesson failed:", error.message);
   revalidatePath("/admin/content");
 }
 
@@ -68,7 +69,8 @@ export async function setAccess(
   const supabase = createAdminClient();
   // Single-cohort product: a student has one active enrollment, so filtering by
   // user_id flips their access. Revisit if multi-cohort enrollment is added.
-  await supabase.from("enrollments").update({ status }).eq("user_id", userId);
+  const { error } = await supabase.from("enrollments").update({ status }).eq("user_id", userId);
+  if (error) console.error("[admin] setAccess failed:", error.message);
   revalidatePath("/admin/students");
 }
 
@@ -87,10 +89,11 @@ export async function saveCohort(formData: FormData): Promise<void> {
   }
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const supabase = createAdminClient();
-  await supabase.from("cohorts").insert({
+  const { error } = await supabase.from("cohorts").insert({
     name: str(formData, "name") ?? "Untitled cohort",
     start_date: startDate,
   });
+  if (error) console.error("[admin] saveCohort failed:", error.message);
   revalidatePath("/admin/cohorts");
 }
 
@@ -116,12 +119,13 @@ export async function saveLiveSession(formData: FormData): Promise<void> {
     revalidatePath("/admin/cohorts");
     return;
   }
-  await supabase.from("live_sessions").insert({
+  const { error } = await supabase.from("live_sessions").insert({
     cohort_id: (cohort as { id: string }).id,
     day_index: Number(str(formData, "day_index") ?? "1") || 1,
     scheduled_at: scheduledAt,
     zoom_url: str(formData, "zoom_url"),
   });
+  if (error) console.error("[admin] saveLiveSession failed:", error.message);
   revalidatePath("/admin/cohorts");
 }
 
@@ -135,10 +139,11 @@ export async function postAnnouncement(formData: FormData): Promise<void> {
 
   const { createAdminClient } = await import("@/lib/supabase/admin");
   const supabase = createAdminClient();
-  await supabase.from("announcements").insert({
+  const { error } = await supabase.from("announcements").insert({
     title: str(formData, "title") ?? "Announcement",
     body: str(formData, "body"),
   });
+  if (error) console.error("[admin] postAnnouncement failed:", error.message);
   revalidatePath("/admin/announcements");
 }
 
@@ -312,6 +317,7 @@ export async function deleteRecordingAction(id: string): Promise<void> {
       // best-effort object delete; still remove the row
     }
   }
-  await supabase.from("session_recordings").delete().eq("id", id);
+  const { error } = await supabase.from("session_recordings").delete().eq("id", id);
+  if (error) console.error("[admin] deleteRecordingAction failed:", error.message);
   revalidatePath("/admin/recordings");
 }

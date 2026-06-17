@@ -91,7 +91,7 @@ export async function updateLead(formData: FormData): Promise<void> {
 
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
-  await supabase
+  const { error } = await supabase
     .from("leads")
     .update({
       company: str(formData, "company") ?? "Untitled lead",
@@ -108,6 +108,9 @@ export async function updateLead(formData: FormData): Promise<void> {
       next_follow_up_at: toIso(formData, "next_follow_up_at"),
     })
     .eq("id", id);
+  if (error) {
+    redirect(`/admin/crm/leads/${id}?error=${encodeURIComponent(error.message)}`);
+  }
   revalidatePath("/admin/crm");
   revalidatePath("/admin/crm/leads");
   revalidatePath(`/admin/crm/leads/${id}`);
@@ -126,7 +129,10 @@ export async function updateLeadStatus(formData: FormData): Promise<void> {
   if (!IS_MOCK) {
     const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
-    await supabase.from("leads").update({ status }).eq("id", id);
+    const { error } = await supabase.from("leads").update({ status }).eq("id", id);
+    if (error) {
+      redirect(`/admin/crm/leads/${id}?error=${encodeURIComponent(error.message)}`);
+    }
   }
   revalidatePath("/admin/crm");
   revalidatePath("/admin/crm/leads");
@@ -146,7 +152,10 @@ export async function assignLead(formData: FormData): Promise<void> {
   if (!IS_MOCK) {
     const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
-    await supabase.from("leads").update({ assigned_to: assignedTo }).eq("id", id);
+    const { error } = await supabase.from("leads").update({ assigned_to: assignedTo }).eq("id", id);
+    if (error) {
+      redirect(`/admin/crm/leads/${id}?error=${encodeURIComponent(error.message)}`);
+    }
   }
   revalidatePath(`/admin/crm/leads/${id}`);
   redirect(`/admin/crm/leads/${id}?saved=1`);
@@ -172,7 +181,7 @@ export async function logActivity(formData: FormData): Promise<void> {
   const occurredAt = toIso(formData, "occurred_at") ?? new Date().toISOString();
   const followUpAt = toIso(formData, "follow_up_at");
 
-  await supabase.from("lead_activities").insert({
+  const { error: activityError } = await supabase.from("lead_activities").insert({
     lead_id: leadId,
     user_id: profile.id,
     type,
@@ -182,11 +191,17 @@ export async function logActivity(formData: FormData): Promise<void> {
     occurred_at: occurredAt,
     follow_up_at: followUpAt,
   });
+  if (activityError) {
+    redirect(`/admin/crm/leads/${leadId}?error=${encodeURIComponent(activityError.message)}`);
+  }
 
   // Sync the lead: bump last_contacted (unless it's just a note), set next follow-up.
   const leadPatch: Record<string, unknown> = { next_follow_up_at: followUpAt };
   if (type !== "note") leadPatch.last_contacted_at = occurredAt;
-  await supabase.from("leads").update(leadPatch).eq("id", leadId);
+  const { error: leadError } = await supabase.from("leads").update(leadPatch).eq("id", leadId);
+  if (leadError) {
+    redirect(`/admin/crm/leads/${leadId}?error=${encodeURIComponent(leadError.message)}`);
+  }
 
   revalidatePath("/admin/crm");
   revalidatePath(`/admin/crm/leads/${leadId}`);
@@ -203,7 +218,10 @@ export async function clearFollowUp(formData: FormData): Promise<void> {
   if (!IS_MOCK) {
     const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
-    await supabase.from("leads").update({ next_follow_up_at: null }).eq("id", id);
+    const { error } = await supabase.from("leads").update({ next_follow_up_at: null }).eq("id", id);
+    if (error) {
+      redirect(`/admin/crm/leads/${id}?error=${encodeURIComponent(error.message)}`);
+    }
   }
   revalidatePath("/admin/crm");
   revalidatePath(`/admin/crm/leads/${id}`);
@@ -220,7 +238,10 @@ export async function deleteLead(formData: FormData): Promise<void> {
   if (!IS_MOCK) {
     const { createClient } = await import("@/lib/supabase/server");
     const supabase = await createClient();
-    await supabase.from("leads").delete().eq("id", id);
+    const { error } = await supabase.from("leads").delete().eq("id", id);
+    if (error) {
+      redirect(`/admin/crm/leads?error=${encodeURIComponent(error.message)}`);
+    }
   }
   revalidatePath("/admin/crm");
   revalidatePath("/admin/crm/leads");
@@ -262,7 +283,7 @@ export async function sendLeadEmail(formData: FormData): Promise<void> {
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
   const now = new Date().toISOString();
-  await supabase.from("lead_activities").insert({
+  const { error: activityError } = await supabase.from("lead_activities").insert({
     lead_id: leadId,
     user_id: profile.id,
     type: "email",
@@ -272,10 +293,16 @@ export async function sendLeadEmail(formData: FormData): Promise<void> {
     occurred_at: now,
     follow_up_at: followUpAt,
   });
-  await supabase
+  if (activityError) {
+    redirect(`/admin/crm/leads/${leadId}?error=${encodeURIComponent(activityError.message)}`);
+  }
+  const { error: leadError } = await supabase
     .from("leads")
     .update({ last_contacted_at: now, next_follow_up_at: followUpAt })
     .eq("id", leadId);
+  if (leadError) {
+    redirect(`/admin/crm/leads/${leadId}?error=${encodeURIComponent(leadError.message)}`);
+  }
 
   revalidatePath("/admin/crm");
   revalidatePath(`/admin/crm/leads/${leadId}`);

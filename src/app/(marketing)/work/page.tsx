@@ -6,7 +6,7 @@ import { FinalCta } from "@/components/marketing/sections/FinalCta";
 export const metadata: Metadata = {
   title: "Our Work — Bridgeway AI Bootcamp",
   description:
-    "Websites we've designed, built and shipped with AI — charities (Youth n Rise, Commonwell, Stepping Stones, Springboard), with creatives and sports coming soon. The same workflow we teach in the bootcamp.",
+    "Websites we've designed, built and shipped with AI — charities (Forever Family, Youth n Rise, Commonwell, Stepping Stones, Springboard), sports (Chuks Fitness) and local services (Clearway Driving School), with creative portfolios coming soon. The same workflow we teach in the bootcamp.",
 };
 
 export default function WorkPage() {

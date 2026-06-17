@@ -7,6 +7,7 @@ const REQUIRED_SERVER_KEYS = [
   "SUPABASE_SERVICE_ROLE_KEY",
   "STRIPE_SECRET_KEY",
   "STRIPE_WEBHOOK_SECRET",
+  "STRIPE_PRICE_ID",
   "RESEND_API_KEY",
   "RESEND_FROM",
   "CRON_SECRET",
@@ -19,6 +20,7 @@ const FULL_ENV: Record<string, string> = {
   SUPABASE_SERVICE_ROLE_KEY: "service-role-key",
   STRIPE_SECRET_KEY: "sk_test_123",
   STRIPE_WEBHOOK_SECRET: "whsec_123",
+  STRIPE_PRICE_ID: "price_123",
   RESEND_API_KEY: "re_123",
   RESEND_FROM: "Urban AI <hello@urbanai.co>",
   CRON_SECRET: "cron-secret",
@@ -67,11 +69,18 @@ describe("getServerEnv (from env.server)", () => {
     expect(msg).toMatch(/SUPABASE_SERVICE_ROLE_KEY/);
   });
 
-  it("does not require STRIPE_WEBHOOK_SECRET (it is optional)", async () => {
+  it("requires STRIPE_WEBHOOK_SECRET", async () => {
     for (const [k, v] of Object.entries(FULL_ENV)) process.env[k] = v;
     delete process.env.STRIPE_WEBHOOK_SECRET;
     const { getServerEnv } = await import("@/lib/env.server");
-    expect(() => getServerEnv()).not.toThrow();
+    expect(() => getServerEnv()).toThrow(/STRIPE_WEBHOOK_SECRET/);
+  });
+
+  it("requires STRIPE_PRICE_ID", async () => {
+    for (const [k, v] of Object.entries(FULL_ENV)) process.env[k] = v;
+    delete process.env.STRIPE_PRICE_ID;
+    const { getServerEnv } = await import("@/lib/env.server");
+    expect(() => getServerEnv()).toThrow(/STRIPE_PRICE_ID/);
   });
 
   it("does not require CRON_SECRET (it is optional)", async () => {
