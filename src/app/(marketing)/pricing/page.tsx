@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 const INCLUDED = [
   "5 live 1-hour Zoom sessions",
   "Lifetime access to all recordings",
-  "The full 12-topic curriculum",
+  "The full 5-day curriculum",
   "Student dashboard to rewatch lessons",
   "Ask-anything Q&A in your live sessions",
   "Templates, prompts & resources",

@@ -6,7 +6,7 @@ import { FinalCta } from "@/components/marketing/sections/FinalCta";
 export const metadata: Metadata = {
   title: "Syllabus — Bridgeway AI Bootcamp",
   description:
-    "The full Bridgeway AI Bootcamp syllabus: twelve essential skills across five focused one-hour live sessions. From building the look to getting found on Google — every session recorded so you can rewatch any time.",
+    "The full Bridgeway AI Bootcamp syllabus: over 20 essential skills across five focused one-hour live sessions. From building the look to getting found on Google — every session recorded so you can rewatch any time.",
 };
 
 const DAYS = [
@@ -84,7 +84,7 @@ export default function SyllabusPage() {
       <PageHero
         eyebrow="5 days · 1 hour a day · live on Zoom"
         title="the syllabus"
-        intro="Twelve essential skills, spread across five focused one-hour live sessions. Every session is recorded, so you can rewatch any topic whenever you like."
+        intro="Over 20 essential skills, spread across five focused one-hour live sessions. Every session is recorded, so you can rewatch any topic whenever you like."
         sticker="sparkles"
       />
 
@@ -101,7 +101,6 @@ export default function SyllabusPage() {
             const bodyText = dark ? "text-ua-bg/90" : "text-ua-ink/80";
             const labelText = dark ? "text-ua-bg/70" : "text-ua-ink/60";
             const numText = dark ? "text-ua-bg/30" : "text-ua-ink/20";
-            const borderText = dark ? "border-ua-bg/40" : "border-ua-ink/40";
 
             return (
               <div
@@ -159,15 +158,6 @@ export default function SyllabusPage() {
                           </li>
                         ))}
                       </ul>
-
-                      {/* Video placeholder (compact so the card fits when stacked) */}
-                      <div
-                        className={`mt-6 flex h-36 w-full items-center justify-center rounded-2xl border-2 border-dashed ${borderText} ${labelText} md:h-40`}
-                      >
-                        <span className="px-4 text-center text-sm font-bold uppercase tracking-[0.15em]">
-                          Day {day.n} tutorial — video slot
-                        </span>
-                      </div>
                     </div>
                   </div>
                 </div>

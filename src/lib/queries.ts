@@ -49,17 +49,18 @@ export async function getCurrentProfile(): Promise<Profile> {
 // ---------------------------------------------------------------------------
 // Cohort
 // ---------------------------------------------------------------------------
-export async function getCohort(): Promise<Cohort> {
+export async function getCohort(): Promise<Cohort | null> {
   if (IS_MOCK) return getMockCohort();
   const { createClient } = await import("@/lib/supabase/server");
   const supabase = await createClient();
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("cohorts")
     .select("id, name, start_date")
     .order("start_date", { ascending: false })
     .limit(1)
-    .single();
-  return data as Cohort;
+    .maybeSingle();
+  if (error) return null;
+  return data as Cohort | null;
 }
 
 // ---------------------------------------------------------------------------
@@ -256,7 +257,7 @@ export async function getLatestAnnouncement(): Promise<Announcement | null> {
     .select("id, title, body, created_at")
     .order("created_at", { ascending: false })
     .limit(1)
-    .single();
+    .maybeSingle();
   return (data as Announcement) ?? null;
 }
 

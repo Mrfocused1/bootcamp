@@ -30,10 +30,30 @@ const lora = Lora({
   display: "swap",
 });
 
+const SITE_TITLE =
+  "Bridgeway AI Bootcamp — Learn to build websites with AI in 5 days";
+const SITE_DESCRIPTION =
+  "A 5-day live course teaching founders, entrepreneurs, teams and organisations (including charities) to build, refresh and launch real websites with AI — databases, payments, hosting and more. Train yourself or your tech team to ship in-house. No coding experience needed.";
+
 export const metadata: Metadata = {
-  title: "Bridgeway AI Bootcamp — Learn to build websites with AI in 5 days",
-  description:
-    "A 5-day live course teaching founders, entrepreneurs, teams and organisations (including charities) to build, refresh and launch real websites with AI — databases, payments, hosting and more. Train yourself or your tech team to ship in-house. No coding experience needed.",
+  metadataBase: new URL("https://www.bridgewayaibootcamp.com"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "https://www.bridgewayaibootcamp.com",
+    siteName: "Bridgeway AI Bootcamp",
+    images: [
+      { url: "/marketing/bridgeway-hero.webp", width: 1672, height: 941 },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/marketing/bridgeway-hero.webp"],
+  },
 };
 
 export default function RootLayout({

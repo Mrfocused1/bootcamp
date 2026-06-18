@@ -48,10 +48,10 @@ export default async function AdminCohortsPage() {
           className="font-bold text-xl"
           style={{ fontFamily: "var(--font-epilogue), Epilogue, sans-serif", color: "var(--ua-ink)" }}
         >
-          {cohort.name}
+          {cohort?.name ?? "No cohort yet"}
         </p>
         <p className="text-sm" style={{ color: "var(--ua-ink)", opacity: 0.7 }}>
-          Starts: {cohort.start_date}
+          {cohort ? `Starts: ${cohort.start_date}` : "Create your first cohort below."}
         </p>
       </div>
 

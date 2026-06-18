@@ -48,6 +48,36 @@ export default async function DashboardPage() {
     ]
   );
 
+  // No cohort yet (e.g. before the first cohort is created) — show a friendly
+  // placeholder rather than crashing on cohort.start_date.
+  if (!cohort) {
+    return (
+      <div className="mx-auto max-w-6xl space-y-6 px-4 py-14 sm:px-6">
+        <h1
+          className="text-4xl font-black tracking-tight text-ua-ink md:text-5xl"
+          style={{ fontFamily: "var(--font-epilogue)" }}
+        >
+          your dashboard
+        </h1>
+        <div className="flex items-center gap-4 rounded-3xl border-2 border-ua-ink bg-ua-sky p-7 text-ua-ink shadow-[6px_6px_0_var(--ua-ink)]">
+          <Sticker name="sparkles" size={64} rotate={-8} className="shrink-0" />
+          <div>
+            <h2
+              className="text-xl font-black lowercase"
+              style={{ fontFamily: "var(--font-epilogue)" }}
+            >
+              your cohort is being set up
+            </h2>
+            <p className="text-sm text-ua-ink/70">
+              Hang tight — your start date and lessons will appear here as soon
+              as your cohort is scheduled.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // Overall progress: average of watched_percent across all 5 lessons
   const lessonIds = days.map((_, i) => `lesson-${i + 1}`);
   const percents = lessonIds.map((id) => progressMap[id]?.watched_percent ?? 0);

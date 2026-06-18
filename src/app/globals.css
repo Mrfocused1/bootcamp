@@ -34,6 +34,14 @@
   min-height: 100vh;
 }
 
+/* Site-wide backstop against accidental horizontal scroll (off-canvas
+   decorations, oversized stickers, etc.). `clip` keeps sticky/position
+   contexts intact, unlike `hidden`. */
+html,
+body {
+  overflow-x: clip;
+}
+
 /* ── Oversized, colour-inverted cursor ──
    ~3x the default arrow (48px vs ~16px) and colour-inverted: the default
    pointer is black-on-white, so this is white-on-black. Applied site-wide.

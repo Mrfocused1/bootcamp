@@ -147,7 +147,7 @@ export interface LiveSession {
   id: string;
   day_index: number;
   scheduled_at: string;
-  zoom_url: string;
+  zoom_url: string | null;
 }
 
 export interface SessionRecording {

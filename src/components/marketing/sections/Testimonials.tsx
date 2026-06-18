@@ -129,6 +129,8 @@ function PhotoCard({
         alt={alt}
         aria-hidden={alt === "" ? true : undefined}
         draggable={false}
+        loading="lazy"
+        decoding="async"
         className={`h-full w-full object-cover ${imgClassName}`}
       />
     </div>

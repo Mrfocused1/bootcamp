@@ -41,7 +41,7 @@ export const HERO = {
   // Background slideshow images (cross-fade through dark). Add more here later.
   // Hero background slides — images or videos (.mp4). Cross-fade through dark.
   // (Single image for now.)
-  images: ["/marketing/bridgeway-hero.png"],
+  images: ["/marketing/bridgeway-hero.webp"],
   image: "/marketing/bridgeway-hero.png",
   imageAlt: "Founder learning to build websites with AI",
 };

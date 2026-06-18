@@ -125,6 +125,9 @@ const TABS: {
 ];
 
 export function WorkCategories() {
+  // Only show categories that actually have work — avoids a "coming soon"
+  // dead-end tab (e.g. the empty "creatives" deck).
+  const visibleTabs = TABS.filter((t) => DECKS[t.id].length > 0);
   const [active, setActive] = useState<TabId>("charities");
   const tab = TABS.find((t) => t.id === active)!;
   const studies = DECKS[active];
@@ -151,18 +154,16 @@ export function WorkCategories() {
           </div>
 
           <div
-            role="tablist"
             aria-label="Work categories"
             className="inline-flex shrink-0 flex-wrap gap-1 rounded-full border-2 border-ua-ink/15 bg-white/60 p-1.5"
           >
-            {TABS.map((t) => {
+            {visibleTabs.map((t) => {
               const on = t.id === active;
               return (
                 <button
                   key={t.id}
                   type="button"
-                  role="tab"
-                  aria-selected={on}
+                  aria-pressed={on}
                   onClick={() => setActive(t.id)}
                   className={`rounded-full px-4 py-2 text-sm font-bold lowercase transition-colors md:px-5 ${
                     on ? "bg-ua-ink text-ua-bg" : "text-ua-ink/55 hover:text-ua-ink"

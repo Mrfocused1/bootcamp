@@ -24,7 +24,7 @@ export default async function LessonPage({ params }: PageProps) {
   // Access guard — defence-in-depth beyond RLS
   const todayISO = new Date().toISOString().slice(0, 10);
   const cohort = await getCohort();
-  if (!isDayUnlocked(dayIndex, cohort.start_date, todayISO)) {
+  if (!cohort || !isDayUnlocked(dayIndex, cohort.start_date, todayISO)) {
     redirect("/dashboard");
   }
 

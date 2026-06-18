@@ -15,12 +15,9 @@ const EMPHASIS_WORDS = ["from", "idea", "to", "live", "site."];
 const UNDERLINE_PATH =
   "M2 26C41.0237 23.1556 79.9927 19.9419 118.634 15.5521C169.106 9.98633 227.314 2.42393 275.206 2C280.46 2.57436 264.768 4.99488 262.462 5.55556C257.837 6.43078 252.529 7.47009 247.317 8.59146C239.594 10.3556 212.496 15.8393 226.932 19.8051C239.594 22.6359 263.663 21.9521 280.978 21.3504C314.817 19.9829 349.311 16.7419 383.204 14.7863C465.931 9.5077 549.191 10.547 632 14.1436";
 
-// TODO(owner): swap these placeholder photos for your own (students, sessions, projects).
-const PHOTOS = [
-  { src: "/marketing/placeholders/p1.png", rotate: 0, objectPosition: "left center" },
-  { src: "/marketing/placeholders/p5.png", rotate: 0, objectPosition: "center" },
-  { src: "/marketing/placeholders/p3.png", rotate: 0, objectPosition: "right center" },
-];
+// Three cards in the fan: a phone-style video clip + two real images. Only the
+// per-card rotation differs (the src/aspect are derived in the map below).
+const CARD_ROTATIONS = [0, 0, 0];
 
 export function Future() {
   const sectionRef = useRef<HTMLElement>(null);
@@ -199,9 +196,10 @@ export function Future() {
           </h2>
         </div>
 
-        {/* Photo collage (placeholder images) — same hover-fan as the curriculum
-            cards: hovering one straightens + lifts it to the front and nudges the
-            photos after it right (see .ua-fan-card in globals.css). */}
+        {/* Card fan — a phone-style video clip plus two real images. Same
+            hover-fan as the curriculum cards: hovering one straightens + lifts
+            it to the front and nudges the cards after it right (see .ua-fan-card
+            in globals.css). */}
         <Reveal className="mt-28 md:mt-36">
           <div className="relative mx-auto flex w-fit max-w-full items-center justify-center">
             {/* Blue organic blob behind the photos (decorative). */}
@@ -214,7 +212,7 @@ export function Future() {
                 stay within the mobile frame. Same hover-fan as the curriculum
                 cards from sm up (see .ua-fan-card). */}
             <div className="relative flex items-center justify-center -space-x-10 sm:-space-x-4 md:-space-x-5 lg:-space-x-6">
-              {PHOTOS.map((photo, i) => {
+              {CARD_ROTATIONS.map((rotate, i) => {
                 // Cards holding a video are sized to the video's aspect ratio
                 // (400:736) so they play uncropped; the middle one is enlarged.
                 // Card 0 is a video clip; cards 1 and 2 are static images.
@@ -230,7 +228,7 @@ export function Future() {
                     className="ua-fan-card relative shrink-0 overflow-hidden rounded-2xl border-2 border-ua-ink shadow-[6px_6px_0_var(--ua-ink)] sm:rounded-3xl"
                     style={
                       {
-                        "--rot": `${photo.rotate}deg`,
+                        "--rot": `${rotate}deg`,
                         zIndex: isMiddle ? 20 : i + 1,
                       } as React.CSSProperties
                     }
@@ -263,6 +261,8 @@ export function Future() {
                         alt=""
                         aria-hidden="true"
                         draggable={false}
+                        loading="lazy"
+                        decoding="async"
                         className={
                           isMiddle
                             ? "block aspect-[400/736] w-36 object-cover md:w-44 lg:w-52"

@@ -18,7 +18,7 @@ const FAQS = [
   },
   {
     q: "What exactly do I get?",
-    a: "Five live 1-hour Zoom sessions, lifetime access to every recording, the full 12-topic curriculum, a student dashboard to rewatch lessons, Q&A support, and templates and prompts to reuse.",
+    a: "Five live 1-hour Zoom sessions, lifetime access to every recording, the full 5-day curriculum, a student dashboard to rewatch lessons, Q&A support, and templates and prompts to reuse.",
   },
   {
     q: "When are the live sessions?",
