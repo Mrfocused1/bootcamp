@@ -75,7 +75,7 @@ const PHOTOS: Photo[] = [
       name: "rock-on",
       size: 92,
       rotate: -10,
-      className: "-right-6 top-1/4",
+      className: "-right-5 -top-6",
     },
   },
   {
