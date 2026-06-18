@@ -8,11 +8,13 @@ drop policy if exists sr_read on session_recordings;
 
 create policy sr_read on session_recordings for select
   using (
-    is_admin() or exists (
-      select 1 from enrollments e
-      where e.cohort_id = session_recordings.cohort_id
-        and e.user_id = auth.uid()
-        and e.status = 'active'
+    is_admin() or (
+      exists (
+        select 1 from enrollments e
+        where e.cohort_id = session_recordings.cohort_id
+          and e.user_id = auth.uid()
+          and e.status = 'active'
+      )
+      and session_recordings.day_index <= public.max_unlocked_day()
     )
-    and session_recordings.day_index <= public.max_unlocked_day()
   );
