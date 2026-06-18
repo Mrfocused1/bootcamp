@@ -217,13 +217,12 @@ export function Future() {
               {PHOTOS.map((photo, i) => {
                 // Cards holding a video are sized to the video's aspect ratio
                 // (400:736) so they play uncropped; the middle one is enlarged.
-                // Cards 0 and 1 are video clips; card 2 is a static image.
-                const video =
+                // Card 0 is a video clip; cards 1 and 2 are static images.
+                const video = i === 0 ? "/marketing/future-clip-2.mp4" : null;
+                const image =
                   i === 1
-                    ? "/marketing/future-clip.mp4"
-                    : i === 0
-                      ? "/marketing/future-clip-2.mp4"
-                      : null;
+                    ? "/marketing/future-card-2.jpg"
+                    : "/marketing/future-card-3.jpg";
                 const isMiddle = i === 1;
                 return (
                   <div
@@ -260,7 +259,7 @@ export function Future() {
                     ) : (
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src="/marketing/future-card-3.jpg"
+                        src={image}
                         alt=""
                         aria-hidden="true"
                         draggable={false}
