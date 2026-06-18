@@ -71,6 +71,16 @@ const DECKS: Record<TabId, CaseStudy[]> = {
   ],
   other: [
     {
+      name: "The Perfect Pair",
+      logo: "/marketing/work/perfect-pair-logo.svg",
+      blurb:
+        "A bold, cinematic site for a matchmaking show pairing real people for real chemistry. Full-bleed video hero, scroll-driven storytelling with pinned host reels and a friction-light, multi-step application to apply to be matched.",
+      video: "/marketing/work/perfect-pair-demo.mp4",
+      poster: "/marketing/work/perfect-pair-poster.jpg",
+      href: "https://theperfectpairshow.com",
+      logoClass: "h-14 md:h-16",
+    },
+    {
       name: "Clearway Driving School",
       logo: "/marketing/work/clearway-logo.svg",
       blurb:
